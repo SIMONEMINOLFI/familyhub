@@ -1,0 +1,18 @@
+body {
+    background-color: rgb(230, 250, 255); /* Uso un azzurro molto chiaro, quasi bianco */
+}
+
+h1 {
+    color: blue;
+}
+
+h2 {
+    color: orange; /
+}
+
+.container {
+    background: white; 
+    padding: 20px; 
+    border-radius: 10px; 
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Aggiungo un'ombra leggera al contenitore */
+}
