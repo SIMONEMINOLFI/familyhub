@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>FAMILY HUB</title> <!-- Titolo dell'applicazione che appare nella scheda del browser -->
+        <title>Family Hub</title> <!-- Titolo dell'applicazione che appare nella scheda del browser -->
         <meta charset="utf-8" /> <!-- Imposto la codifica dei caratteri, garantendo che i caratteri speciali siano visualizzati correttamente -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" href="app.jpg" /> <!-- Icona della mia webapp -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity=
         "sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="stileapp.css"> <!-- Definisco lo stile della pagina in un file CSS esterno (lo carico dopo Bootstrap per evitare di sovrascrivere) -->
     </head>
     <body>
         <div class="container text-center mt-3"> <!-- Contenitore principale centrato con margine superiore -->
@@ -34,13 +35,17 @@
         <div class="row justify-content-center">  <!-- Metto gli elementi centrati sulla riga -->
             <div class="col-4"> 
                 <h2>🎖 Premi</h2>
-                <p>Lista dei premi riscossi e da riscuotere</p>
+                <p class="text-warning-emphasis">Lista dei premi riscossi e da riscuotere</p>
             </div>
             <div class="col-4"> 
                 <h2>🎯 Obiettivi</h2> 
-                <p>Attività e Sfide</p>
+                <p class="text-danger-emphasis">Attività e Sfide</p>
             </div>
         </div>
         </div>
+        <!-- Importo il file JavaScript di Bootstrap-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>    
+        <script src="codiceapp.js"></script> <!-- Collegamento al mio file JavaScript personalizzato -->
     </body>
 </html>
