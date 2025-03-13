@@ -8,6 +8,6 @@ Creo una funzione gestisciAccesso (viene eseguita quando l'utente clicca su Acce
 // Funzione per gestire l'inserimento del nome
 let gestisciAccesso = function (e) {
 
-    let nomeUtente = document.getElementById("inputNomeUtente"); // Prendo il valore inserito dall'utente
+    let nomeUtente = document.getElementById("inputNomeUtente").value; // Prendo il valore inserito dall'utente
     document.getElementById("nomeUtente").textContent = nomeUtente; // Aggiorno il saluto personalizzato nella Home 
 }
