@@ -21,10 +21,19 @@
             <h1>Family Hub</h1>
             <h5>Benvenuto nell'App!😊</h5>
             <form> 
-                <input type="text" class="form-control" placeholder="Inserisci il tuo nome"> 
+                <input type="text" id="inputNomeUtente" class="form-control" placeholder="Inserisci il tuo nome"> 
                 <button type="submit" class="btn btn-primary mt-3">Accedi</button>
             </form>
         </div>
+
+        <!-- Pagina Home completa (voglio nascondrrla inizialmente) -->
+        <div>
+            <h1>Family Hub</h1> <!-- Titolo dell'app -->
+            <div class="row"> 
+                <!-- Nell'attributo span viene messo il nome inserito dall'utente nel form di login -->
+                <p>👋 Ciao, <span id="nomeUtente"></span>!</p> <!-- Saluto personalizzato all'utente-->
+            </div>
+
 
         <!-- Sezione Classifica e Icona Utente (disposti come colonne laterali) -->
         <div class="row">  
