@@ -11,3 +11,7 @@ let gestisciAccesso = function (e) {
     let nomeUtente = document.getElementById("inputNomeUtente").value; // Prendo il valore inserito dall'utente
     document.getElementById("nomeUtente").textContent = nomeUtente; // Aggiorno il saluto personalizzato nella Home 
 }
+
+// Associo l'evento submit alla funzione (ogni volta che l'utente clicca su Accedi, la funzione gestisciAccesso viene eseguita)
+let formAccesso = document.getElementById("formAccesso");
+formAccesso.addEventListener("submit", gestisciAccesso);
