@@ -51,14 +51,13 @@ Gli obiettivi sono suddivisi prima per **frequenza**
 
 -   **Sfide** (da completare/completate)
 
-Cliccando su attività o su sfide mostro di default prima gli obiettivi da completare, poi avrò un pulsante per aggiornare lo stato del mio obiettivo (ad esempio "Segna come completato").\
-Gli obiettivi completati e da completare hanno due colori diversi.\
+Cliccando su attività o su sfide mostro di default prima gli obiettivi da completare, poi avrò un pulsante per aggiornare lo stato del mio obiettivo (ad esempio "Segna come completato").  
+Gli obiettivi completati e da completare hanno due colori diversi.  
 Gli obiettivi scaduti o le sfide rifiutate non vengono visualizzati...
 
-Inserisco una Progress Bar che mostra la percentuale di completamento
-degli obiettivi in base alla loro frequenza (settimanale, mensile,
-annuale). Quindi avrò 3 diverse progress bar, che cambiano di colore in
-base alla percentuale di caricamento (Bootstrap)
+Inserisco una Progress Bar che mostra la percentuale di completamento degli obiettivi in base alla loro frequenza (settimanale, mensile, annuale).   
+Quindi avrò 3 diverse progress bar, che cambiano di colore in
+base alla percentuale di caricamento (Bootstrap).
 
 ### Funzionalità Grafiche da Implementare (con Bootstrap)
 
