@@ -7,6 +7,7 @@ Creo una funzione gestisciAccesso (viene eseguita quando l'utente clicca su Acce
 
 // Funzione per gestire l'inserimento del nome
 let gestisciAccesso = function (e) {
+    e.preventDefault(); // Impedisce il ricaricamento della pagina
 
     let nomeUtente = document.getElementById("inputNomeUtente").value; // Prendo il valore inserito dall'utente
     document.getElementById("nomeUtente").textContent = nomeUtente; // Aggiorno il saluto personalizzato nella Home 
@@ -19,3 +20,9 @@ let gestisciAccesso = function (e) {
 // Associo l'evento submit alla funzione (ogni volta che l'utente clicca su Accedi, la funzione gestisciAccesso viene eseguita)
 let formAccesso = document.getElementById("formAccesso");
 formAccesso.addEventListener("submit", gestisciAccesso);
+
+/*
+Senza e.preventDefault(): 
+1.L'utente inserisce il nome nel campo di testo e preme "Accedi"
+2.Il modulo si invia e la pagina si ricarica, quindi tutte le modifiche fatte dalla funzione JavaScript vengono perse (non vedo la Home)
+*/
