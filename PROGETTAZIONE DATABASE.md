@@ -72,23 +72,3 @@ Con il campo punti_richiesti indico il numero di punti necessari a riscattare qu
 | data_riscossione | DATE     | NOT NULL   |
 
 **VINCOLI DI INTEGRITÀ REFERENZIALE**: Tra riscossione.id_utente e utenti.id_utente
-
------------------------------------------------------------------------
-
-### INTERFACCIA UTENTE
-
-- Saluto all'utente (es. Ciao Simone!)
-
-- Sfondo azzurro molto chiaro oppure giallo chiaro in stile "Note"
-
-- IN ALTO scritta Family Hub, casella rotonda nome utente
-
-- Barra di avanzamento punti (eventualmente con percentuale di completamento delle attività/sfide)
-
-- Barra con percentuale di avanzamento delle attività a seconda della frequenza (ad esempio quale percentuale di attività/sfide settimanali è stata svolta?)
-
-- Tabella obiettivi con distinzione in sfide (accettate e in attesa) e attività (accettate in automatico)
-
-- Tabella Premi (riscossi e da riscuotere per motivare l'utente, il tasto "riscuoti premio" dispone dei punti necessari a richiederlo)
-
-- Tabella Punteggi ASSOLUTI (con classifica associata ed eventuale possibilità di filtrare per intervalli di tempo (settimanale, mensile, annuale)).
