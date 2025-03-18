@@ -1,10 +1,16 @@
 # FAMILY HUB - SPECIFICHE DELL' INTERFACCIA UTENTE
 
-### Funzionalità dell'Interfaccia Utente
+### Prossime Funzionalità da introdurre per l'Interfaccia Utente 
 
-- [ ] Login form utente (l'utente accede all'app e viene visualizzata la homepage)
+- [X] Login form utente (l'utente accede all'app e viene visualizzata la homepage)
 
 - [ ] Progress Bar per gli Obiettivi
+
+- [ ] Icona impostazioni con opzioni *"Modifica nome utente"* e *"Logout"*
+
+- [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
+
+- [ ] Cookie per login form utente (salvo stato e nome dell'utente una volta registrato)
 
 ### Accesso all'App
 
@@ -38,43 +44,55 @@
 
 - Situata al centro-sinistra dello schermo. Cliccandola, si espande in due liste:
 
-    - Premi già riscossi: Mostra il nome del premio e la data di riscossione.
+- Premi già riscossi: Mostra il nome del premio e la data di riscossione.
 
-    - Premi disponibili: Contiene un pulsante "riscatta", attivo solo se l'utente ha abbastanza punti.
+- Premi disponibili: Contiene un pulsante "riscatta", attivo solo se l'utente ha abbastanza punti.
 
 ### Sezione Obiettivi
 
-Gli obiettivi sono suddivisi prima per **frequenza**
-(settimanali/mensili/annuali/occasionali), poi ogni tabella (ad es. obiettivi settimanali) sarà distinta per **tipologia** in due liste (potrei anche inserire in modo OPZIONALE un'unica lista **Tutti** che permette di visualizzare tutti gli obiettivi di una categoria senza distinzione tra attività e sfide):
+Gli obiettivi sono suddivisi prima per **frequenza** (settimanali/mensili/annuali/occasionali), poi ogni tabella (ad es. obiettivi settimanali) sarà distinta per **tipologia** in due liste (potrei anche inserire in modo OPZIONALE un'unica lista **Tutti** che permette di visualizzare tutti gli obiettivi di una categoria senza distinzione tra attività e sfide):
 
--   **Attività** (da completare/completate)
+- **Attività** (da completare/completate)
 
--   **Sfide** (da completare/completate)
+- **Sfide** (da completare/completate)
 
-Cliccando su attività o su sfide mostro di default prima gli obiettivi da completare, poi avrò un pulsante per aggiornare lo stato del mio obiettivo (ad esempio "Segna come completato").  
-Gli obiettivi completati e da completare hanno due colori diversi.  
-Gli obiettivi scaduti o le sfide rifiutate non vengono visualizzati...
+#### Stato obiettivi
 
-Inserisco una Progress Bar che mostra la percentuale di completamento degli obiettivi in base alla loro frequenza (settimanale, mensile, annuale).   
-Quindi avrò 3 diverse progress bar, che cambiano di colore in
-base alla percentuale di caricamento (Bootstrap).
+- Cliccando su attività o su sfide mostro di default prima gli **obiettivi da completare**, con un pulsante per aggiornarne lo stato (ad esempio "Segna come completato").  
+- Vengono visualizzati poi gli **obiettivi da completare**, con un colore diverso (ad esempio, grigio o verde chiaro).
+- Gli **obiettivi scaduti o rifiutati** (le sfide) rifiutate non vengono visualizzati...
+
+#### Progress Bar
+
+Inserisco una **Progress Bar** che mostra la percentuale di completamento degli obiettivi in base alla loro frequenza (settimanale, mensile, annuale), e cambia colore in base alla percentuale di completamento:
+
+- 0%: Rosso (nessun obiettivo completato)
+- 1-99%: Giallo (svolgimento obiettivi in corso...)
+- 100%: Verde (obiettivi completati)
+
+La percentuale viene calcolata in base ai punti completati rispetto ai punti totali.
+
+Ad esempio, per gli obiettivi settimanali avrò una Progress Bar che all'inizio è di default allo 0%, se ad esempio in questa settimana devo completare (tra attività e sfide) 40 punti, se completo un obiettivo da 10 punti la Progress Bar andrà al 25% (e cambierà colore). Stessa cosa 
+per gli obiettivi mensili ed annuali.
 
 ### Funzionalità Grafiche da Implementare (con Bootstrap)
 
-- Tables → Per la classifica utenti e la gestione dei premi.
+- Tables: Per la classifica utenti e la gestione dei premi.
 
-- Modals → Per mostrare dettagli o conferme di azioni.
+- Modals: Per mostrare dettagli o conferme di azioni (ad esempio quando riscatto un premio, sei sicuro di voler riscattare?)
 
-- Progress Bar → Per visualizzare i progressi degli obiettivi e i punti per riscattare premi.
+- Progress Bar: Per visualizzare i progressi degli obiettivi e i punti per riscattare premi.
 
-- Forms → Per il login e la registrazione dell'utente.
+- Forms: Per il login e la registrazione dell'utente.
 
-- Select Form → Per scegliere un utente a cui lanciare una sfida.
+- Select Form: Per scegliere un utente a cui lanciare una sfida.
 
-- Checkbox → Per il completamento di attività e sfide.
+- Checkbox: Per il completamento di attività e sfide.
 
-- Buttons → Per accettare/rifiutare sfide (opzionale).
+- Buttons: Per accettare/rifiutare sfide (opzionale).
 
-- Spinners → Per il caricamento delle pagine.
+- Pagination: Per navigare tra gli tutti gli obiettivi.
 
-- Accordion → Per nascondere o mostrare sezioni (es. premi disponibili).
+- Accordion: Per nascondere o mostrare sezioni (es. premi disponibili).
+
+- Badge: Per notifiche sfide in arrivo o altro (obiettivi completati ad esempio o avanzamento in classifica).
