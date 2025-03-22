@@ -4,13 +4,15 @@
 
 - [X] Login form utente (l'utente accede all'app e viene visualizzata la homepage)
 
+- [ ] Implemeto tabs per gli Obiettivi
+
 - [ ] Progress Bar per gli Obiettivi
 
 - [ ] Icona impostazioni con opzioni *"Modifica nome utente"* e *"Logout"*
 
 - [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
 
-- [ ] Cookie per login form utente (salvo stato e nome dell'utente una volta registrato)
+- [ ] Cookie/local storage (salvo informazioni utente una volta registrato, magari sulla sezione aperta all'utimo accesso dall'utente)
 
 ### Accesso all'App
 
@@ -19,6 +21,7 @@
 - Ad ogni accesso, viene mostrato un messaggio di benvenuto con il nome utente (es. Ciao Simone !). Cliccando su Accedi, l'utente viene indirizzato nella pagina Home della Webapp.
 
 ### Design e Stile
+
 
 - Uso di icone ed emoji per rendere l'interfaccia più intuitiva e piacevole.
 
