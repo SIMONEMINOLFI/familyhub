@@ -4,7 +4,11 @@
 
 - [X] Login form utente (l'utente accede all'app e viene visualizzata la homepage)
 
-- [ ] Implemeto tabs per gli Obiettivi
+- [X] Istanze su phpmyadmin
+
+- [ ] Api Rest
+
+- [ ] Implemento tabs per gli Obiettivi
 
 - [ ] Progress Bar per gli Obiettivi
 
