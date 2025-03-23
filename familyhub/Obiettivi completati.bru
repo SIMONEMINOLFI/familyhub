@@ -1,0 +1,15 @@
+meta {
+  name: Obiettivi completati
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://mywebapp.ingeg.it/api.php/records/partecipazione?filter=stato,eq,completato
+  body: none
+  auth: none
+}
+
+params:query {
+  filter: stato,eq,completato
+}

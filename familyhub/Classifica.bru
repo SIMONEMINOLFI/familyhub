@@ -1,0 +1,16 @@
+meta {
+  name: Classifica
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://mywebapp.ingeg.it/api.php/records/utenti?include=id_utente,nome_utente,punti&order=punti,desc
+  body: none
+  auth: none
+}
+
+params:query {
+  include: id_utente,nome_utente,punti
+  order: punti,desc
+}
