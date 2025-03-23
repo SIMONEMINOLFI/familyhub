@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.5
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Creato il: Mar 14, 2025 alle 17:13
--- Versione del server: 10.4.32-MariaDB
--- Versione PHP: 8.2.12
+-- Host: localhost:3306
+-- Generation Time: Mar 23, 2025 at 10:43 PM
+-- Server version: 5.7.24
+-- PHP Version: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,7 +25,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `obiettivi`
+-- Table structure for table `obiettivi`
 --
 
 CREATE TABLE `obiettivi` (
@@ -34,29 +35,51 @@ CREATE TABLE `obiettivi` (
   `descrizione` varchar(500) DEFAULT NULL,
   `frequenza` enum('settimanale','mensile','annuale','occasionale') NOT NULL,
   `punti_obiettivo` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `obiettivi`
+--
+
+INSERT INTO `obiettivi` (`id_obiettivo`, `nome_obiettivo`, `tipo`, `descrizione`, `frequenza`, `punti_obiettivo`) VALUES
+(1, 'Fare esercizio fisico', 'attivita', 'Stretching regolare', 'settimanale', 20),
+(2, 'Lavare la macchina', 'sfida', NULL, 'occasionale', 10),
+(3, 'Leggere un libro', 'attivita', NULL, 'mensile', 20),
+(4, 'Pulire la cantina', 'attivita', NULL, 'occasionale', 30),
+(5, 'Fare volontariato', 'attivita', 'Assistenza anziani', 'mensile', 30);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `partecipazione`
+-- Table structure for table `partecipazione`
 --
 
 CREATE TABLE `partecipazione` (
   `id_partecipazione` int(11) NOT NULL,
   `id_obiettivo` int(11) NOT NULL,
   `id_utente` int(11) NOT NULL,
-  `id_utente_sfidante` int(11) NOT NULL,
+  `id_utente_sfidante` int(11) DEFAULT NULL,
   `stato` enum('accettato','rifiutato','completato','scaduto') NOT NULL,
   `data_assegnazione` date NOT NULL,
   `data_completamento` date DEFAULT NULL,
   `punti_assegnati` int(10) UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `partecipazione`
+--
+
+INSERT INTO `partecipazione` (`id_partecipazione`, `id_obiettivo`, `id_utente`, `id_utente_sfidante`, `stato`, `data_assegnazione`, `data_completamento`, `punti_assegnati`) VALUES
+(1, 1, 2, NULL, 'scaduto', '2025-03-20', NULL, 20),
+(2, 2, 3, 2, 'completato', '2025-03-21', '2025-03-23', 10),
+(3, 3, 3, NULL, 'completato', '2025-03-22', '2025-03-24', 20),
+(4, 5, 1, NULL, 'completato', '2025-03-22', '2025-03-23', 30),
+(5, 3, 1, NULL, 'accettato', '2025-03-23', NULL, 0);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `premi`
+-- Table structure for table `premi`
 --
 
 CREATE TABLE `premi` (
@@ -64,13 +87,23 @@ CREATE TABLE `premi` (
   `id_utente` int(11) NOT NULL,
   `nome_premio` varchar(500) NOT NULL,
   `punti_richiesti` int(10) UNSIGNED NOT NULL,
-  `data_riscossione` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `data_riscossione` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `premi`
+--
+
+INSERT INTO `premi` (`id_premio`, `id_utente`, `nome_premio`, `punti_richiesti`, `data_riscossione`) VALUES
+(1, 1, 'Cena al ristorante', 50, NULL),
+(2, 3, 'Biglietto per il cinema', 10, '2025-03-22'),
+(3, 3, 'Giornata alle terme', 100, NULL),
+(4, 2, 'Gita in montagna', 30, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `utenti`
+-- Table structure for table `utenti`
 --
 
 CREATE TABLE `utenti` (
@@ -80,21 +113,30 @@ CREATE TABLE `utenti` (
   `email` varchar(500) NOT NULL,
   `eta` int(10) UNSIGNED NOT NULL,
   `punti` int(10) UNSIGNED NOT NULL,
-  `ultimo_accesso` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `ultimo_accesso` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indici per le tabelle scaricate
+-- Dumping data for table `utenti`
+--
+
+INSERT INTO `utenti` (`id_utente`, `nome_utente`, `password`, `email`, `eta`, `punti`, `ultimo_accesso`) VALUES
+(1, 'Anna', 'gatto12', 'anna@gmail.com', 37, 30, NULL),
+(2, 'Mario', 'pass123', 'mario@gmail.com', 45, 0, '2025-03-23'),
+(3, 'Luigi2001', 'mariobros83', 'luigi@gmail.com', 15, 20, '2025-03-22');
+
+--
+-- Indexes for dumped tables
 --
 
 --
--- Indici per le tabelle `obiettivi`
+-- Indexes for table `obiettivi`
 --
 ALTER TABLE `obiettivi`
   ADD PRIMARY KEY (`id_obiettivo`);
 
 --
--- Indici per le tabelle `partecipazione`
+-- Indexes for table `partecipazione`
 --
 ALTER TABLE `partecipazione`
   ADD PRIMARY KEY (`id_partecipazione`),
@@ -103,24 +145,24 @@ ALTER TABLE `partecipazione`
   ADD KEY `id_utente` (`id_utente`);
 
 --
--- Indici per le tabelle `premi`
+-- Indexes for table `premi`
 --
 ALTER TABLE `premi`
   ADD PRIMARY KEY (`id_premio`),
   ADD KEY `FK` (`id_utente`);
 
 --
--- Indici per le tabelle `utenti`
+-- Indexes for table `utenti`
 --
 ALTER TABLE `utenti`
   ADD PRIMARY KEY (`id_utente`);
 
 --
--- Limiti per le tabelle scaricate
+-- Constraints for dumped tables
 --
 
 --
--- Limiti per la tabella `partecipazione`
+-- Constraints for table `partecipazione`
 --
 ALTER TABLE `partecipazione`
   ADD CONSTRAINT `partecipazione_ibfk_1` FOREIGN KEY (`id_obiettivo`) REFERENCES `obiettivi` (`id_obiettivo`),
@@ -128,7 +170,7 @@ ALTER TABLE `partecipazione`
   ADD CONSTRAINT `partecipazione_ibfk_3` FOREIGN KEY (`id_utente`) REFERENCES `utenti` (`id_utente`);
 
 --
--- Limiti per la tabella `premi`
+-- Constraints for table `premi`
 --
 ALTER TABLE `premi`
   ADD CONSTRAINT `FK` FOREIGN KEY (`id_utente`) REFERENCES `utenti` (`id_utente`);
