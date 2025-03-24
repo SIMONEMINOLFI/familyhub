@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 23, 2025 at 10:43 PM
+-- Generation Time: Mar 24, 2025 at 11:40 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -21,6 +21,18 @@ SET time_zone = "+00:00";
 --
 -- Database: `familyhub`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `classifica`
+-- (See below for the actual view)
+--
+CREATE TABLE `classifica` (
+`id_utente` int(10)
+,`nome_utente` varchar(500)
+,`punti` int(10) unsigned
+);
 
 -- --------------------------------------------------------
 
@@ -70,7 +82,7 @@ CREATE TABLE `partecipazione` (
 --
 
 INSERT INTO `partecipazione` (`id_partecipazione`, `id_obiettivo`, `id_utente`, `id_utente_sfidante`, `stato`, `data_assegnazione`, `data_completamento`, `punti_assegnati`) VALUES
-(1, 1, 2, NULL, 'scaduto', '2025-03-20', NULL, 20),
+(1, 1, 2, NULL, 'scaduto', '2025-03-20', NULL, 0),
 (2, 2, 3, 2, 'completato', '2025-03-21', '2025-03-23', 10),
 (3, 3, 3, NULL, 'completato', '2025-03-22', '2025-03-24', 20),
 (4, 5, 1, NULL, 'completato', '2025-03-22', '2025-03-23', 30),
@@ -122,8 +134,17 @@ CREATE TABLE `utenti` (
 
 INSERT INTO `utenti` (`id_utente`, `nome_utente`, `password`, `email`, `eta`, `punti`, `ultimo_accesso`) VALUES
 (1, 'Anna', 'gatto12', 'anna@gmail.com', 37, 30, NULL),
-(2, 'Mario', 'pass123', 'mario@gmail.com', 45, 0, '2025-03-23'),
+(2, 'Mario', 'pass123*', 'mario@gmail.com', 45, 0, '2025-03-23'),
 (3, 'Luigi2001', 'mariobros83', 'luigi@gmail.com', 15, 20, '2025-03-22');
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `classifica`
+--
+DROP TABLE IF EXISTS `classifica`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `classifica`  AS  select `utenti`.`id_utente` AS `id_utente`,`utenti`.`nome_utente` AS `nome_utente`,`utenti`.`punti` AS `punti` from `utenti` order by `utenti`.`punti` desc ;
 
 --
 -- Indexes for dumped tables
