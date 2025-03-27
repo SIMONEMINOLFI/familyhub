@@ -6,15 +6,21 @@
 
 - [X] Istanze su phpmyadmin
 
-- [ ] Api Rest
+- [X] Creo view classifica e ne leggo i dati usando app Bruno
+
+- [ ] Implemento Classifica utenti (creo tabella dinamica in javascript)
 
 - [ ] Implemento tabs per gli Obiettivi
+
+- [] Calcolo dinamico punti del database (punti obiettivi completati - punti premi riscattati)
+
+- [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
+
+- [ ] Api Rest e token per autenticazione utente (vedi [php-crud-api](https://github.com/mevdschee/php-crud-api))
 
 - [ ] Progress Bar per gli Obiettivi
 
 - [ ] Icona impostazioni con opzioni *"Modifica nome utente"* e *"Logout"*
-
-- [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
 
 - [ ] Cookie/local storage (salvo informazioni utente una volta registrato, magari sulla sezione aperta all'utimo accesso dall'utente)
 
