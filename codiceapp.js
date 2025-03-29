@@ -1,8 +1,12 @@
 /*
 Creo una funzione gestisciAccesso (viene eseguita quando l'utente clicca su Accedi"). La funzione deve:
-1.Prendere il nome che l'utente ha scritto nel campo di testo.
-2.Visualizzare un saluto personalizzato con il nome dell'utente.
-3.Nascondere il modulo di login e mostrare la pagina principale.
+1.Prendere il nome che l'utente ha scritto nel campo di testo
+2.Visualizzare un saluto personalizzato con il nome dell'utente
+3.Nascondere il modulo di login e mostrare la pagina principale
+
+Senza e.preventDefault(): 
+1.L'utente inserisce il nome nel campo di testo e preme "Accedi"
+2.Il modulo si invia e la pagina si ricarica, quindi tutte le modifiche fatte dalla funzione JavaScript vengono perse (non vedo la Home)
 */
 
 // Funzione per gestire l'inserimento del nome
@@ -21,8 +25,18 @@ let gestisciAccesso = function (e) {
 let formAccesso = document.getElementById("formAccesso");
 formAccesso.addEventListener("submit", gestisciAccesso);
 
-/*
-Senza e.preventDefault(): 
-1.L'utente inserisce il nome nel campo di testo e preme "Accedi"
-2.Il modulo si invia e la pagina si ricarica, quindi tutte le modifiche fatte dalla funzione JavaScript vengono perse (non vedo la Home)
-*/
+// Funzione per mostrare la classifica
+async function mostraClassifica() {
+    const tbody = document.getElementById("classifica");
+
+        // Faccio una richiesta GET (fatta da app Bruno) al server per avere dati degli utenti
+        const risposta = await fetch("http://mywebapp.ingeg.it/api.php/records/utenti?include=id_utente,nome_utente,punti&order=punti,desc");
+        const dati = await risposta.json(); // Converto la risposta in formato JSON per poterla usare
+
+        let contenuto = "";  // Definisco una variabile per il contenuto della tabella
+
+        // Qui inizierò a scrivere il ciclo per generare la tabella...
+
+}
+// Mostro la classifica quando la pagina è caricata
+document.addEventListener("DOMContentLoaded", mostraClassifica);

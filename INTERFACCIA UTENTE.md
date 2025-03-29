@@ -6,9 +6,9 @@
 
 - [X] Istanze su phpmyadmin
 
-- [X] Creo view classifica e ne leggo i dati usando app Bruno
+- [X] Creo view (tabella virtuale) classifica e usando app Bruno ne leggo i dati
 
-- [ ] Implemento Classifica utenti (creo tabella dinamica in javascript)
+- [] Implemento Classifica utenti (creo tabella dinamica in javascript)
 
 - [ ] Implemento tabs per gli Obiettivi
 
