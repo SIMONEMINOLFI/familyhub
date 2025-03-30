@@ -1,9 +1,8 @@
 /*
-La funzione gestisciAccesso (eseguita quando l'utente clicca su Accedi") deve:
-1.Prendere il nome che l'utente ha scritto nel campo di testo
-2.Visualizzare un saluto personalizzato con il nome dell'utente
-3.Nascondere il modulo di login e mostrare la pagina principale
-
+La funzione gestisciAccesso (eseguita quando l'utente clicca su Accedi"):
+1.Prende il nome che l'utente ha scritto nel campo di testo
+2.Visualizza un saluto personalizzato con il nome dell'utente
+3.Nasconde il modulo di login e mostra la pagina principale
 Senza e.preventDefault(): 
 1.L'utente inserisce il nome nel campo di testo e preme "Accedi"
 2.Il modulo si invia e la pagina si ricarica, quindi tutte le modifiche fatte dalla funzione JavaScript vengono perse (non vedo la Home)
@@ -24,6 +23,14 @@ let gestisciAccesso = function (e) {
 // Associo l'evento submit alla funzione (ogni volta che l'utente clicca su Accedi, la funzione gestisciAccesso viene eseguita)
 let formAccesso = document.getElementById("formAccesso");
 formAccesso.addEventListener("submit", gestisciAccesso);
+
+/*
+La funzione mostraClassifica: 
+1.Fa una richiesta al server per ottenere la classifica degli utenti
+2.Converte la risposta in formato JSON per poterla usare
+3.Crea dinamicamente le righe della tabella, aggiungendo posizione, nome e punti di ogni utente
+4.Aggiorna il contenuto della tabella con i dati ottenuti quando la pagina è caricata
+*/
 
 // Funzione per mostrare la classifica
 async function mostraClassifica() { // Asincrkna perché faccio una richiesta al server e devo attedere la risposta...
