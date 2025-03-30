@@ -1,5 +1,5 @@
 /*
-Creo una funzione gestisciAccesso (viene eseguita quando l'utente clicca su Accedi"). La funzione deve:
+La funzione gestisciAccesso (eseguita quando l'utente clicca su Accedi") deve:
 1.Prendere il nome che l'utente ha scritto nel campo di testo
 2.Visualizzare un saluto personalizzato con il nome dell'utente
 3.Nascondere il modulo di login e mostrare la pagina principale
@@ -26,7 +26,7 @@ let formAccesso = document.getElementById("formAccesso");
 formAccesso.addEventListener("submit", gestisciAccesso);
 
 // Funzione per mostrare la classifica
-async function mostraClassifica() {
+async function mostraClassifica() { // Asincrkna perché faccio una richiesta al server e devo attedere la risposta...
     const tbody = document.getElementById("classifica");
 
         // Faccio una richiesta GET (fatta da app Bruno) al server per avere dati degli utenti
@@ -34,9 +34,20 @@ async function mostraClassifica() {
         const dati = await risposta.json(); // Converto la risposta in formato JSON per poterla usare
 
         let contenuto = "";  // Definisco una variabile per il contenuto della tabella
+       
+        // Ciclo for su tutti gli utenti che ho in classifica
+        for (let i = 0; i < dati.records.length; i++) {
+            const utente = dati.records[i]; // Prendo l'utente corrente
 
-        // Qui inizierò a scrivere il ciclo per generare la tabella...
-
+            // Creo una riga della tabella con i dati dell'utente corrente (posizione, nome, punti)
+            contenuto += "<tr>" +
+                "<td>" + (i + 1) + "</td>" + // Mostro la posizione in classifica (i+1 perché le posizioni partono da 1, non da 0)
+                "<td>" + utente.nome_utente + "</td>" + // Mostro il nome utente
+                "<td>" + utente.punti + "</td>" + // Mostro i punti dell'utente
+            "</tr>";
+        }
+        tbody.innerHTML = contenuto; // Aggiorno il contenuto della tabella con i dati degli utenti
 }
+
 // Mostro la classifica quando la pagina è caricata
 document.addEventListener("DOMContentLoaded", mostraClassifica);
