@@ -30,18 +30,19 @@ La funzione mostraClassifica:
 2.Converte la risposta in formato JSON per poterla usare
 3.Crea dinamicamente le righe della tabella, aggiungendo posizione, nome e punti di ogni utente
 4.Aggiorna il contenuto della tabella con i dati ottenuti quando la pagina è caricata
+P.S. Ho inserito un try-catch per gestire possivili errori durante la richiesta al server
 */
 
 // Funzione per mostrare la classifica
-async function mostraClassifica() { // Asincrkna perché faccio una richiesta al server e devo attedere la risposta...
+async function mostraClassifica() { // Asincrona perché faccio una richiesta al server e devo attendere la risposta...
     const tbody = document.getElementById("classifica");
 
+    try {
         // Faccio una richiesta GET (fatta da app Bruno) al server per avere dati degli utenti
-        const risposta = await fetch("http://mywebapp.ingeg.it/api.php/records/utenti?include=id_utente,nome_utente,punti&order=punti,desc");
+        const risposta = await fetch("api.php/records/utenti?include=id_utente,nome_utente,punti&order=punti,desc");
         const dati = await risposta.json(); // Converto la risposta in formato JSON per poterla usare
 
         let contenuto = "";  // Definisco una variabile per il contenuto della tabella
-       
         // Ciclo for su tutti gli utenti che ho in classifica
         for (let i = 0; i < dati.records.length; i++) {
             const utente = dati.records[i]; // Prendo l'utente corrente
@@ -54,6 +55,11 @@ async function mostraClassifica() { // Asincrkna perché faccio una richiesta al
             "</tr>";
         }
         tbody.innerHTML = contenuto; // Aggiorno il contenuto della tabella con i dati degli utenti
+
+    } catch (errore) {
+        // Se qualcosa va storto, mostro un messaggio di errore nella tabella
+        tbody.innerHTML = "<tr><td colspan='3' class='text-danger'>Errore nel caricamento</td></tr>";
+    }
 }
 
 // Mostro la classifica quando la pagina è caricata
