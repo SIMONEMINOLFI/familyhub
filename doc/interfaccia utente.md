@@ -1,16 +1,16 @@
 # FAMILY HUB - SPECIFICHE DELL' INTERFACCIA UTENTE
 
-### Prossime Funzionalità da introdurre per l'Interfaccia Utente 
+### Storico Funzionalità introdotte per l'utilizzo dell'Interfaccia Utente 
 
 - [X] Login form utente (l'utente accede all'app e viene visualizzata la homepage)
 
-- [X] Istanze su phpmyadmin
+- [X] Aggiungo istanze database su phpmyadmin
 
-- [X] Creo view (tabella virtuale) classifica e usando app Bruno ne leggo i dati
+- [X] Creo view (tabella virtuale) classifica con query sql e usando app Bruno ne leggo i dati
 
-- [X] Implemento Classifica utenti (creo tabella dinamica in javascript)
+- [X] Creo tabella dinamica tramite javascript (implemento funzione che legge i dati della classifica e li visualizza)
 
-- [ ] Calcolo dinamico punti del database (punti obiettivi completati - punti premi riscattati)
+- [ ] Calcolo dinamico dei punti del database (punti obiettivi completati - punti premi riscattati), provo a farlo usando i Trigger
 
 - [ ] Implemento tabs per gli Obiettivi
 

@@ -1,9 +1,4 @@
-## FAMILY HUB - L'APP PER ORGANIZZARE LE TUE ATTIVITÀ E SFIDE FAMILIARI
-
-### Elevator Pitch
-Family Hub è l'app che trasforma la gestione delle tue attività in un'esperienza unica e coinvolgente. Dimentica liste di cose da fare noiose e inconcludenti: con Family Hub puoi tenere traccia delle tue attività settimanali, mensili, annuali o occasionali, completarle con facilità e vedere i tuoi progressi in tempo reale. Ma non è solo una semplice to-do list: puoi anche lanciare sfide, accumulare punti e scalare la classifica familiare, rendendo ogni attività più stimolante.  
-E con il sistema di premi, ogni compito portato a termine diventa una piccola vittoria!  
-Family Hub è il modo più smart per gestire i tuoi impegni e divertirti in famiglia 😊
+## FAMILY HUB - PANORAMICA DELL'APPLICAZIONE
 
 ### Funzionalità Principali
 
