@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Mar 24, 2025 at 11:40 PM
+-- Generation Time: Apr 04, 2025 at 10:24 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -87,6 +87,20 @@ INSERT INTO `partecipazione` (`id_partecipazione`, `id_obiettivo`, `id_utente`, 
 (3, 3, 3, NULL, 'completato', '2025-03-22', '2025-03-24', 20),
 (4, 5, 1, NULL, 'completato', '2025-03-22', '2025-03-23', 30),
 (5, 3, 1, NULL, 'accettato', '2025-03-23', NULL, 0);
+
+--
+-- Triggers `partecipazione`
+--
+DELIMITER $$
+CREATE TRIGGER `aggiungi_punti_obiettivo_completato` AFTER UPDATE ON `partecipazione` FOR EACH ROW BEGIN
+    IF NEW.stato = 'completato' THEN
+        UPDATE utenti 
+        SET punti = punti + (SELECT punti_obiettivo FROM obiettivi WHERE id_obiettivo = NEW.id_obiettivo)
+        WHERE id_utente = NEW.id_utente;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
