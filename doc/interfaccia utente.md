@@ -10,7 +10,7 @@
 
 - [X] Creo tabella dinamica tramite javascript (implemento funzione che legge i dati della classifica e li visualizza)
 
-- [X] Calcolo dinamico dei punti del database (punti obiettivi completati - punti premi riscattati), usando i Trigger...
+- [X] Calcolo dinamico dei punti del database (punti obiettivi completati - punti premi riscattati) usando i Trigger
 
 - [ ] Implemento tabs per gli Obiettivi
 

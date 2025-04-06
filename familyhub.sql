@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 06, 2025 at 02:36 PM
+-- Generation Time: Apr 06, 2025 at 10:32 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -130,17 +130,17 @@ INSERT INTO `premi` (`id_premio`, `id_utente`, `nome_premio`, `punti_richiesti`,
 -- Triggers `premi`
 --
 DELIMITER $$
-CREATE TRIGGER `sottrai_punti_riscatto_premio` AFTER UPDATE ON `premi` FOR EACH ROW BEGIN
-    IF NEW.data_riscossione IS NULL THEN
+CREATE TRIGGER `sottrai_punti_riscatto_premio` BEFORE UPDATE ON `premi` FOR EACH ROW BEGIN
+    IF OLD.data_riscossione IS NULL THEN
         IF (SELECT punti FROM utenti WHERE id_utente = NEW.id_utente) >= NEW.punti_richiesti THEN
             UPDATE utenti
             SET punti = punti - NEW.punti_richiesti
             WHERE id_utente = NEW.id_utente;
-
-            UPDATE premi
-            SET data_riscossione = CURRENT_DATE
-            WHERE id_premio = NEW.id_premio;
+        ELSE
+            SET NEW.data_riscossione = NULL;
         END IF;
+    ELSE
+        SET NEW.data_riscossione = OLD.data_riscossione; 
     END IF;
 END
 $$
