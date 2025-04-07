@@ -12,8 +12,8 @@ Senza e.preventDefault():
 let gestisciAccesso = function (e) {
     e.preventDefault(); // Impedisce il ricaricamento della pagina
 
-    let nomeUtente = document.querySelector("inputNomeUtente").value; // Prendo il valore inserito dall'utente
-    document.querySelector("nomeUtente").textContent = nomeUtente; // Aggiorno il saluto personalizzato nella Home 
+    let nomeUtente = document.querySelector("#inputNomeUtente").value; // Prendo il valore inserito dall'utente
+    document.querySelector("#nomeUtente").textContent = nomeUtente; // Aggiorno il saluto personalizzato nella Home 
 
     // Nascondo il form e mostro la pagina principale
     formAccesso.style.display = "none"; // Nascondo il form dove l'utente ha inserito il suo nome
@@ -21,7 +21,7 @@ let gestisciAccesso = function (e) {
 }
 
 // Associo l'evento submit alla funzione (ogni volta che l'utente clicca su Accedi, la funzione gestisciAccesso viene eseguita)
-let formAccesso = document.querySelector("formAccesso");
+let formAccesso = document.querySelector("#formAccesso");
 formAccesso.addEventListener("submit", gestisciAccesso);
 
 /*
@@ -35,7 +35,7 @@ P.S. Ho inserito un try-catch per gestire possivili errori durante la richiesta 
 
 // Funzione per mostrare la classifica
 async function mostraClassifica() { // Asincrona perché faccio una richiesta al server e devo attendere la risposta...
-    const tbody = document.querySelector("classifica");
+    const tbody = document.querySelector("#classifica");
 
     try {
         // Faccio una richiesta GET (fatta da app Bruno) al server per avere dati degli utenti
