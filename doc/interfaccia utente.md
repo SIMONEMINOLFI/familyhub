@@ -12,6 +12,9 @@
 
 - [X] Calcolo dinamico dei punti del database (punti obiettivi completati - punti premi riscattati) usando i Trigger
 
+- [ ] Configurare api.php, utenti e password con hash nella tabella, richiesta POST all'endpoint login tramite Bruno, vedi php-crud GET me per ottenere l'utente 
+'dbAuth.usersTable' => 'utenti' (metto sotto 'debug' => true,)
+
 - [ ] Implemento tabs per gli Obiettivi
 
 - [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)

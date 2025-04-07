@@ -12783,6 +12783,7 @@ namespace Tqdev\PhpCrudApi {
         'database' => 'familyhub',
 
         'debug' => true
+
     ]);
     $request = RequestFactory::fromGlobals();
     $api = new Api($config);

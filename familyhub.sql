@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 06, 2025 at 10:32 PM
+-- Generation Time: Apr 07, 2025 at 10:02 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -73,29 +73,28 @@ CREATE TABLE `partecipazione` (
   `id_utente_sfidante` int(11) DEFAULT NULL,
   `stato` enum('accettato','rifiutato','completato','scaduto') NOT NULL,
   `data_assegnazione` date NOT NULL,
-  `data_completamento` date DEFAULT NULL,
-  `punti_assegnati` int(10) UNSIGNED NOT NULL
+  `data_completamento` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `partecipazione`
 --
 
-INSERT INTO `partecipazione` (`id_partecipazione`, `id_obiettivo`, `id_utente`, `id_utente_sfidante`, `stato`, `data_assegnazione`, `data_completamento`, `punti_assegnati`) VALUES
-(1, 1, 2, NULL, 'scaduto', '2025-03-20', NULL, 0),
-(2, 2, 3, 2, 'completato', '2025-03-21', '2025-03-23', 10),
-(3, 3, 3, NULL, 'completato', '2025-03-22', '2025-03-24', 20),
-(4, 5, 1, NULL, 'completato', '2025-03-22', '2025-03-23', 30),
-(5, 3, 1, NULL, 'accettato', '2025-03-23', NULL, 0);
+INSERT INTO `partecipazione` (`id_partecipazione`, `id_obiettivo`, `id_utente`, `id_utente_sfidante`, `stato`, `data_assegnazione`, `data_completamento`) VALUES
+(1, 1, 2, NULL, 'scaduto', '2025-03-20', NULL),
+(2, 2, 3, 2, 'completato', '2025-03-21', '2025-03-23'),
+(3, 3, 3, NULL, 'completato', '2025-03-22', '2025-03-24'),
+(4, 5, 1, NULL, 'completato', '2025-03-22', '2025-03-23'),
+(5, 3, 1, NULL, 'accettato', '2025-03-23', NULL);
 
 --
 -- Triggers `partecipazione`
 --
 DELIMITER $$
 CREATE TRIGGER `aggiungi_punti_obiettivo_completato` AFTER UPDATE ON `partecipazione` FOR EACH ROW BEGIN
-    IF NEW.stato = 'completato' THEN
+    IF NEW.stato = 'completato' AND OLD.stato <> 'completato' THEN
         UPDATE utenti 
-        SET punti = punti + (SELECT punti_obiettivo FROM obiettivi WHERE id_obiettivo = NEW.id_obiettivo)
+        SET punti = punti + (SELECT punti_obiettivo FROM obiettivi WHERE id_obiettivo = OLD.id_obiettivo)
         WHERE id_utente = NEW.id_utente;
     END IF;
 END
@@ -122,7 +121,7 @@ CREATE TABLE `premi` (
 
 INSERT INTO `premi` (`id_premio`, `id_utente`, `nome_premio`, `punti_richiesti`, `data_riscossione`) VALUES
 (1, 1, 'Cena al ristorante', 50, NULL),
-(2, 3, 'Biglietto per il cinema', 10, '2025-03-22'),
+(2, 3, 'Biglietto per il cinema', 10, '2025-03-29'),
 (3, 3, 'Giornata alle terme', 100, NULL),
 (4, 2, 'Gita in montagna', 30, NULL);
 
@@ -167,9 +166,9 @@ CREATE TABLE `utenti` (
 --
 
 INSERT INTO `utenti` (`id_utente`, `nome_utente`, `password`, `email`, `eta`, `punti`, `ultimo_accesso`) VALUES
-(1, 'Anna', 'gatto12', 'anna@gmail.com', 37, 30, NULL),
-(2, 'Mario', 'pass123*', 'mario@gmail.com', 45, 0, '2025-03-23'),
-(3, 'Luigi2001', 'mariobros83', 'luigi@gmail.com', 15, 20, '2025-03-22');
+(1, 'Anna', '$2y$10$5dycfv4jMbx9CdBTdHL50.0/LKvlg1dO3gyVab3RWuPAgdmOlbJAC', 'anna@gmail.com', 37, 30, NULL),
+(2, 'Mario', '$2y$10$59UTH0UnDjMEc/BkwIZYAOK0nX.WRY6KifOgFh0JJLjCJ0QMd2aw6', 'mario@gmail.com', 45, 0, '2025-03-23'),
+(3, 'Luigi2001', '$2y$10$abdR0UqSSPoXt5pRLdASMOkODgxqmSWMQ2uPzXZaZ1bI4eN0dMzCu', 'luigi@gmail.com', 15, 20, '2025-03-22');
 
 -- --------------------------------------------------------
 
