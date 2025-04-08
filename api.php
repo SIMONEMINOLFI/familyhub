@@ -12782,7 +12782,10 @@ namespace Tqdev\PhpCrudApi {
         'password' => 'root',
         'database' => 'familyhub',
 
-        'debug' => true
+        'debug' => true,
+        'middlewares' => 'dbAuth',         // Attivo il sistema di autenticazione
+        'dbAuth.usersTable' => 'utenti',   // Cerca gli utenti nella tabella utenti
+        'dbAuth.passwordColumn' => 'password' // Indica la colonna con le password in hahs
 
     ]);
     $request = RequestFactory::fromGlobals();
