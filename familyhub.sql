@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 07, 2025 at 10:02 AM
+-- Generation Time: Apr 09, 2025 at 12:30 AM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -167,7 +167,7 @@ CREATE TABLE `utenti` (
 
 INSERT INTO `utenti` (`id_utente`, `nome_utente`, `password`, `email`, `eta`, `punti`, `ultimo_accesso`) VALUES
 (1, 'Anna', '$2y$10$5dycfv4jMbx9CdBTdHL50.0/LKvlg1dO3gyVab3RWuPAgdmOlbJAC', 'anna@gmail.com', 37, 30, NULL),
-(2, 'Mario', '$2y$10$59UTH0UnDjMEc/BkwIZYAOK0nX.WRY6KifOgFh0JJLjCJ0QMd2aw6', 'mario@gmail.com', 45, 0, '2025-03-23'),
+(2, 'Mario', '$2a$12$khWRswafWULVZclok8zKAOXzJI6NuurZdFZcLL6HuqflxrX.dLlju', 'mario@gmail.com', 45, 0, '2025-03-23'),
 (3, 'Luigi2001', '$2y$10$abdR0UqSSPoXt5pRLdASMOkODgxqmSWMQ2uPzXZaZ1bI4eN0dMzCu', 'luigi@gmail.com', 15, 20, '2025-03-22');
 
 -- --------------------------------------------------------

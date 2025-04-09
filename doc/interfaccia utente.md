@@ -16,13 +16,15 @@
 
 - [ ] Api Rest e token per autenticazione utente (passo utente e password con POST e mi restituisce token, vedi [php-crud-api](https://github.com/mevdschee/php-crud-api))
 
+- [ ] Login con nome utente e password (nome utente deve esistere)
+
 - [ ] Implemento tabs per gli Obiettivi
 
 - [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
 
 - [ ] Progress Bar per gli Obiettivi
 
-- [ ] Icona impostazioni con opzioni *"Modifica nome utente"* e *"Logout"*
+- [ ] Icona impostazioni con opzioni *"Modifica nome utente"*, *"Logout"* e *"Modifica password"*
 
 - [ ] Cookie/local storage (salvo informazioni utente una volta registrato, magari sulla sezione aperta all'utimo accesso dall'utente)
 
