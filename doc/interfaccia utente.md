@@ -12,11 +12,11 @@
 
 - [X] Calcolo dinamico dei punti del database (punti obiettivi completati - punti premi riscattati) usando i Trigger
 
-- [ ] Configurare api.php, utenti e password con hash nella tabella, richiesta POST all'endpoint login tramite Bruno, vedi php-crud GET me per ottenere l'utente 'dbAuth.usersTable' => 'utenti' (metto sotto 'debug' => true,)
+- [X] Configurare api.php, utenti e password con hash nella tabella, richiesta POST all'endpoint login tramite Bruno
 
-- [ ] Api Rest e token per autenticazione utente (passo utente e password con POST e mi restituisce token, vedi [php-crud-api](https://github.com/mevdschee/php-crud-api))
+- [X] Api Rest e token per autenticazione utente (passo utente e password con POST e mi restituisce token, vedi [php-crud-api](https://github.com/mevdschee/php-crud-api))
 
-- [ ] Login con nome utente e password (nome utente deve esistere)
+- [X] Login con nome utente e password 
 
 - [ ] Implemento tabs per gli Obiettivi
 
@@ -25,8 +25,6 @@
 - [ ] Progress Bar per gli Obiettivi
 
 - [ ] Icona impostazioni con opzioni *"Modifica nome utente"*, *"Logout"* e *"Modifica password"*
-
-- [ ] Cookie/local storage (salvo informazioni utente una volta registrato, magari sulla sezione aperta all'utimo accesso dall'utente)
 
 ### Accesso all'App
 
@@ -113,3 +111,11 @@ per gli obiettivi mensili ed annuali.
 - Accordion: Per nascondere o mostrare sezioni (es. premi disponibili).
 
 - Badge: Per notifiche sfide in arrivo o altro (obiettivi completati ad esempio o avanzamento in classifica).
+
+#### Credenziali utenti database 
+
+| nome_utente: "Anna" | password: "ciao123" | hash: "$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO"
+
+| nome_utente: "Mario" | password: "mariobros83" | hash: "$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS"
+
+| nome_utente: "Luigi2001" | password: "loveTravelling*" | hash: "$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe"

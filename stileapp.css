@@ -1,27 +1,44 @@
 body {
-    background-color: rgb(230, 250, 255); /* Uso un azzurro molto chiaro, quasi bianco */
+    background-color: rgb(230, 250, 255); /* Colore di sfondo azzurro chiaro */
 }
 
-h1 {
-    color: blue;
-    font-size: 3rem; 
-}
-
-h2 {
-    color: orange;
-}
-
-h5 {
-    padding: 5px;
-}
-
-.container {
-    background: white; 
+/* Stile del box contenente la form di login */
+.accesso-box {
+    background-color: white;
     padding: 20px; 
-    border-radius: 10px; 
+    border-radius: 10px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Aggiungo un'ombra leggera al contenitore */
 }
 
-#paginaHome {
-    display: none; /* Inizialmente nascondo la Home, devo prima fare il login */
+h1 {
+    color: blue;       
+    font-size: 3rem;  
 }
+
+h2 {
+    color: orange; 
+}
+
+h5 {
+    padding: 5px;      
+    font-size: 1.30rem;
+    margin-bottom: 25px; 
+}
+
+.container {
+    background: transparent; 
+    padding: 20px;       
+}
+
+#paginaHome {
+    display: none; /* Nascondo la Home all'avvio (la mostro solo dopo il login) */   
+    background-color: white; 
+    padding: 20px;       
+    border-radius: 10px; 
+    margin-top: 20px;    
+}
+
+#nomeUtente {
+    font-size: 240px;
+    font-weight: bold;
+  }

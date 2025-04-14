@@ -9,15 +9,45 @@ Senza e.preventDefault():
 */
 
 // Funzione per gestire l'inserimento del nome
-let gestisciAccesso = function (e) {
+async function gestisciAccesso(e) {
     e.preventDefault(); // Impedisce il ricaricamento della pagina
 
-    let nomeUtente = document.querySelector("#inputNomeUtente").value; // Prendo il valore inserito dall'utente
-    document.querySelector("#nomeUtente").textContent = nomeUtente; // Aggiorno il saluto personalizzato nella Home 
+    // Recupero i valori inseriti dall'utente
+    let nomeUtente = document.querySelector("#inputNomeUtente").value; // Prendo il nome utente inserito dall'utente
+    let password = document.querySelector("#inputPassword").value; // Prendo la password inserita dall'utente
 
-    // Nascondo il form e mostro la pagina principale
-    formAccesso.style.display = "none"; // Nascondo il form dove l'utente ha inserito il suo nome
-    paginaHome.style.display = "block"; // Imposto il display su block, l'elemento diventa visibile
+    // Configurazione della richiesta API
+    const url = 'api.php/login';
+    const options = {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' }, // Specifica che stiamo inviando JSON
+        body: JSON.stringify({username: nomeUtente, password: password}) // Convertiamo l'oggetto in stringa JSON
+    };
+
+    try {
+        // Invio la richiesta al server e attendo la risposta
+        const response = await fetch(url, options);
+    
+        // Controllo se la risposta è OK (codice 200)
+        if (response.status === 200) {
+            const data = await response.json(); // Converto solo se tutto ok
+            console.log(data);
+    
+            // Operazioni da eseguire dopo il login riuscito
+            mostraClassifica(); // Mostro la classifica aggiornata
+            document.querySelector("#nomeUtente").textContent = nomeUtente; // Saluto personalizzato
+            formAccesso.style.display = "none"; // Nascondo il form di login
+            paginaHome.style.display = "block"; // Mostro la home page
+        } else {
+            // Se il server non risponde con 200 (login fallito) mostro un messaggio di errore
+            alert("Credenziali errate! Riprova.");
+        }
+    
+    } catch (error) {
+        // Gestione degli errori di rete o del server
+        console.error("Errore nella richiesta:", error);
+        alert("Si è verificato un errore. Controlla la connessione.");
+    }
 }
 
 // Associo l'evento submit alla funzione (ogni volta che l'utente clicca su Accedi, la funzione gestisciAccesso viene eseguita)
@@ -33,6 +63,7 @@ La funzione mostraClassifica:
 P.S. Ho inserito un try-catch per gestire possivili errori durante la richiesta al server
 */
 
+// Funzione per mostrare la classifica
 // Funzione per mostrare la classifica
 async function mostraClassifica() { // Asincrona perché faccio una richiesta al server e devo attendere la risposta...
     const tbody = document.querySelector("#classifica");
@@ -62,5 +93,5 @@ async function mostraClassifica() { // Asincrona perché faccio una richiesta al
     }
 }
 
-// Mostro la classifica quando la pagina è caricata
-document.addEventListener("DOMContentLoaded", mostraClassifica);
+// Variabili globali per gli elementi principali della pagina
+let paginaHome = document.querySelector("#paginaHome"); // Seleziono l'elemento della home page

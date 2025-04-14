@@ -13,15 +13,17 @@
     <div class="container text-center mt-3"> <!-- Contenitore principale centrato con margine superiore -->
 
         <!-- Form per accedere all'app scegliendo il proprio nome utente -->
-        <div id="formAccesso">
-            <h1>Family Hub</h1>
-            <h5>Benvenuto nell'App!😊</h5>
-            <form> <!-- Metto attributo required per obbligare l'utente ad inserire qualcosa-->
-                <input type="text" id="inputNomeUtente" class="form-control" placeholder="Inserisci il tuo nome utente" required> 
-                <input type="password" id="inputPassword" class="form-control" placeholder="Inserisci la tua password" required> 
-                <button type="submit" class="btn btn-primary mt-3">Accedi</button>
-            </form>
-        </div>
+        <div id="formAccesso" class="row justify-content-center">
+            <div class="col-md-4 accesso-box">
+                <h1 class="text-center">Family Hub</h1>
+                <h5 class="text-center">Benvenuto nell'App!😊</h5>
+                <form>
+                    <input type="text" id="inputNomeUtente" class="form-control mb-2" placeholder="Inserisci il tuo nome utente" required> 
+                    <input type="password" id="inputPassword" class="form-control mb-2" placeholder="Inserisci la tua password" required> 
+                    <button type="submit" class="btn btn-primary w-100">Accedi</button>
+                </form>
+            </div>
+        </div>                
 
         <!-- Pagina Home completa (voglio nasconderla inizialmente) -->
         <div id="paginaHome">
@@ -30,7 +32,6 @@
                 <!-- Nell'attributo span viene messo il nome inserito dall'utente nel form di login -->
                 <h5>👋 Ciao, <span id="nomeUtente"></span>!</h5> <!-- Saluto personalizzato all'utente-->
             </div>
-
 
         <!-- Sezione Classifica e Icona Utente (disposti come colonne laterali) -->
         <div class="row">  
