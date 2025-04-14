@@ -1,0 +1,11 @@
+meta {
+  name: Utente check login
+  type: http
+  seq: 7
+}
+
+get {
+  url: http://mywebapp.ingeg.it/api.php/me
+  body: none
+  auth: inherit
+}

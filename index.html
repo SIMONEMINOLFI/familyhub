@@ -17,7 +17,8 @@
             <h1>Family Hub</h1>
             <h5>Benvenuto nell'App!😊</h5>
             <form> <!-- Metto attributo required per obbligare l'utente ad inserire qualcosa-->
-                <input type="text" id="inputNomeUtente" class="form-control" placeholder="Inserisci il tuo nome" required> 
+                <input type="text" id="inputNomeUtente" class="form-control" placeholder="Inserisci il tuo nome utente" required> 
+                <input type="password" id="inputPassword" class="form-control" placeholder="Inserisci la tua password" required> 
                 <button type="submit" class="btn btn-primary mt-3">Accedi</button>
             </form>
         </div>
@@ -81,6 +82,19 @@
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#riscossi">Premi Riscossi</button>
                     </li>
                 </ul>
+
+                <div class="tab-content mt-3">
+                    <div class="tab-pane fade show active" id="daRiscuotere">
+                        <ul id="listaPremiDaRiscattare" class="list-group">
+                            <!-- Premi da riscuotere verranno inseriti qui... -->
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="riscossi">
+                        <ul id="listaPremiRiscossi" class="list-group">
+                            <!-- Premi riscossi verranno inseriti qui... -->
+                        </ul>
+                    </div>
+                </div>
 
             </div>
 
