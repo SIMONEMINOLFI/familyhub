@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 09, 2025 at 12:30 AM
+-- Generation Time: Apr 16, 2025 at 08:01 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -153,7 +153,7 @@ DELIMITER ;
 
 CREATE TABLE `utenti` (
   `id_utente` int(10) NOT NULL,
-  `nome_utente` varchar(500) NOT NULL,
+  `nome_utente` varchar(500) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `password` varchar(500) NOT NULL,
   `email` varchar(500) NOT NULL,
   `eta` int(10) UNSIGNED NOT NULL,
@@ -166,9 +166,9 @@ CREATE TABLE `utenti` (
 --
 
 INSERT INTO `utenti` (`id_utente`, `nome_utente`, `password`, `email`, `eta`, `punti`, `ultimo_accesso`) VALUES
-(1, 'Anna', '$2y$10$5dycfv4jMbx9CdBTdHL50.0/LKvlg1dO3gyVab3RWuPAgdmOlbJAC', 'anna@gmail.com', 37, 30, NULL),
-(2, 'Mario', '$2a$12$khWRswafWULVZclok8zKAOXzJI6NuurZdFZcLL6HuqflxrX.dLlju', 'mario@gmail.com', 45, 0, '2025-03-23'),
-(3, 'Luigi2001', '$2y$10$abdR0UqSSPoXt5pRLdASMOkODgxqmSWMQ2uPzXZaZ1bI4eN0dMzCu', 'luigi@gmail.com', 15, 20, '2025-03-22');
+(1, 'Anna', '$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO', 'anna@gmail.com', 37, 30, NULL),
+(2, 'Mario', '$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS', 'mario@gmail.com', 45, 0, '2025-03-23'),
+(3, 'Luigi2001', '$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe', 'luigi@gmail.com', 15, 20, '2025-03-22');
 
 -- --------------------------------------------------------
 

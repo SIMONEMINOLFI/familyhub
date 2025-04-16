@@ -20,8 +20,8 @@ async function gestisciAccesso(e) {
     const url = 'api.php/login';
     const options = {
         method: 'POST',
-        headers: { 'content-type': 'application/json' }, // Specifica che stiamo inviando JSON
-        body: JSON.stringify({username: nomeUtente, password: password}) // Convertiamo l'oggetto in stringa JSON
+        headers: { 'content-type': 'application/json' }, // Specifico che stiamo inviando JSON
+        body: JSON.stringify({username: nomeUtente, password: password}) // Converto l'oggetto in stringa JSON
     };
 
     try {
@@ -30,10 +30,10 @@ async function gestisciAccesso(e) {
     
         // Controllo se la risposta è OK (codice 200)
         if (response.status === 200) {
-            const data = await response.json(); // Converto solo se tutto ok
-            console.log(data);
+            const data = await response.json(); // Converto la risposta in json solo se tutto ok
     
             // Operazioni da eseguire dopo il login riuscito
+            let paginaHome = document.querySelector("#paginaHome"); // Seleziono la Home page (la mostro dopo il login)
             mostraClassifica(); // Mostro la classifica aggiornata
             document.querySelector("#nomeUtente").textContent = nomeUtente; // Saluto personalizzato
             formAccesso.style.display = "none"; // Nascondo il form di login
@@ -44,15 +44,13 @@ async function gestisciAccesso(e) {
         }
     
     } catch (error) {
-        // Gestione degli errori di rete o del server
-        console.error("Errore nella richiesta:", error);
-        alert("Si è verificato un errore. Controlla la connessione.");
+        // Gestione degli errori in caso di problemi con la richiesta
+        alert("Si è verificato un errore durante l'accesso. Riprova più tardi.");
     }
 }
 
-// Associo l'evento submit alla funzione (ogni volta che l'utente clicca su Accedi, la funzione gestisciAccesso viene eseguita)
-let formAccesso = document.querySelector("#formAccesso");
-formAccesso.addEventListener("submit", gestisciAccesso);
+let formAccesso = document.querySelector("#formAccesso"); // Seleziono la form di accesso
+formAccesso.addEventListener("submit", gestisciAccesso); // Quando l'utente clicca su "Accedi", viene eseguita funzione gestisciAccesso
 
 /*
 La funzione mostraClassifica: 
@@ -63,7 +61,6 @@ La funzione mostraClassifica:
 P.S. Ho inserito un try-catch per gestire possivili errori durante la richiesta al server
 */
 
-// Funzione per mostrare la classifica
 // Funzione per mostrare la classifica
 async function mostraClassifica() { // Asincrona perché faccio una richiesta al server e devo attendere la risposta...
     const tbody = document.querySelector("#classifica");
@@ -92,6 +89,3 @@ async function mostraClassifica() { // Asincrona perché faccio una richiesta al
         tbody.innerHTML = "<tr><td colspan='3' class='text-danger'>Errore nel caricamento</td></tr>";
     }
 }
-
-// Variabili globali per gli elementi principali della pagina
-let paginaHome = document.querySelector("#paginaHome"); // Seleziono l'elemento della home page

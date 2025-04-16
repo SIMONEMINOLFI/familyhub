@@ -16,24 +16,21 @@
 
 - [X] Api Rest e token per autenticazione utente (passo utente e password con POST e mi restituisce token, vedi [php-crud-api](https://github.com/mevdschee/php-crud-api))
 
-- [X] Login con nome utente e password 
+- [X] Login con nome utente e password (entrambi case-sensitive)
 
 - [ ] Implemento tabs per gli Obiettivi
 
 - [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
 
-- [ ] Progress Bar per gli Obiettivi
-
 - [ ] Icona impostazioni con opzioni *"Modifica nome utente"*, *"Logout"* e *"Modifica password"*
 
 ### Accesso all'App
 
-- Al primo accesso, l'utente deve registrarsi con email e password tramite un form. Dopo la registrazione, sceglie un nome utente e riceve un bonus punti di benvenuto.
+- Al primo accesso, l'utente deve registrarsi con email e password tramite un form. Dopo la registrazione, riceve un bonus punti di benvenuto.
 
 - Ad ogni accesso, viene mostrato un messaggio di benvenuto con il nome utente (es. Ciao Simone !). Cliccando su Accedi, l'utente viene indirizzato nella pagina Home della Webapp.
 
 ### Design e Stile
-
 
 - Uso di icone ed emoji per rendere l'interfaccia più intuitiva e piacevole.
 
@@ -77,7 +74,7 @@ Gli obiettivi sono suddivisi prima per **frequenza** (settimanali/mensili/annual
 - Vengono visualizzati poi gli **obiettivi da completare**, con un colore diverso (ad esempio, grigio o verde chiaro).
 - Gli **obiettivi scaduti o rifiutati** (le sfide) rifiutate non vengono visualizzati...
 
-#### Progress Bar
+#### Progress Bar (Opzionale)
 
 Inserisco una **Progress Bar** che mostra la percentuale di completamento degli obiettivi in base alla loro frequenza (settimanale, mensile, annuale), e cambia colore in base alla percentuale di completamento:
 
