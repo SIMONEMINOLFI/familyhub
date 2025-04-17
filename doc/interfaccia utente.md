@@ -18,11 +18,17 @@
 
 - [X] Login con nome utente e password (entrambi case-sensitive)
 
+- [X] Icona impostazioni con opzione *"Logout"* e funzione che lo gestisce
+
+- [ ] Punti visualizzati nella Home devono essere giusti
+
+- [ ] Miglioro estetica classifica utenti
+
+- [ ] Sistemo icona utente
+
 - [ ] Implemento tabs per gli Obiettivi
 
 - [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
-
-- [ ] Icona impostazioni con opzioni *"Modifica nome utente"*, *"Logout"* e *"Modifica password"*
 
 ### Accesso all'App
 

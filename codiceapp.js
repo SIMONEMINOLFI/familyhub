@@ -8,7 +8,7 @@ Senza e.preventDefault():
 2.Il modulo si invia e la pagina si ricarica, quindi tutte le modifiche fatte dalla funzione JavaScript vengono perse (non vedo la Home)
 */
 
-// Funzione per gestire l'inserimento del nome
+// Funzione per gestire il login utente
 async function gestisciAccesso(e) {
     e.preventDefault(); // Impedisce il ricaricamento della pagina
 
@@ -51,6 +51,26 @@ async function gestisciAccesso(e) {
 
 let formAccesso = document.querySelector("#formAccesso"); // Seleziono la form di accesso
 formAccesso.addEventListener("submit", gestisciAccesso); // Quando l'utente clicca su "Accedi", viene eseguita funzione gestisciAccesso
+
+// Funzione per gestire il logout utente (eseguita quando l'utente clicca su Logout)
+async function gestisciLogout(e) {
+    e.preventDefault();
+
+    try {
+        const url = 'api.php/logout';
+        await fetch(url, { method: 'POST' });
+
+        // Nascondo la pagina home e torno al login
+        document.querySelector("#paginaHome").style.display = "none";
+        formAccesso.style.display = "flex"; // Mostro il form di accesso
+        
+    } catch (error) {
+        alert("Errore durante il logout! Riprova.");
+    }
+}
+
+let boxLogout = document.querySelector("#boxLogout");
+boxLogout.addEventListener("click", gestisciLogout);
 
 /*
 La funzione mostraClassifica: 
