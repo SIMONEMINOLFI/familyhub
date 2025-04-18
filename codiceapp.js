@@ -1,11 +1,15 @@
 /*
 La funzione gestisciAccesso (eseguita quando l'utente clicca su Accedi"):
-1.Prende il nome che l'utente ha scritto nel campo di testo
-2.Visualizza un saluto personalizzato con il nome dell'utente
-3.Nasconde il modulo di login e mostra la pagina principale
-Senza e.preventDefault(): 
-1.L'utente inserisce il nome nel campo di testo e preme "Accedi"
-2.Il modulo si invia e la pagina si ricarica, quindi tutte le modifiche fatte dalla funzione JavaScript vengono perse (non vedo la Home)
+
+1. Impedisce che la pagina si ricarichi usando e.preventDefault(), altrimenti non vdrei la Home
+2. Recupera il nome utente e la password inseriti dall'utente
+3. Invia una richiesta POST al server per verificare se le credenziali sono corrette
+4. Se il login ha successo: 
+    - Mostra la Home page (e nasconde la form di accesso)
+    - Mostra un saluto personalizzato con il nome dell’utente
+    - Mostra la classifica aggiornata
+5. Se il login fallisce (credenziali errate), mostra un messaggio specifico di errore
+6. Se c’è un problema tecnico (es. server non raggiungibile), mostra un messaggio di errore generico
 */
 
 // Funzione per gestire il login utente
@@ -34,7 +38,7 @@ async function gestisciAccesso(e) {
     
             // Operazioni da eseguire dopo il login riuscito
             let paginaHome = document.querySelector("#paginaHome"); // Seleziono la Home page (la mostro dopo il login)
-            mostraClassifica(); // Mostro la classifica aggiornata
+            mostraClassifica(nomeUtente); // Mostro la classifica aggiornata 
             document.querySelector("#nomeUtente").textContent = nomeUtente; // Saluto personalizzato
             formAccesso.style.display = "none"; // Nascondo il form di login
             paginaHome.style.display = "block"; // Mostro la home page
@@ -74,15 +78,16 @@ boxLogout.addEventListener("click", gestisciLogout);
 
 /*
 La funzione mostraClassifica: 
-1.Fa una richiesta al server per ottenere la classifica degli utenti
-2.Converte la risposta in formato JSON per poterla usare
-3.Crea dinamicamente le righe della tabella, aggiungendo posizione, nome e punti di ogni utente
-4.Aggiorna il contenuto della tabella con i dati ottenuti quando la pagina è caricata
-P.S. Ho inserito un try-catch per gestire possivili errori durante la richiesta al server
+
+1. Fa una richiesta al server per ottenere la classifica degli utenti
+2. Converte la risposta in formato JSON per poterla usare
+3. Crea dinamicamente le righe della tabella, aggiungendo posizione, nome e punti di ogni utente
+4. Controlla se l'utente corrente è quello loggato e, in tal caso, salva i suoi punti nella Home
+5. Gestisce eventuali errori tramite un blocco try-catch, mostrando un messaggio nella tabella
 */
 
 // Funzione per mostrare la classifica
-async function mostraClassifica() { // Asincrona perché faccio una richiesta al server e devo attendere la risposta...
+async function mostraClassifica(nomeLoginUtente) { 
     const tbody = document.querySelector("#classifica");
 
     try {
@@ -90,19 +95,29 @@ async function mostraClassifica() { // Asincrona perché faccio una richiesta al
         const risposta = await fetch("api.php/records/utenti?include=id_utente,nome_utente,punti&order=punti,desc");
         const dati = await risposta.json(); // Converto la risposta in formato JSON per poterla usare
 
-        let contenuto = "";  // Definisco una variabile per il contenuto della tabella
+        let contenuto = ""; // Definisco una variabile per il contenuto della tabella
+        let puntiUtente = 0; // Inizializzo variabile per memorizzare i punti dell’utente loggato (nomeLoginUtente)
+
         // Ciclo for su tutti gli utenti che ho in classifica
         for (let i = 0; i < dati.records.length; i++) {
             const utente = dati.records[i]; // Prendo l'utente corrente
 
-            // Creo una riga della tabella con i dati dell'utente corrente (posizione, nome, punti)
             contenuto += "<tr>" +
                 "<td>" + (i + 1) + "</td>" + // Mostro la posizione in classifica (i+1 perché le posizioni partono da 1, non da 0)
                 "<td>" + utente.nome_utente + "</td>" + // Mostro il nome utente
                 "<td>" + utente.punti + "</td>" + // Mostro i punti dell'utente
             "</tr>";
+
+            // Se è l'utente loggato, aggiorno i suoi punti nella Home
+            if (utente.nome_utente === nomeLoginUtente) {
+                puntiUtente = utente.punti;
+            }
         }
+
         tbody.innerHTML = contenuto; // Aggiorno il contenuto della tabella con i dati degli utenti
+
+        // Mostro i punti dell'utente loggato nella Home
+        document.querySelector("#puntiTotali").textContent = puntiUtente;
 
     } catch (errore) {
         // Se qualcosa va storto, mostro un messaggio di errore nella tabella

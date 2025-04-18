@@ -20,7 +20,7 @@
 
 - [X] Icona impostazioni con opzione *"Logout"* e funzione che lo gestisce
 
-- [ ] Punti visualizzati nella Home devono essere giusti
+- [X] Punti visualizzati nella Home devono essere quelli dell'utente che ha fatto il login
 
 - [ ] Miglioro estetica classifica utenti
 
