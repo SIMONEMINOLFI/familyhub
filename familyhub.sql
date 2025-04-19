@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 16, 2025 at 08:01 PM
+-- Generation Time: Apr 19, 2025 at 12:26 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.4.1
 
@@ -58,7 +58,9 @@ INSERT INTO `obiettivi` (`id_obiettivo`, `nome_obiettivo`, `tipo`, `descrizione`
 (2, 'Lavare la macchina', 'sfida', NULL, 'occasionale', 10),
 (3, 'Leggere un libro', 'attivita', NULL, 'mensile', 20),
 (4, 'Pulire la cantina', 'attivita', NULL, 'occasionale', 30),
-(5, 'Fare volontariato', 'attivita', 'Assistenza anziani', 'mensile', 30);
+(5, 'Fare volontariato', 'attivita', 'Assistenza anziani', 'mensile', 30),
+(6, 'Pulizia appartamento', 'attivita', 'Per affittuari in arrivo', 'mensile', 100),
+(7, 'Riparare lavatrice', 'attivita', NULL, 'occasionale', 25);
 
 -- --------------------------------------------------------
 
@@ -85,7 +87,9 @@ INSERT INTO `partecipazione` (`id_partecipazione`, `id_obiettivo`, `id_utente`, 
 (2, 2, 3, 2, 'completato', '2025-03-21', '2025-03-23'),
 (3, 3, 3, NULL, 'completato', '2025-03-22', '2025-03-24'),
 (4, 5, 1, NULL, 'completato', '2025-03-22', '2025-03-23'),
-(5, 3, 1, NULL, 'accettato', '2025-03-23', NULL);
+(5, 3, 1, NULL, 'accettato', '2025-03-23', NULL),
+(6, 6, 2, NULL, 'accettato', '2025-04-19', NULL),
+(7, 7, 2, NULL, 'completato', '2025-04-18', '2025-04-19');
 
 --
 -- Triggers `partecipazione`
@@ -120,10 +124,13 @@ CREATE TABLE `premi` (
 --
 
 INSERT INTO `premi` (`id_premio`, `id_utente`, `nome_premio`, `punti_richiesti`, `data_riscossione`) VALUES
-(1, 1, 'Cena al ristorante', 50, NULL),
+(1, 1, 'Cena al ristorante', 40, NULL),
 (2, 3, 'Biglietto per il cinema', 10, '2025-03-29'),
-(3, 3, 'Giornata alle terme', 100, NULL),
-(4, 2, 'Gita in montagna', 30, NULL);
+(3, 2, 'Giornata alle terme', 80, NULL),
+(4, 2, 'Gita in montagna', 30, NULL),
+(5, 3, 'Giornata a Gardaland', 60, NULL),
+(6, 1, 'Visita osservatorio astronomico', 40, NULL),
+(7, 3, 'Console Playstation', 400, NULL);
 
 --
 -- Triggers `premi`
@@ -167,7 +174,7 @@ CREATE TABLE `utenti` (
 
 INSERT INTO `utenti` (`id_utente`, `nome_utente`, `password`, `email`, `eta`, `punti`, `ultimo_accesso`) VALUES
 (1, 'Anna', '$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO', 'anna@gmail.com', 37, 30, NULL),
-(2, 'Mario', '$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS', 'mario@gmail.com', 45, 0, '2025-03-23'),
+(2, 'Mario', '$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS', 'mario@gmail.com', 45, 25, '2025-03-23'),
 (3, 'Luigi2001', '$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe', 'luigi@gmail.com', 15, 20, '2025-03-22');
 
 -- --------------------------------------------------------
@@ -210,6 +217,16 @@ ALTER TABLE `premi`
 --
 ALTER TABLE `utenti`
   ADD PRIMARY KEY (`id_utente`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `premi`
+--
+ALTER TABLE `premi`
+  MODIFY `id_premio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables

@@ -56,7 +56,19 @@ async function gestisciAccesso(e) {
 let formAccesso = document.querySelector("#formAccesso"); // Seleziono la form di accesso
 formAccesso.addEventListener("submit", gestisciAccesso); // Quando l'utente clicca su "Accedi", viene eseguita funzione gestisciAccesso
 
-// Funzione per gestire il logout utente (eseguita quando l'utente clicca su Logout)
+/*
+La funzione gestisciLogout (eseguita quando l'utente clicca su "Logout"):
+
+1. Impedisce il ricaricamento della pagina usando e.preventDefault()
+2. Invia una richiesta POST al server per terminare la sessione dell’utente
+3. Se il logout va a buon fine:
+   - Nasconde la pagina Home
+   - Riporta l’utente alla schermata di login mostrando il form
+4. Se qualcosa va storto mostra un messaggio di errore
+*/
+
+
+// Funzione per gestire il logout utente
 async function gestisciLogout(e) {
     e.preventDefault();
 

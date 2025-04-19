@@ -5,11 +5,12 @@ meta {
 }
 
 get {
-  url: http://mywebapp.ingeg.it/api.php/records/premi?filter=data_riscossione,eq,null
+  url: http://mywebapp.ingeg.it/api.php/records/premi?filter=data_riscossione,is,null&filter=id_utente,eq,3
   body: none
   auth: inherit
 }
 
 params:query {
-  filter: data_riscossione,eq,null
+  filter: data_riscossione,is,null
+  filter: id_utente,eq,3
 }

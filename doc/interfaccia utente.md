@@ -22,13 +22,15 @@
 
 - [X] Punti visualizzati nella Home devono essere quelli dell'utente che ha fatto il login
 
-- [ ] Miglioro estetica classifica utenti
+- [ ] Sistemo GET Bruno Premi riscossi e da riscuotere per l'utente loggato
 
-- [ ] Sistemo icona utente
+- [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
 
 - [ ] Implemento tabs per gli Obiettivi
 
-- [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
+- [ ] Utente deve poter inserire nuovi obiettivi e premi
+
+- [ ] Sistemo icona utente
 
 ### Accesso all'App
 
@@ -93,7 +95,7 @@ La percentuale viene calcolata in base ai punti completati rispetto ai punti tot
 Ad esempio, per gli obiettivi settimanali avrò una Progress Bar che all'inizio è di default allo 0%, se ad esempio in questa settimana devo completare (tra attività e sfide) 40 punti, se completo un obiettivo da 10 punti la Progress Bar andrà al 25% (e cambierà colore). Stessa cosa 
 per gli obiettivi mensili ed annuali.
 
-### Funzionalità Grafiche da Implementare (con Bootstrap)
+### Funzionalità Grafiche da Implementare con Bootstrap (OPZIONALI)
 
 - Tables: Per la classifica utenti e la gestione dei premi.
 
