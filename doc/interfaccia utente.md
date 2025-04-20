@@ -22,13 +22,15 @@
 
 - [X] Punti visualizzati nella Home devono essere quelli dell'utente che ha fatto il login
 
-- [ ] Sistemo GET Bruno Premi riscossi e da riscuotere per l'utente loggato
+- [X] Sistemo GET Bruno Premi riscossi e da riscuotere per l'utente loggato
 
-- [ ] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
+- [X] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
 
 - [ ] Implemento tabs per gli Obiettivi
 
 - [ ] Utente deve poter inserire nuovi obiettivi e premi
+
+- [ ] Aggiungo tasto riscatta su Premi e cambia stato in Obiettivi
 
 - [ ] Sistemo icona utente
 

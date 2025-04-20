@@ -42,6 +42,8 @@ async function gestisciAccesso(e) {
             document.querySelector("#nomeUtente").textContent = nomeUtente; // Saluto personalizzato
             formAccesso.style.display = "none"; // Nascondo il form di login
             paginaHome.style.display = "block"; // Mostro la home page
+            mostraPremiUtente(data.id_utente); // Mostro i premi dell'utente
+
         } else {
             // Se il server non risponde con 200 (login fallito) mostro un messaggio di errore
             alert("Credenziali errate! Riprova.");
@@ -76,9 +78,9 @@ async function gestisciLogout(e) {
         const url = 'api.php/logout';
         await fetch(url, { method: 'POST' });
 
-        // Nascondo la pagina home e torno al login
+        // Nascondo la pagina Home e torno al login
         document.querySelector("#paginaHome").style.display = "none";
-        formAccesso.style.display = "flex"; // Mostro il form di accesso
+        formAccesso.style.display = "flex"; // Mostro la form di accesso
         
     } catch (error) {
         alert("Errore durante il logout! Riprova.");
@@ -134,5 +136,60 @@ async function mostraClassifica(nomeLoginUtente) {
     } catch (errore) {
         // Se qualcosa va storto, mostro un messaggio di errore nella tabella
         tbody.innerHTML = "<tr><td colspan='3' class='text-danger'>Errore nel caricamento</td></tr>";
+    }
+}
+
+/*
+La funzione mostraPremiUtente (eseguita quando l'utente accede alla Home):
+
+1. Recupera i premi riscossi e da riscattare per l'utente che si è loggato (idUtente) usando due chiamate distinte al server 
+2. Mostra i premi in due liste separate (riscossi e da riscattare)
+3. Se non ci sono premi in una delle due categorie, mostra un messaggio apposito
+4. In caso di errore nella richiesta, mostra un messaggio di errore per ciascuna lista
+*/
+
+// Funzione per mostrare i premi dell'utente
+async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente loggato (preso dalla risposta del login)  
+    // Seleziono le liste HTML dove mostrare i premi
+    const listaPremiDaRiscattare = document.querySelector("#listaPremiDaRiscattare");
+    const listaPremiRiscossi = document.querySelector("#listaPremiRiscossi");
+
+    try {
+        // Faccio la GET per i premi riscossi (data_riscossione diversa da null)
+        const rispostaPremiRiscossi = await fetch("api.php/records/premi?filter=data_riscossione,neq,null&filter=id_utente,eq," + idUtente); 
+        const datiPremiRiscossi = await rispostaPremiRiscossi.json();
+
+        // Faccio la GET per i premi da riscattare (data_riscossione è null)
+        const rispostaPremiDaRiscattare = await fetch("api.php/records/premi?filter=data_riscossione,is,null&filter=id_utente,eq," + idUtente);
+        const datiPremiDaRiscattare = await rispostaPremiDaRiscattare.json();
+
+        // Svuoto le due liste prima di riempirle
+        listaPremiDaRiscattare.innerHTML = "";
+        listaPremiRiscossi.innerHTML = "";
+
+        // Mostro i premi da riscattare, se presenti, altrimento mostro "Nessun premio da riscattare"
+        if (datiPremiDaRiscattare.records.length > 0) {
+            for (let i = 0; i < datiPremiDaRiscattare.records.length; i++) {
+                let premio = datiPremiDaRiscattare.records[i];
+                listaPremiDaRiscattare.innerHTML += "<li class='list-group-item'>" + premio.nome_premio + " - " + premio.punti_richiesti + " punti</li>";
+            }
+        } else {
+            listaPremiDaRiscattare.innerHTML = "<li class='list-group-item text-warning'>Nessun premio da riscattare</li>";
+        }
+
+        // Mostro i premi riscossi, se presenti, altrimento mostro "Nessun premio riscosso"
+        if (datiPremiRiscossi.records.length > 0) {
+            for (let i = 0; i < datiPremiRiscossi.records.length; i++) {
+                let premio = datiPremiRiscossi.records[i];
+                listaPremiRiscossi.innerHTML += "<li class='list-group-item'>" + premio.nome_premio + " - " + premio.data_riscossione + "</li>";
+            }
+        } else {
+            listaPremiRiscossi.innerHTML = "<li class='list-group-item text-warning'>Nessun premio riscosso</li>";
+        }
+
+    } catch (errore) {
+        // In caso di errore nelle richieste al srrver mostro messaggi di errore per ognuna delle due liste...
+        listaPremiDaRiscattare.innerHTML = "<li class='list-group-item text-danger'>Errore nel caricamento dei premi da riscattare</li>";
+        listaPremiRiscossi.innerHTML = "<li class='list-group-item text-danger'>Errore nel caricamento dei premi riscossi</li>";
     }
 }
