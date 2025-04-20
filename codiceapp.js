@@ -148,6 +148,15 @@ La funzione mostraPremiUtente (eseguita quando l'utente accede alla Home):
 4. In caso di errore nella richiesta, mostra un messaggio di errore per ciascuna lista
 */
 
+/*
+La funzione mostraPremiUtente (eseguita quando l'utente accede alla Home):
+
+1. Recupera i premi riscossi e da riscattare per l'utente che si è loggato (idUtente) usando due chiamate distinte al server 
+2. Mostra i premi in due liste separate (riscossi e da riscattare)
+3. Se non ci sono premi in una delle due categorie, mostra un messaggio apposito
+4. In caso di errore nella richiesta, mostra un messaggio di errore per ciascuna lista
+*/
+
 // Funzione per mostrare i premi dell'utente
 async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente loggato (preso dalla risposta del login)  
     // Seleziono le liste HTML dove mostrare i premi
@@ -156,11 +165,11 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
 
     try {
         // Faccio la GET per i premi riscossi (data_riscossione diversa da null)
-        const rispostaPremiRiscossi = await fetch("api.php/records/premi?filter=data_riscossione,neq,null&filter=id_utente,eq," + idUtente); 
+        const rispostaPremiRiscossi = await fetch("api.php/records/premi?filter=data_riscossione,neq,null&filter=id_utente,eq,3&order=punti_richiesti," + idUtente); 
         const datiPremiRiscossi = await rispostaPremiRiscossi.json();
 
         // Faccio la GET per i premi da riscattare (data_riscossione è null)
-        const rispostaPremiDaRiscattare = await fetch("api.php/records/premi?filter=data_riscossione,is,null&filter=id_utente,eq," + idUtente);
+        const rispostaPremiDaRiscattare = await fetch("api.php/records/premi?filter=data_riscossione,is,null&filter=id_utente,eq,3&order=punti_richiesti," + idUtente);
         const datiPremiDaRiscattare = await rispostaPremiDaRiscattare.json();
 
         // Svuoto le due liste prima di riempirle

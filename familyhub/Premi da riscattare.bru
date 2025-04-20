@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: http://mywebapp.ingeg.it/api.php/records/premi?filter=data_riscossione,is,null&filter=id_utente,eq,3
+  url: http://mywebapp.ingeg.it/api.php/records/premi?filter=data_riscossione,is,null&filter=id_utente,eq,3&order=punti_richiesti
   body: none
   auth: inherit
 }
@@ -13,4 +13,5 @@ get {
 params:query {
   filter: data_riscossione,is,null
   filter: id_utente,eq,3
+  order: punti_richiesti
 }
