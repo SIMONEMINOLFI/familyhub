@@ -26,11 +26,21 @@
 
 - [X] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
 
+- [X] Aggiungo tasto riscatta su Premi
+
+- [ ] Aggiungo funzione mostraPunti 
+
+- [ ] Creo funzione riscattaPremio che prende fetch Bruno riscattaPremi (PUT) richiamata quando clicco il bottone riscatta, bottone deve fare riscatto e poi richiamare funzione mostraPremi, mostraClassifica e mostra puntiTotali
+
+- [ ] Disabilito opzione clic per riscatta se non ho abbastanza punti per riscattare il premio
+
 - [ ] Implemento tabs per gli Obiettivi
 
-- [ ] Utente deve poter inserire nuovi obiettivi e premi
+- [ ] Aggiungo tasto completaObiettivo in Obiettivi
 
-- [ ] Aggiungo tasto riscatta su Premi e cambia stato in Obiettivi
+- [ ] Inserisco tasto per inserire nuovi premi/obiettivi
+
+- [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, se completata prende punti utente sfidante e li aggiunge all'utente sfidato
 
 - [ ] Sistemo icona utente
 

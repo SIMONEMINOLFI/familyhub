@@ -131,7 +131,7 @@ async function mostraClassifica(nomeLoginUtente) {
         tbody.innerHTML = contenuto; // Aggiorno il contenuto della tabella con i dati degli utenti
 
         // Mostro i punti dell'utente loggato nella Home
-        document.querySelector("#puntiTotali").textContent = puntiUtente;
+        mostraPunti(puntiUtente); 
 
     } catch (errore) {
         // Se qualcosa va storto, mostro un messaggio di errore nella tabella
@@ -217,7 +217,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                 // Aggiorno i punti dell'utente
                 let puntiUtente = parseInt(puntiTotali.textContent); // Ottengo i punti attuali dell'utente
                 puntiUtente = puntiUtente - puntiRichiesti; 
-                puntiTotali.textContent = puntiUtente; 
+                mostraPunti(puntiUtente);
 
                 // Rimuovo il premio dalla lista dei premi da riscattare
                 // .closest trova il più vicino genitore <li> dell'elemento cliccato, poi lo rimuovo con .remove()
@@ -251,4 +251,24 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
         listaPremiDaRiscattare.innerHTML = "<li class='list-group-item text-danger'>Errore nel caricamento dei premi da riscattare</li>";
         listaPremiRiscossi.innerHTML = "<li class='list-group-item text-danger'>Errore nel caricamento dei premi riscossi</li>";
     }
+}
+
+// Funzione per mostrare i punti totali dell'utente nella Home
+function mostraPunti(punti) {
+    document.querySelector("#puntiTotali").textContent = punti;
+}
+
+// Funzione per mostrare i premi dell'utente
+async function riscattaPremiUtente(idUtente, idPremio) {
+    const url = 'http://mywebapp.ingeg.it/api.php/records/premi' + idPremio;
+const options = {
+  method: 'PUT',
+  headers: {'content-type': 'application/json'},
+  body: '{"data_riscossione":"2025-03-29"}'
+};
+
+
+    mostraPremiUtente(idUtente); 
+    mostraClassifica(nomeUtente); 
+    mostraPunti(puntiUtente);
 }
