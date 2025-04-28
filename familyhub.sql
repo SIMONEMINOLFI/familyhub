@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Apr 19, 2025 at 12:26 PM
--- Server version: 5.7.24
--- PHP Version: 7.4.1
+-- Creato il: Apr 28, 2025 alle 08:15
+-- Versione del server: 5.7.24
+-- Versione PHP: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,8 +25,8 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `classifica`
--- (See below for the actual view)
+-- Struttura stand-in per le viste `classifica`
+-- (Vedi sotto per la vista effettiva)
 --
 CREATE TABLE `classifica` (
 `id_utente` int(10)
@@ -37,7 +37,7 @@ CREATE TABLE `classifica` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `obiettivi`
+-- Struttura della tabella `obiettivi`
 --
 
 CREATE TABLE `obiettivi` (
@@ -50,7 +50,7 @@ CREATE TABLE `obiettivi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `obiettivi`
+-- Dump dei dati per la tabella `obiettivi`
 --
 
 INSERT INTO `obiettivi` (`id_obiettivo`, `nome_obiettivo`, `tipo`, `descrizione`, `frequenza`, `punti_obiettivo`) VALUES
@@ -65,7 +65,7 @@ INSERT INTO `obiettivi` (`id_obiettivo`, `nome_obiettivo`, `tipo`, `descrizione`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `partecipazione`
+-- Struttura della tabella `partecipazione`
 --
 
 CREATE TABLE `partecipazione` (
@@ -79,7 +79,7 @@ CREATE TABLE `partecipazione` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `partecipazione`
+-- Dump dei dati per la tabella `partecipazione`
 --
 
 INSERT INTO `partecipazione` (`id_partecipazione`, `id_obiettivo`, `id_utente`, `id_utente_sfidante`, `stato`, `data_assegnazione`, `data_completamento`) VALUES
@@ -92,7 +92,7 @@ INSERT INTO `partecipazione` (`id_partecipazione`, `id_obiettivo`, `id_utente`, 
 (7, 7, 2, NULL, 'completato', '2025-04-18', '2025-04-19');
 
 --
--- Triggers `partecipazione`
+-- Trigger `partecipazione`
 --
 DELIMITER $$
 CREATE TRIGGER `aggiungi_punti_obiettivo_completato` AFTER UPDATE ON `partecipazione` FOR EACH ROW BEGIN
@@ -108,7 +108,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `premi`
+-- Struttura della tabella `premi`
 --
 
 CREATE TABLE `premi` (
@@ -120,20 +120,20 @@ CREATE TABLE `premi` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `premi`
+-- Dump dei dati per la tabella `premi`
 --
 
 INSERT INTO `premi` (`id_premio`, `id_utente`, `nome_premio`, `punti_richiesti`, `data_riscossione`) VALUES
 (1, 1, 'Cena al ristorante', 40, NULL),
 (2, 3, 'Biglietto per il cinema', 10, '2025-03-29'),
 (3, 2, 'Giornata alle terme', 80, NULL),
-(4, 2, 'Gita in montagna', 30, NULL),
+(4, 2, 'Gita in montagna', 20, '2025-03-29'),
 (5, 3, 'Giornata a Gardaland', 60, NULL),
 (6, 1, 'Visita osservatorio astronomico', 40, NULL),
 (7, 3, 'Console Playstation', 400, NULL);
 
 --
--- Triggers `premi`
+-- Trigger `premi`
 --
 DELIMITER $$
 CREATE TRIGGER `sottrai_punti_riscatto_premio` BEFORE UPDATE ON `premi` FOR EACH ROW BEGIN
@@ -155,7 +155,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `utenti`
+-- Struttura della tabella `utenti`
 --
 
 CREATE TABLE `utenti` (
@@ -169,35 +169,35 @@ CREATE TABLE `utenti` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `utenti`
+-- Dump dei dati per la tabella `utenti`
 --
 
 INSERT INTO `utenti` (`id_utente`, `nome_utente`, `password`, `email`, `eta`, `punti`, `ultimo_accesso`) VALUES
 (1, 'Anna', '$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO', 'anna@gmail.com', 37, 30, NULL),
-(2, 'Mario', '$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS', 'mario@gmail.com', 45, 25, '2025-03-23'),
+(2, 'Mario', '$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS', 'mario@gmail.com', 45, 230, '2025-03-23'),
 (3, 'Luigi2001', '$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe', 'luigi@gmail.com', 15, 20, '2025-03-22');
 
 -- --------------------------------------------------------
 
 --
--- Structure for view `classifica`
+-- Struttura per vista `classifica`
 --
 DROP TABLE IF EXISTS `classifica`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `classifica`  AS  select `utenti`.`id_utente` AS `id_utente`,`utenti`.`nome_utente` AS `nome_utente`,`utenti`.`punti` AS `punti` from `utenti` order by `utenti`.`punti` desc ;
 
 --
--- Indexes for dumped tables
+-- Indici per le tabelle scaricate
 --
 
 --
--- Indexes for table `obiettivi`
+-- Indici per le tabelle `obiettivi`
 --
 ALTER TABLE `obiettivi`
   ADD PRIMARY KEY (`id_obiettivo`);
 
 --
--- Indexes for table `partecipazione`
+-- Indici per le tabelle `partecipazione`
 --
 ALTER TABLE `partecipazione`
   ADD PRIMARY KEY (`id_partecipazione`),
@@ -206,34 +206,34 @@ ALTER TABLE `partecipazione`
   ADD KEY `id_utente` (`id_utente`);
 
 --
--- Indexes for table `premi`
+-- Indici per le tabelle `premi`
 --
 ALTER TABLE `premi`
   ADD PRIMARY KEY (`id_premio`),
   ADD KEY `FK` (`id_utente`);
 
 --
--- Indexes for table `utenti`
+-- Indici per le tabelle `utenti`
 --
 ALTER TABLE `utenti`
   ADD PRIMARY KEY (`id_utente`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT per le tabelle scaricate
 --
 
 --
--- AUTO_INCREMENT for table `premi`
+-- AUTO_INCREMENT per la tabella `premi`
 --
 ALTER TABLE `premi`
   MODIFY `id_premio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- Constraints for dumped tables
+-- Limiti per le tabelle scaricate
 --
 
 --
--- Constraints for table `partecipazione`
+-- Limiti per la tabella `partecipazione`
 --
 ALTER TABLE `partecipazione`
   ADD CONSTRAINT `partecipazione_ibfk_1` FOREIGN KEY (`id_obiettivo`) REFERENCES `obiettivi` (`id_obiettivo`),
@@ -241,7 +241,7 @@ ALTER TABLE `partecipazione`
   ADD CONSTRAINT `partecipazione_ibfk_3` FOREIGN KEY (`id_utente`) REFERENCES `utenti` (`id_utente`);
 
 --
--- Constraints for table `premi`
+-- Limiti per la tabella `premi`
 --
 ALTER TABLE `premi`
   ADD CONSTRAINT `FK` FOREIGN KEY (`id_utente`) REFERENCES `utenti` (`id_utente`);

@@ -1,0 +1,15 @@
+meta {
+  name: Riscatta Premi
+  type: http
+  seq: 9
+}
+
+put {
+  url: http://mywebapp.ingeg.it/api.php/records/premi/4
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {"data_riscossione": "2025-03-29"}
+}
