@@ -1,7 +1,7 @@
 /*
 La funzione gestisciAccesso (eseguita quando l'utente clicca su Accedi"):
 
-1. Impedisce che la pagina si ricarichi usando e.preventDefault(), altrimenti non vdrei la Home
+1. Impedisce che la pagina si ricarichi usando e.preventDefault(), altrimenti non vedrei la Home
 2. Recupera il nome utente e la password inseriti dall'utente
 3. Invia una richiesta POST al server per verificare se le credenziali sono corrette
 4. Se il login ha successo: 
@@ -204,7 +204,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
         // Aggiungo l'evento di clic per il riscatto dei premi
         const bottoniRiscatta = document.querySelectorAll('.riscatta-btn');
         bottoniRiscatta.forEach(function(button) {
-            // Modifico direttamente lo stile del bottone (poi metteròò nel CSS...)
+            // Modifico direttamente lo stile del bottone (poi lo metterò nel CSS...)
             button.style.fontSize = '14px';
             button.style.padding = '5px 10px';
             button.style.marginLeft = '10px'; // Distanzio a sinistra il bottone
@@ -212,7 +212,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
             button.addEventListener('click', function(event) {
                 // Ottengo i dati del premio da riscattare
                 const puntiRichiesti = parseInt(event.target.getAttribute('data-punti')); // parseint converte i punti in numero
-                const nomePremio = event.target.getAttribute('data-nome'); //getAttribute legge valore attibuto nome_premio 
+                const nomePremio = event.target.getAttribute('data-nome'); // getAttribute legge valore attibuto nome_premio 
 
                 // Aggiorno i punti dell'utente
                 let puntiUtente = parseInt(puntiTotali.textContent); // Ottengo i punti attuali dell'utente
@@ -258,17 +258,31 @@ function mostraPunti(punti) {
     document.querySelector("#puntiTotali").textContent = punti;
 }
 
-// Funzione per mostrare i premi dell'utente
-async function riscattaPremiUtente(idUtente, idPremio) {
-    const url = 'http://mywebapp.ingeg.it/api.php/records/premi' + idPremio;
-const options = {
-  method: 'PUT',
-  headers: {'content-type': 'application/json'},
-  body: '{"data_riscossione":"2025-03-29"}'
-};
+// Funzione per riscattare un premio dell'utente
+async function riscattaPremi(idUtente, idPremio) {
+    const url = 'api.php/records/premi/' + idPremio;
 
+    const body = {
+        data_riscossione: new Date().toISOString(),  // Usa la data attuale in formato ISO
+        id_utente: idUtente            
+    };
 
-    mostraPremiUtente(idUtente); 
-    mostraClassifica(nomeUtente); 
-    mostraPunti(puntiUtente);
+    const options = {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body)
+    };
+
+    // Faccio la richiesta al server per riscattare il premio 
+    try {
+        const risposta = await fetch(url, options);
+
+        if (risposta.ok) {
+            alert("Premio riscattato con successo!");
+        } else {
+            alert("Errore nel riscatto del premio.");
+        }
+    } catch (errore) {
+        alert("Errore durante la richiesta al server.");
+    }
 }
