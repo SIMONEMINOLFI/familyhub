@@ -194,7 +194,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                 // Aggiungo un premio riscosso nella lista
                 listaPremiRiscossi.innerHTML += 
                     "<li class='list-group-item'>" +
-                    "<span>" + premio.nome_premio + " - " + premio.punti_riscossi + " punti - " + premio.data_riscossione + "</span>" +
+                    "<span>" + premio.nome_premio + " - " + premio.punti_richiesti + " punti - " + premio.data_riscossione + "</span>" +
                     "</li>";
             }
         } else {
