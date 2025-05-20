@@ -222,7 +222,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
 
                 // Controllo se l'utente ha abbastanza punti per riscattare il premio
                 if (puntiAttuali < puntiRichiesti) {
-                    alert("Punti insufficienti per riscattare questo premio.");
+                    alert("Non hai abbastanza punti per riscattare questo premio.");
                     return; // Interrompo la funzione se non ha abbastanza punti
                 }
 
@@ -264,6 +264,7 @@ La funzione riscattaPremio (eseguita quando l’utente clicca su "Riscatta"):
 6. Se qualcosa va storto, mostra un messaggio di errore all’utente...
 */
 
+// Funzione per gestire il riscatto di un premio
 async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, nomeUtente) {
     try {
         // Invio una richiesta al server per aggiornare il premio selezionato
@@ -276,45 +277,15 @@ async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, no
             })
         });
 
-        // Se il server risponde con un errore, interrompo e notifico l’errore
+        // Se il server risponde con un errore, interrompo l'esecuzione
         if (!rispostaPremio.ok) throw new Error("Errore nell'aggiornamento del premio");
 
-        // Recupero i dati aggiornati dell’utente per ottenere il numero di punti attuali
-        const urlUtente = 'api.php/records/utenti?filter=id_utente,eq,' + idUtente;
-        const rispostaUtente = await fetch(urlUtente);
-        const datiUtente = await rispostaUtente.json();
-        
-        // Se l’utente non esiste o non viene trovato nel database, lancio un errore
-        if (!datiUtente.records || datiUtente.records.length === 0) throw new Error("Utente non trovato");
-        
-        // Calcolo il nuovo saldo di punti sottraendo quelli necessari per riscattare il premio
-        const puntiAttuali = parseInt(datiUtente.records[0].punti);
-        const nuoviPunti = puntiAttuali - parseInt(puntiRichiesti);
-        
-        // Aggiorno i punti nel database tramite PUT
-        const urlAggiornaPunti = 'api.php/records/utenti/' + idUtente;
-        const rispostaAggiornaPunti = await fetch(urlAggiornaPunti, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ punti: nuoviPunti })
-        });
-
-        // Se l'aggiornamento dei punti non va a buon fine, lancio un errore
-        if (!rispostaAggiornaPunti.ok) throw new Error("Errore nell'aggiornamento dei punti");
-
-        // Informo l’utente che il riscatto è avvenuto correttamente con un messaggio
+        // Informo l’utente che il riscatto è avvenuto correttamente con un messaggio di conferma
         alert("Hai riscattato il premio: " + nomePremio + " per " + puntiRichiesti + " punti");
         
-        /*
-        Ora devo aggiornare l’interfaccia utente per mostrare i cambiamenti:
-
-        - Aggiorno la lista dei premi disponibili per l’utente
-        - Aggiorno la classifica generale
-        - Aggiorno il numero di punti visibile all’utente
-        */
-        await mostraPremiUtente(idUtente);
-        await mostraClassifica(nomeUtente);
-        mostraPunti(nuoviPunti);
+        // Aggiorno l’interfaccia utente per mostrare i cambiamenti...
+        await mostraPremiUtente(idUtente); // Aggiorno la lista dei premi disponibili per l’utente
+        await mostraClassifica(nomeUtente); // Aggiorno la classifica generale
 
     // Se qualcosa va storto durante il riscatto del premio, mostro un messaggio di errore
     } catch (errore) {
