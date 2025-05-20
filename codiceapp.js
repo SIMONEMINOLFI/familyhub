@@ -207,43 +207,29 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
             // Modifico direttamente lo stile del bottone (poi lo metterò nel CSS...)
             button.style.fontSize = '14px';
             button.style.padding = '5px 10px';
-            button.style.marginLeft = '10px'; // Distanzio a sinistra il bottone
+            button.style.marginLeft = '10px'; 
 
+            // Aggiungo un listener per gestire il click sul bottone
             button.addEventListener('click', function(event) {
-                // Ottengo i dati del premio da riscattare
-                const puntiRichiesti = parseInt(event.target.getAttribute('data-punti')); // parseint converte i punti in numero
-                const nomePremio = event.target.getAttribute('data-nome'); // getAttribute legge valore attibuto nome_premio 
+                // Recupero le informazioni associate al premio selezionato (dagli attributi "data")
+                const idPremio = event.target.getAttribute('data-id'); // ID del premio nel database
+                const puntiRichiesti = parseInt(event.target.getAttribute('data-punti')); // Punti necessari per riscattarlo
+                const nomePremio = event.target.getAttribute('data-nome'); // Nome del premio
 
-                // Aggiorno i punti dell'utente
-                let puntiUtente = parseInt(puntiTotali.textContent); // Ottengo i punti attuali dell'utente
-                puntiUtente = puntiUtente - puntiRichiesti; 
-                mostraPunti(puntiUtente);
+                // Recupero i punti attuali dell'utente e il suo nome
+                const puntiAttuali = parseInt(puntiTotali.textContent);
+                const nomeUtente = document.querySelector("#nomeUtente").textContent;
 
-                // Rimuovo il premio dalla lista dei premi da riscattare
-                // .closest trova il più vicino genitore <li> dell'elemento cliccato, poi lo rimuovo con .remove()
-                event.target.closest('li').remove(); 
-
-                // Aggiungo il premio alla lista dei premi riscossi
-                const dataRiscatto = new Date().toLocaleDateString(); // prendo la data attuale come data di riscossione
-                listaPremiRiscossi.innerHTML += 
-                    "<li class='list-group-item'>" +
-                    "<span>" + nomePremio + " - " + puntiRichiesti + " punti - " + dataRiscatto + "</span>" +
-                    "</li>";
-
-                // Se non ci sono più premi da riscattare, mostro il messaggio "Nessun premio da riscattare"
-                if (listaPremiDaRiscattare.innerHTML.trim() === "") {
-                    listaPremiDaRiscattare.innerHTML = "<li class='list-group-item text-warning text-center'>Nessun premio da riscattare</li>";
+                // Controllo se l'utente ha abbastanza punti per riscattare il premio
+                if (puntiAttuali < puntiRichiesti) {
+                    alert("Punti insufficienti per riscattare questo premio.");
+                    return; // Interrompo la funzione se non ha abbastanza punti
                 }
 
-                // Se non ci sono più premi riscossi, non mostrare la scritta "Nessun premio riscosso"
-                const messaggioVuoto = document.getElementById('nessunPremio');
-                if (messaggioVuoto) {
-                    messaggioVuoto.remove();
-                }
-
-                // Mostro un messaggio di conferma per il riscatto
-                alert("Hai riscattato il premio: " + nomePremio);
+                // Se i punti sono sufficienti, chiamo la funzione per il riscatto del premio
+                riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, nomeUtente);
             });
+
         });
 
     } catch (errore) {
@@ -258,31 +244,71 @@ function mostraPunti(punti) {
     document.querySelector("#puntiTotali").textContent = punti;
 }
 
-// Funzione per riscattare un premio dell'utente
-async function riscattaPremi(idUtente, idPremio) {
-    const url = 'api.php/records/premi/' + idPremio;
+/*
+La funzione riscattaPremio (eseguita quando l’utente clicca su "Riscatta"):
 
-    const body = {
-        data_riscossione: new Date().toISOString(),  // Usa la data attuale in formato ISO
-        id_utente: idUtente            
-    };
+1. Aggiorna il premio nel database impostando la data di riscossione (PUT)
+2. Aggiorna i punti dell'utente nel database (PUT)
+3. Aggiorna l'interfaccia utente
+4. Mostra un messaggio di conferma all’utente con il nome e il costo del premio
+5. Ricarica le sezioni premi e classifica per riflettere le modifiche
+6. Se qualcosa va storto, mostra un messaggio di errore all’utente...
+*/
 
-    const options = {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(body)
-    };
-
-    // Faccio la richiesta al server per riscattare il premio 
+async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, nomeUtente) {
     try {
-        const risposta = await fetch(url, options);
+        // Invio una richiesta al server per aggiornare il premio selezionato
+        const urlPremio = 'api.php/records/premi/' + idPremio;
+        const rispostaPremio = await fetch(urlPremio, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                data_riscossione: new Date().toISOString().split('T')[0] // Imposto la data di riscossione al giorno corrente
+            })
+        });
 
-        if (risposta.ok) {
-            alert("Premio riscattato con successo!");
-        } else {
-            alert("Errore nel riscatto del premio.");
-        }
+        // Se il server risponde con un errore, interrompo e notifico l’errore
+        if (!rispostaPremio.ok) throw new Error("Errore nell'aggiornamento del premio");
+
+        // Recupero i dati aggiornati dell’utente per ottenere il numero di punti attuali
+        const urlUtente = 'api.php/records/utenti?filter=id_utente,eq,' + idUtente;
+        const rispostaUtente = await fetch(urlUtente);
+        const datiUtente = await rispostaUtente.json();
+        
+        // Se l’utente non esiste o non viene trovato nel database, lancio un errore
+        if (!datiUtente.records || datiUtente.records.length === 0) throw new Error("Utente non trovato");
+        
+        // Calcolo il nuovo saldo di punti sottraendo quelli necessari per riscattare il premio
+        const puntiAttuali = parseInt(datiUtente.records[0].punti);
+        const nuoviPunti = puntiAttuali - parseInt(puntiRichiesti);
+        
+        // Aggiorno i punti nel database tramite PUT
+        const urlAggiornaPunti = 'api.php/records/utenti/' + idUtente;
+        const rispostaAggiornaPunti = await fetch(urlAggiornaPunti, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ punti: nuoviPunti })
+        });
+
+        // Se l'aggiornamento dei punti non va a buon fine, lancio un errore
+        if (!rispostaAggiornaPunti.ok) throw new Error("Errore nell'aggiornamento dei punti");
+
+        // Informo l’utente che il riscatto è avvenuto correttamente con un messaggio
+        alert("Hai riscattato il premio: " + nomePremio + " per " + puntiRichiesti + " punti");
+        
+        /*
+        Ora devo aggiornare l’interfaccia utente per mostrare i cambiamenti:
+
+        - Aggiorno la lista dei premi disponibili per l’utente
+        - Aggiorno la classifica generale
+        - Aggiorno il numero di punti visibile all’utente
+        */
+        await mostraPremiUtente(idUtente);
+        await mostraClassifica(nomeUtente);
+        mostraPunti(nuoviPunti);
+
+    // Se qualcosa va storto durante il riscatto del premio, mostro un messaggio di errore
     } catch (errore) {
-        alert("Errore durante la richiesta al server.");
+        alert("Si è verificato un errore durante il riscatto del premio. Riprova più tardi.");
     }
 }
