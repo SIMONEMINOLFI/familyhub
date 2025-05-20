@@ -28,21 +28,17 @@
 
 - [X] Aggiungo tasto riscatta su Premi
 
-- [ ] Aggiungo funzione mostraPunti 
+- [X] Aggiungo funzione mostraPunti 
 
-- [ ] Creo funzione riscattaPremio che prende fetch Bruno riscattaPremi (PUT) richiamata quando clicco il bottone riscatta, bottone deve fare riscatto e poi richiamare funzione mostraPremi, mostraClassifica e mostra puntiTotali
+- [X] Creo funzione riscattaPremio che prende fetch Bruno riscattaPremi (PUT) richiamata quando clicco il bottone riscatta, bottone deve fare riscatto e poi richiamare funzioni mostraPremi e mostraClassifica 
 
-- [ ] Disabilito opzione clic per riscatta se non ho abbastanza punti per riscattare il premio
+- [ ] Implemento tabs per gli Obiettivi con divisione in attività e sfide
 
-- [ ] Implemento tabs per gli Obiettivi
-
-- [ ] Aggiungo tasto completaObiettivo in Obiettivi
+- [ ] Aggiungo tasto Completa in Obiettivi
 
 - [ ] Inserisco tasto per inserire nuovi premi/obiettivi
 
 - [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, se completata prende punti utente sfidante e li aggiunge all'utente sfidato
-
-- [ ] Sistemo icona utente
 
 ### Accesso all'App
 
@@ -64,7 +60,7 @@
 
 - In alto a destra, un'icona circolare con l'iniziale del nome utente. Sotto l'icona, vengono visualizzati il nome e i punti accumulati.
 
-- Un'icona che apre un menu impostazioni (OPZIONALE) con le opzioni *"Modifica nome utente"* e *"Logout"*.
+- Un'icona con opzione di *"Logout"*.
 
 ### Sezione Classifica
 

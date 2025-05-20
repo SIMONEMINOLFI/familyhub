@@ -34,6 +34,7 @@
 - **Storico e tracciabilità:** Monitoraggio delle attività passate per migliorare l'organizzazione e la gestione del tempo.
 
 ### Esempio di utilizzo - L'Esperienza di Marco su Family Hub
+
 Marco, 17 anni, usa Family Hub per tenere traccia dei suoi impegni.  
 Accede all'applicazione scegliendo come nome utente Marco01.  
 A questo punto clicca su Obiettivi, visualizza le attività della settimana, ed inizia a completarle...
