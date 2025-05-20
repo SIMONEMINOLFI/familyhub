@@ -194,7 +194,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                 // Aggiungo un premio riscosso nella lista
                 listaPremiRiscossi.innerHTML += 
                     "<li class='list-group-item'>" +
-                    "<span>" + premio.nome_premio + " - " + premio.punti_richiesti + " punti - " + premio.data_riscossione + "</span>" +
+                    "<span>" + premio.nome_premio + " - " + premio.punti_richiesti + " punti - " + formattaData(premio.data_riscossione) + "</span>"
                     "</li>";
             }
         } else {
@@ -237,6 +237,15 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
         listaPremiDaRiscattare.innerHTML = "<li class='list-group-item text-danger'>Errore nel caricamento dei premi da riscattare</li>";
         listaPremiRiscossi.innerHTML = "<li class='list-group-item text-danger'>Errore nel caricamento dei premi riscossi</li>";
     }
+}
+
+// Funzione per formattare la data (viene passta in formato ISO e la converto in formato gg/mm/aaaa)
+function formattaData(dataISO) {
+    let parti = dataISO.split("-");
+    let giorno = parti[2];
+    let mese = parti[1];
+    let anno = parti[0];
+    return giorno + "/" + mese + "/" + anno;
 }
 
 // Funzione per mostrare i punti totali dell'utente nella Home
