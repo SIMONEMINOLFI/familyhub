@@ -20,7 +20,7 @@
                 <form>
                     <input type="text" id="inputNomeUtente" class="form-control mb-2" placeholder="Inserisci il tuo nome utente" required> 
                     <input type="password" id="inputPassword" class="form-control mb-2" placeholder="Inserisci la tua password" required> 
-                    <button type="submit" class="btn btn-primary w-100">Accedi</button>
+                    <button type="submit" class="btn btn-primary w-100"> 🔓 Accedi</button>
                 </form>
             </div>
         </div>                
@@ -30,7 +30,6 @@
             <h1>Family Hub</h1> <!-- Titolo dell'app -->
             <div class="row"> 
                 <!-- Nell'attributo span viene messo il nome inserito dall'utente nel form di login -->
-                <h5>👋 Ciao, <span id="nomeUtente"></span>!</h5> <!-- Saluto personalizzato all'utente-->
             </div>
 
         <!-- Sezione Classifica e Icona Utente (disposti come colonne laterali) -->
@@ -55,21 +54,19 @@
             <!-- Colonna centrale per i punti totali dell'utente -->
             <div class="col-6 d-flex align-items-center justify-content-center">
                 <div class="text-center">
-                    <h2>🌟Punti Totali</h2>
+                    <h2>🎉 Punti Totali</h2>
                     <h3 id="puntiTotali">...</h3>
                 </div>
             </div>
             
-            <div class="col-3"> 
-                <h2>
-                <img src="avatar.png" id="avatar">
-                Icona Utente
-                </h2>
-                <div id="boxLogout" style="margin-top: 10px; cursor: pointer;">
-                    <h5> ⚙️Logout</h5>
-                </div>
-
+            <!-- Colonna con avatar, saluto e logout -->
+            <div class="col-3 text-center mt-3">
+                <img src="avatar.png" id="avatar" class="rounded-circle mb-2">
+                <h5 class="mb-2">Ciao, <span id="nomeUtente"></span>!</h5>
+                <button id="boxLogout" class="btn btn-primary btn-sm">⚙️ Logout</button>
             </div>
+
+
     </div>
 
         <div class="row mt-5"></div> <!-- Lascio spazio extra... -->
@@ -84,10 +81,10 @@
                     <!-- Inizio della navigazione con stile "tabs" di Bootstrap -->
                     <li class="nav-item">
                         <!-- attributo active indica che "daRiscuotere" sarà il tab selezionato all'inizio-->
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#daRiscuotere">Premi Da Riscattare</button>
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#daRiscuotere">Da Riscattare</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#riscossi">Premi Riscossi</button>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#riscossi">Riscossi</button>
                     </li>
                 </ul>
 
@@ -108,7 +105,6 @@
 
             <div class="col-4"> 
                 <h2>🎯 Obiettivi</h2> 
-                <h5 class="text-danger-emphasis">Attività e Sfide</h5>
 
                 <!-- Tabelle in cui distinguo gli obiettivi in base alla frequenza -->
                 <ul class="nav nav-tabs">
