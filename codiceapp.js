@@ -184,7 +184,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                     "</li>";
             }
         } else {
-            listaPremiDaRiscattare.innerHTML = "<li class='list-group-item text-warning text-center'>Nessun premio da riscattare</li>";
+            listaPremiDaRiscattare.innerHTML = "<li class='list-group-item orange text-center'>Nessun premio da riscattare</li>";
         }
 
         // Mostro i premi riscossi, se presenti
@@ -198,7 +198,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                     "</li>";
             }
         } else {
-            listaPremiRiscossi.innerHTML = "<li id='nessunPremio' class='list-group-item text-warning text-center'>Nessun premio riscosso</li>";;
+            listaPremiRiscossi.innerHTML = "<li id='nessunPremio' class='list-group-item orange text-center'>Nessun premio riscosso</li>";;
         }
 
         // Aggiungo l'evento di clic per il riscatto dei premi

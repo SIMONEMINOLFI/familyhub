@@ -34,9 +34,11 @@
 
 - [ ] Implemento tabs per gli Obiettivi con divisione in attività e sfide
 
-- [ ] Aggiungo tasto Completa in Obiettivi
+- [ ] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
 
-- [ ] Inserisco tasto per inserire nuovi premi/obiettivi
+- [ ] Inserisco tasto per inserire nuovi premi
+
+- [ ] Inserisco tasto per inserire nuove Attività/Sfide
 
 - [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, se completata prende punti utente sfidante e li aggiunge all'utente sfidato
 
