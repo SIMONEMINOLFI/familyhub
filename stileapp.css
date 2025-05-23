@@ -80,3 +80,10 @@ h5 {
     color: white !important;
     border-radius: 0.375rem;
 }
+
+.divider-line {
+  border: none;
+  border-top: 2px dashed rgb(165, 56, 9); 
+  margin-top: 1rem;   
+  margin-bottom: 1rem; 
+}
