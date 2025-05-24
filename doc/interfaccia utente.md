@@ -32,11 +32,11 @@
 
 - [X] Creo funzione riscattaPremio che prende fetch Bruno riscattaPremi (PUT) richiamata quando clicco il bottone riscatta, bottone deve fare riscatto e poi richiamare funzioni mostraPremi e mostraClassifica 
 
-- [ ] Implemento tabs per gli Obiettivi con divisione in attività e sfide
+- [X] Implemento tabs per gli Obiettivi con divisione in attività e sfide
 
 - [ ] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
 
-- [ ] Inserisco tasto per inserire nuovi premi
+- [ ] Inserisco tasto per inserire nuovi Premi da riscattare
 
 - [ ] Inserisco tasto per inserire nuove Attività/Sfide
 
