@@ -1,0 +1,16 @@
+meta {
+  name: Attività mensili
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://mywebapp.ingeg.it/api.php/records/obiettivi?filter=tipo,eq,attivita&filter=frequenza,eq,mensile
+  body: none
+  auth: inherit
+}
+
+params:query {
+  filter: tipo,eq,attivita
+  filter: frequenza,eq,mensile
+}

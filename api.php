@@ -12783,8 +12783,8 @@ namespace Tqdev\PhpCrudApi {
         'database' => 'familyhub',
 
         'debug' => true,
-        'middlewares' => 'dbAuth',         // Attivo il sistema di autenticazione
-        'dbAuth.usersTable' => 'utenti',   // Cerca gli utenti nella tabella utenti
+        'middlewares' => 'dbAuth', // Attivo il sistema di autenticazione
+        'dbAuth.usersTable' => 'utenti', // Cerca gli utenti nella tabella utenti
         'dbAuth.usernameColumn' => 'nome_utente', // Indica la colonna con i nomi utente 
         'dbAuth.passwordColumn' => 'password' // Indica la colonna con le password in hahs
 
