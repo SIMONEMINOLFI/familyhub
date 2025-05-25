@@ -69,8 +69,8 @@
 
         <div class="row mt-5"></div> <!-- Lascio spazio extra... -->
 
-        <!-- Sezione Premi e Obiettivi (disposti centralmente) -->
-        <div class="row justify-content-center">  <!-- Metto gli elementi centrati sulla riga -->
+        <!-- Sezione Premi -->
+        <div class="row justify-content-center"> <!-- Metto gli elementi centrati sulla riga -->
             <div class="col-4"> 
                 <h2>🎖 Premi</h2>
 
@@ -87,7 +87,10 @@
                 </ul>
 
                 <div class="tab-content mt-3">
-                    <div class="tab-pane fade show active" id="daRiscuotere">
+                    <div class="tab-pane fade show active" id="daRiscuotere">                   
+                        <!-- Pulsante per aggiungere un nuovo premio -->
+                        <button id="btnAggiungiPremio" class="btn btn-success mb-3 d-block mx-auto">✚ Aggiungi Premio</button>
+
                         <ul id="listaPremiDaRiscattare" class="list-group">
                             <!-- Premi da riscuotere verranno inseriti qui... -->
                         </ul>
@@ -98,9 +101,9 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
 
+            <!-- Sezione Obiettivi -->
             <div class="col-4"> 
                 <h2>🎯 Obiettivi</h2> 
 
