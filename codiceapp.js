@@ -44,6 +44,12 @@ async function gestisciAccesso(e) {
             paginaHome.style.display = "block"; // Mostro la home page
             mostraPremiUtente(data.id_utente); // Mostro i premi dell'utente
 
+            // Aggiungo l'event listener al bottone "Aggiungi Premio" con l'ID utente
+            document.querySelector("#btnAggiungiPremio").addEventListener("click", function(e) {
+                e.preventDefault();
+                aggiungiPremio(data.id_utente);
+            });
+
         } else {
             // Se il server non risponde con 200 (login fallito) mostro un messaggio di errore
             alert("Credenziali errate! Riprova.");
@@ -290,5 +296,57 @@ async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, no
     // Se qualcosa va storto durante il riscatto del premio, mostro un messaggio di errore
     } catch (errore) {
         alert("Si è verificato un errore durante il riscatto del premio. Riprova più tardi.");
+    }
+}
+
+/* 
+La funzione aggiungiPremio (eseguita quando l'utente clicca su "Aggiungi Premio"):
+
+1. Mostra due input all'utente che deve inserire nome del premio e punti richiesti pe rriscattarlo
+2. Verifica che i campi siano validi
+3. Invia una richiesta POST al server per creare il nuovo premio
+4. Se la creazione ha successo, aggiorna la lista dei premi
+*/
+
+// Funzione per gestire l'aggiunta di un nuovo premio
+async function aggiungiPremio(idUtente) {
+    // Chiedo all'utente di inserire i dettagli del premio
+    const nomePremio = prompt("Inserisci il nome del premio:");
+    if (!nomePremio) return; // Se l'utente annulla, interrompo la funzione
+
+    const puntiRichiesti = prompt("Inserisci i punti richiesti per questo premio:");
+    if (!puntiRichiesti || isNaN(puntiRichiesti)) {
+        alert("Devi inserire un numero valido per i punti richiesti!");
+        return; // Se l'utente non inserisce un numero, interrompo la funzione
+    }
+
+    try {
+        // PUT request per aggiungere il premio
+        const url = 'api.php/records/premi';
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                id_utente: idUtente,
+                nome_premio: nomePremio,
+                punti_richiesti: parseInt(puntiRichiesti),
+                data_riscossione: null
+            })
+        };
+
+        // Invio la richiesta al server
+        const response = await fetch(url, options);
+        
+        if (response.ok) {
+            // Se la risposta è positiva, aggiorno la lista dei premi
+            alert("Premio aggiunto con successo!");
+            mostraPremiUtente(idUtente);
+        } else { 
+            // Altrimenti, mostro un messaggio di errore
+            throw new Error("Errore durante l'aggiunta del premio"); 
+        }
+    } catch (errore) {
+        alert("Si è verificato un errore durante l'aggiunta del premio. Riprova più tardi.");
+        console.error(errore);
     }
 }
