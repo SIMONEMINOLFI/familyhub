@@ -78,7 +78,7 @@
                 <ul class="nav nav-tabs">
                     <!-- Inizio della navigazione con stile "tabs" di Bootstrap -->
                     <li class="nav-item">
-                        <!-- attributo active indica che "daRiscuotere" sarà il tab selezionato all'inizio-->
+                        <!-- attributo active indica che "daRiscuotere" sarà il tab selezionato di default -->
                         <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#daRiscuotere">🎁 Da Riscattare</button>
                     </li>
                     <li class="nav-item">
@@ -107,35 +107,34 @@
             <div class="col-4"> 
                 <h2>🎯 Obiettivi</h2> 
 
-                <!-- Tabs in cui distinguo gli obiettivi in base alla frequenza -->
-                <ul class="nav nav-tabs flex-nowrap"> <!-- Metto flex-nowrap per evitare che i tab vadano a capo -->
-                    <li class="nav-item flex-shrink-0"> <!-- Inizio della navigazione con stile "tabs" di Bootstrap -->
-                        <!-- attributo active indica che "Settimanali" sarà il tab selezionato di default all'inizio-->
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#settimanali">📅 Settimanali</button>
+                <!-- Tabs in cui distinguo gli obiettivi in base al tipo (Attività/Sfide) -->
+                <ul class="nav nav-tabs"> <!-- Inizio della navigazione con stile "tabs" di Bootstrap -->
+                    <li class="nav-item"> 
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#attivita">🛠️ Attività</button>
                     </li>
-                    <li class="nav-item flex-shrink-0">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#mensili">🗓️ Mensili</button>
-                    </li>
-                    <li class="nav-item flex-shrink-0">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#annuali">📆 Annuali</button>
-                    </li>
-                    <li class="nav-item flex-shrink-0">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#occasionali">🔀 Occasionali</button>
+                    <li class="nav-item">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#sfide">⚡ Sfide</button>
                     </li>
                 </ul>
 
-                <!-- Contenuto dei tabs -->
+                <!-- Contenuto principale dei tabs -->
                 <div class="tab-content">
-
-                    <!-- Tab Settimanali -->
-                    <div class="tab-pane fade show active" id="settimanali">
+                    <!-- Tab Attività -->
+                    <div class="tab-pane fade show active" id="attivita">
                         <hr class="divider-line">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#attivitaSettimanali">🛠️ Attività</button>
+                        <!-- Seconda distinzione degli obiettivi in base alla Frequenza -->
+                        <ul class="nav nav-tabs flex-nowrap">
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#attivitaSettimanali">📅 Settimanali</button>
                             </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sfideSettimanali">⚡ Sfide</button>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#attivitaMensili">🗓️ Mensili</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#attivitaAnnuali">📆 Annuali</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#attivitaOccasionali">🔀 Occasionali</button>
                             </li>
                         </ul>
                         <div class="tab-content">
@@ -144,29 +143,46 @@
                                     <!-- Attività settimanali -->
                                 </ul>
                             </div>
-                            <div class="tab-pane fade" id="sfideSettimanali">
-                                <ul id="listaSfideSettimanali" class="list-group">
-                                    <!-- Sfide settimanali -->
+                            <div class="tab-pane fade" id="attivitaMensili">
+                                <ul id="listaAttivitaMensili" class="list-group">
+                                    <!-- Attività mensili -->
+                                </ul>
+                            </div>
+                            <div class="tab-pane fade" id="attivitaAnnuali">
+                                <ul id="listaAttivitaAnnuali" class="list-group">
+                                    <!-- Attività annuali -->
+                                </ul>
+                            </div>
+                            <div class="tab-pane fade" id="attivitaOccasionali">
+                                <ul id="listaAttivitaOccasionali" class="list-group">
+                                    <!-- Attività occasionali -->
                                 </ul>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Tab Mensili -->
-                    <div class="tab-pane fade" id="mensili">
+                    <!-- Tab Sfide -->
+                    <div class="tab-pane fade" id="sfide">
                         <hr class="divider-line">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#attivitaMensili">🛠️ Attività</button>
+                        <!-- Seconda distinzione per Frequenza -->
+                        <ul class="nav nav-tabs flex-nowrap">
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#sfideSettimanali">📅 Settimanali</button>
                             </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sfideMensili">⚡ Sfide</button>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sfideMensili">🗓️ Mensili</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sfideAnnuali">📆 Annuali</button>
+                            </li>
+                            <li class="nav-item flex-shrink-0">
+                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sfideOccasionali">🔀 Occasionali</button>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane fade show active" id="attivitaMensili">
-                                <ul id="listaAttivitaMensili" class="list-group">
-                                    <!-- Attività mensili -->
+                            <div class="tab-pane fade show active" id="sfideSettimanali">
+                                <ul id="listaSfideSettimanali" class="list-group">
+                                    <!-- Sfide settimanali -->
                                 </ul>
                             </div>
                             <div class="tab-pane fade" id="sfideMensili">
@@ -174,49 +190,9 @@
                                     <!-- Sfide mensili -->
                                 </ul>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab Annuali -->
-                    <div class="tab-pane fade" id="annuali">
-                        <hr class="divider-line">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#attivitaAnnuali">🛠️ Attività</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sfideAnnuali">⚡ Sfide</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="attivitaAnnuali">
-                                <ul id="listaAttivitaAnnuali" class="list-group">
-                                    <!-- Attività annuali -->
-                                </ul>
-                            </div>
                             <div class="tab-pane fade" id="sfideAnnuali">
                                 <ul id="listaSfideAnnuali" class="list-group">
                                     <!-- Sfide annuali -->
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tab Occasionali -->
-                    <div class="tab-pane fade" id="occasionali">
-                        <hr class="divider-line">
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#attivitaOccasionali">🛠️ Attività</button>
-                            </li>
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="pill" data-bs-target="#sfideOccasionali">⚡ Sfide</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="attivitaOccasionali">
-                                <ul id="listaAttivitaOccasionali" class="list-group">
-                                    <!-- Attività occasionali -->
                                 </ul>
                             </div>
                             <div class="tab-pane fade" id="sfideOccasionali">
@@ -226,7 +202,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
