@@ -34,9 +34,11 @@
 
 - [X] Implemento tabs per gli Obiettivi con divisione in attività e sfide
 
-- [ ] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
+- [x] Inserisco tasto per inserire nuovi Premi da riscattare
 
-- [ ] Inserisco tasto per inserire nuovi Premi da riscattare
+- [X] Fetch per prendere gli Obiettivi con relativa frequenza, tipo, stato
+
+- [ ] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
 
 - [ ] Inserisco tasto per inserire nuove Attività/Sfide
 
@@ -44,7 +46,7 @@
 
 ### Accesso all'App
 
-- Al primo accesso, l'utente deve registrarsi con email e password tramite un form. Dopo la registrazione, riceve un bonus punti di benvenuto.
+- L'utente accede allìapplicazione con nome uetnte e password tramite un form. 
 
 - Ad ogni accesso, viene mostrato un messaggio di benvenuto con il nome utente (es. Ciao Simone !). Cliccando su Accedi, l'utente viene indirizzato nella pagina Home della Webapp.
 

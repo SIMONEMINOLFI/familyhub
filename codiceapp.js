@@ -210,7 +210,7 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
         // Aggiungo l'evento di clic per il riscatto dei premi
         const bottoniRiscatta = document.querySelectorAll('.riscatta-btn');
         bottoniRiscatta.forEach(function(button) {
-            // Modifico direttamente lo stile del bottone (poi lo metterò nel CSS...)
+            // Modifico direttamente lo stile del bottone
             button.style.fontSize = '14px';
             button.style.padding = '5px 10px';
             button.style.marginLeft = '10px'; 
@@ -302,7 +302,7 @@ async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, no
 /* 
 La funzione aggiungiPremio (eseguita quando l'utente clicca su "Aggiungi Premio"):
 
-1. Mostra due input all'utente che deve inserire nome del premio e punti richiesti pe rriscattarlo
+1. Mostra due input all'utente che deve inserire nome del premio e punti richiesti per riscattarlo
 2. Verifica che i campi siano validi
 3. Invia una richiesta POST al server per creare il nuovo premio
 4. Se la creazione ha successo, aggiorna la lista dei premi
