@@ -4,11 +4,9 @@
 
 #### Gestione delle Attività (To-Do List Avanzata)
 
-- Suddivisione delle attività in **settimanali, mensili, annuali e occasionali**.
+- Suddivisione delle attività in **settimanali, mensili, annuali**.
 
 - Ogni attività completata assegna punti all'utente.
-
-- Le attività completate vengono archiviate, permettendo di monitorare il proprio impegno nel tempo.
 
 #### Sfide e Classifica Familiare
 
@@ -22,7 +20,7 @@
 
 - Sistema di punteggio che premia l'utente per le attività completate e le sfide vinte.
 
-- I punti possono essere utilizzati per sbloccare premi personalizzati definiti in famiglia.
+- I punti possono essere utilizzati per sbloccare premi personalizzati.
 
 - Storico delle attività e delle sfide, per monitorare i progressi nel tempo.
 
@@ -59,7 +57,7 @@ A questo punto clicca su Obiettivi, visualizza le attività della settimana, ed 
 
 - [X] volontariato in oratorio
 
-- [ ] pulire la cantina
+- [ ] pulire la cantina (sfida da altro utente)
 
 #### Obiettivi mensili
 

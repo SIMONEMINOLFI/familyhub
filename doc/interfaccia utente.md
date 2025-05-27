@@ -6,7 +6,7 @@
 
 - [X] Aggiungo istanze database su phpmyadmin
 
-- [X] Creo view (tabella virtuale) classifica con query sql e usando app Bruno ne leggo i dati
+- [X] Creo view classifica con query sql e usando app Bruno ne leggo i dati
 
 - [X] Creo tabella dinamica tramite javascript (implemento funzione che legge i dati della classifica e li visualizza)
 
@@ -38,6 +38,8 @@
 
 - [X] Fetch per prendere gli Obiettivi con relativa frequenza, tipo, stato
 
+- [ ] Gestione scadenza obiettivi (gli obiettivi "scaduti" non devono più essere visualizzati all'utente)
+
 - [ ] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
 
 - [ ] Inserisco tasto per inserire nuove Attività/Sfide
@@ -46,7 +48,7 @@
 
 ### Accesso all'App
 
-- L'utente accede allìapplicazione con nome uetnte e password tramite un form. 
+- L'utente accede all'applicazione con nome uetnte e password tramite un form. 
 
 - Ad ogni accesso, viene mostrato un messaggio di benvenuto con il nome utente (es. Ciao Simone !). Cliccando su Accedi, l'utente viene indirizzato nella pagina Home della Webapp.
 
@@ -54,17 +56,16 @@
 
 - Uso di icone ed emoji per rendere l'interfaccia più intuitiva e piacevole.
 
-- Sfondo in tonalità chiare, come azzurro chiaro o giallo (in stile "Note").
+- Sfondo in tonalità chiare (azzurro chiaro).
 
-- Implementazione di progress bar per mostrare i progressi degli utenti e motivarli.
 
 ### Elementi Estetici Principali
 
 - Titolo "Family Hub" al centro della barra superiore.
 
-- In alto a destra, un'icona circolare con l'iniziale del nome utente. Sotto l'icona, vengono visualizzati il nome e i punti accumulati.
+- In alto a destra, un'icona circolare con il nome utente ed un'icona con opzione di *"Logout"*. 
 
-- Un'icona con opzione di *"Logout"*.
+- Al centro dello schermo vengono visualizzati il nome e i punti accumulati.
 
 ### Sezione Classifica
 
@@ -82,11 +83,7 @@
 
 ### Sezione Obiettivi
 
-Gli obiettivi sono suddivisi prima per **frequenza** (settimanali/mensili/annuali/occasionali), poi ogni tabella (ad es. obiettivi settimanali) sarà distinta per **tipologia** in due liste (potrei anche inserire in modo OPZIONALE un'unica lista **Tutti** che permette di visualizzare tutti gli obiettivi di una categoria senza distinzione tra attività e sfide):
-
-- **Attività** (da completare/completate)
-
-- **Sfide** (da completare/completate)
+Gli obiettivi sono suddivisi prima per **tipologia** in due liste (attività/sfide), poi per **frequenza** (settimanali/mensili/annuali)
 
 #### Stato obiettivi
 
@@ -107,29 +104,7 @@ La percentuale viene calcolata in base ai punti completati rispetto ai punti tot
 Ad esempio, per gli obiettivi settimanali avrò una Progress Bar che all'inizio è di default allo 0%, se ad esempio in questa settimana devo completare (tra attività e sfide) 40 punti, se completo un obiettivo da 10 punti la Progress Bar andrà al 25% (e cambierà colore). Stessa cosa 
 per gli obiettivi mensili ed annuali.
 
-### Funzionalità Grafiche da Implementare con Bootstrap (OPZIONALI)
-
-- Tables: Per la classifica utenti e la gestione dei premi.
-
-- Modals: Per mostrare dettagli o conferme di azioni (ad esempio quando riscatto un premio, sei sicuro di voler riscattare?)
-
-- Progress Bar: Per visualizzare i progressi degli obiettivi e i punti per riscattare premi.
-
-- Forms: Per il login e la registrazione dell'utente.
-
-- Select Form: Per scegliere un utente a cui lanciare una sfida.
-
-- Checkbox: Per il completamento di attività e sfide.
-
-- Buttons: Per accettare/rifiutare sfide (opzionale).
-
-- Pagination: Per navigare tra gli tutti gli obiettivi.
-
-- Accordion: Per nascondere o mostrare sezioni (es. premi disponibili).
-
-- Badge: Per notifiche sfide in arrivo o altro (obiettivi completati ad esempio o avanzamento in classifica).
-
-#### Credenziali utenti database 
+#### Credenziali utenti database per il login
 
 | nome_utente: "Anna" | password: "ciao123" | hash: "$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO"
 
