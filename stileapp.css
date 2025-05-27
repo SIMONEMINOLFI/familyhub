@@ -61,11 +61,9 @@ h5 {
     font-size: 1rem;
     padding: 5px 15px;     
     border-radius: 6px;
-    margin: 0 auto; /* Centra il bottone orizzontalmente */
-    display: block; 
 }
 
-.orange {
+.orange { 
     color: orangered; 
 }
 
@@ -81,6 +79,7 @@ h5 {
     border-radius: 0.375rem;
 }
 
+/* Linea divisoria (usata nella sezione Obiettivi) */
 .divider-line {
   border: none;
   border-top: 2px dashed rgb(165, 56, 9); 
@@ -88,7 +87,27 @@ h5 {
   margin-bottom: 1rem; 
 }
 
-#btnAggiungiPremio {
+/* Stile base del bottone "Aggiungi" */
+.nav-tabs .aggiungi-button {
+    color: #0d6efd;
+    background-color: #e9f5ff;
+    border: 1px solid #0d6efd;
+    font-weight: 500; 
+    font-size: 1rem;
     padding: 6px;
     border-radius: 8px;
+    margin-left: 1.5rem;
+}
+
+/* Stile del botton "Aggiungi" quando è stato cliccato (stato active) */
+.aggiungi-button.active {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+
+.aggiungi-button:hover { /* hover è l'evento che si attiva quando il mouse passa sopra il bottone */
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
 }

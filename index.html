@@ -69,28 +69,28 @@
 
         <div class="row mt-5"></div> <!-- Lascio spazio extra... -->
 
-        <!-- Sezione Premi -->
-        <div class="row justify-content-center"> <!-- Metto gli elementi centrati sulla riga -->
-            <div class="col-4"> 
-                <h2>🎖 Premi</h2>
+            <!-- Sezione Premi -->
+            <div class="row justify-content-center"> <!-- Metto gli elementi centrati sulla riga -->
+                <div class="col-4"> 
+                    <h2>🎖 Premi</h2>
 
-                <!-- Tabelle in cui distinguo i premi riscossi e da riscuotere -->
+                    <!-- Tabelle in cui distinguo i premi riscossi e da riscuotere -->
                 <ul class="nav nav-tabs">
                     <!-- Inizio della navigazione con stile "tabs" di Bootstrap -->
                     <li class="nav-item">
-                        <!-- attributo active indica che "daRiscuotere" sarà il tab selezionato di default -->
-                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#daRiscuotere">🎁 Da Riscattare</button>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#daRiscuotere" id="btnDaRiscuotere">🎁 Da Riscattare</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#riscossi">✅ Riscossi</button>
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#riscossi" id="btnRiscossi">✅ Riscossi</button>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Pulsante per aggiungere un nuovo premio -->
+                        <button id="btnAggiungiPremio" class="nav-link aggiungi-button" type="button">✚ Aggiungi</button>
                     </li>
                 </ul>
 
                 <div class="tab-content mt-3">
-                    <div class="tab-pane fade show active" id="daRiscuotere">                   
-                        <!-- Pulsante per aggiungere un nuovo premio -->
-                        <button id="btnAggiungiPremio" class="btn btn-success mb-3 d-block mx-auto">✚ Aggiungi Premio</button>
-
+                    <div class="tab-pane fade" id="daRiscuotere">
                         <ul id="listaPremiDaRiscattare" class="list-group">
                             <!-- Premi da riscuotere verranno inseriti qui... -->
                         </ul>
@@ -114,6 +114,9 @@
                     </li>
                     <li class="nav-item">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#sfide">⚡ Sfide</button>
+                    </li>
+                    <li class="nav-item flex-shrink-0">
+                        <button id="btnAggiungiObiettivo" class="nav-link aggiungi-button" type="button">✚ Aggiungi</button>
                     </li>
                 </ul>
 

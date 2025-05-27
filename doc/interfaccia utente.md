@@ -38,11 +38,13 @@
 
 - [X] Fetch per prendere gli Obiettivi con relativa frequenza, tipo, stato
 
-- [ ] Gestione scadenza obiettivi (gli obiettivi "scaduti" non devono più essere visualizzati all'utente)
+- [ ] Gestione scadenza obiettivi (gli obiettivi "scaduti" non devono più essere visualizzati all'utente, potrei aggiungere anche visivamente quanti giorni mancano alla scadenza obiettivo...)
 
 - [ ] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
 
 - [ ] Inserisco tasto per inserire nuove Attività/Sfide
+
+- [ ] Gestione fetch obiettivi distinti per frequenza tramite JS
 
 - [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, se completata prende punti utente sfidante e li aggiunge all'utente sfidato
 
@@ -57,7 +59,6 @@
 - Uso di icone ed emoji per rendere l'interfaccia più intuitiva e piacevole.
 
 - Sfondo in tonalità chiare (azzurro chiaro).
-
 
 ### Elementi Estetici Principali
 
@@ -77,9 +78,9 @@
 
 - Situata al centro-sinistra dello schermo. Cliccandola, si espande in due liste:
 
-- Premi già riscossi: Mostra il nome del premio e la data di riscossione.
+- Premi riscossi: Mostra il nome del premio e la data di riscossione.
 
-- Premi disponibili: Contiene un pulsante "riscatta", attivo solo se l'utente ha abbastanza punti.
+- Premi da riscattare: Contiene un pulsante "riscatta", solo se l'utente ha abbastanza punti.
 
 ### Sezione Obiettivi
 
@@ -90,19 +91,6 @@ Gli obiettivi sono suddivisi prima per **tipologia** in due liste (attività/sfi
 - Cliccando su attività o su sfide mostro di default prima gli **obiettivi da completare**, con un pulsante per aggiornarne lo stato (ad esempio "Segna come completato").  
 - Vengono visualizzati poi gli **obiettivi da completare**, con un colore diverso (ad esempio, grigio o verde chiaro).
 - Gli **obiettivi scaduti o rifiutati** (le sfide) rifiutate non vengono visualizzati...
-
-#### Progress Bar (Opzionale)
-
-Inserisco una **Progress Bar** che mostra la percentuale di completamento degli obiettivi in base alla loro frequenza (settimanale, mensile, annuale), e cambia colore in base alla percentuale di completamento:
-
-- 0%: Rosso (nessun obiettivo completato)
-- 1-99%: Giallo (svolgimento obiettivi in corso...)
-- 100%: Verde (obiettivi completati)
-
-La percentuale viene calcolata in base ai punti completati rispetto ai punti totali.
-
-Ad esempio, per gli obiettivi settimanali avrò una Progress Bar che all'inizio è di default allo 0%, se ad esempio in questa settimana devo completare (tra attività e sfide) 40 punti, se completo un obiettivo da 10 punti la Progress Bar andrà al 25% (e cambierà colore). Stessa cosa 
-per gli obiettivi mensili ed annuali.
 
 #### Credenziali utenti database per il login
 
