@@ -97,6 +97,7 @@ h5 {
     padding: 6px;
     border-radius: 8px;
     margin-left: 1.5rem;
+    transition: all 0.3s ease; /* Aggiungo una transizione per un effetto più fluido quando passo il mouse sul bottone */
 }
 
 /* Stile del botton "Aggiungi" quando è stato cliccato (stato active) */
