@@ -1,0 +1,18 @@
+meta {
+  name: Sfide mensili
+  type: http
+  seq: 14
+}
+
+get {
+  url: http://mywebapp.ingeg.it/api.php/records/partecipazioneobiettivi?filter=tipo,eq,sfida&filter=frequenza,eq,mensile&filter=stato,eq,accettato&filter=id_utente,eq,2
+  body: none
+  auth: inherit
+}
+
+params:query {
+  filter: tipo,eq,sfida
+  filter: frequenza,eq,mensile
+  filter: stato,eq,accettato
+  filter: id_utente,eq,2
+}
