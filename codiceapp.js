@@ -43,6 +43,7 @@ async function gestisciAccesso(e) {
             formAccesso.style.display = "none"; // Nascondo il form di login
             paginaHome.style.display = "block"; // Mostro la home page
             mostraPremiUtente(data.id_utente); // Mostro i premi dell'utente
+            caricaAttivitaSettimanali(data.id_utente);
 
             // Aggiungo l'event listener al bottone "Aggiungi Premio" con l'ID utente
             document.querySelector("#btnAggiungiPremio").addEventListener("click", function(e) {
@@ -348,5 +349,46 @@ async function aggiungiPremio(idUtente) {
     } catch (errore) {
         alert("Si è verificato un errore durante l'aggiunta del premio. Riprova più tardi.");
         console.error(errore);
+    }
+}
+
+// Funzione per caricare le attività settimanali dell'utente
+async function caricaAttivitaSettimanali(idUtente) {
+    try {
+        const url = 'api.php/records/partecipazioneobiettivi?' +
+                    'filter=tipo,eq,attivita' +
+                    '&filter=frequenza,eq,settimanale' +
+                    '&filter=stato,eq,accettato' +
+                    '&filter=id_utente,eq,' + idUtente;
+
+        const response = await fetch(url);
+        
+        if (!response.ok) throw new Error('Errore nel caricamento');
+        
+        const data = await response.json();
+        const lista = document.getElementById('listaAttivitaSettimanali');
+        
+        lista.innerHTML = ''; // Svuoto la lista prima di aggiungere nuovi elementi
+
+        if (data.records && data.records.length > 0) { // Controllo se ci sono attività settimanali
+            data.records.forEach(obiettivo => {
+                const item = document.createElement('li');
+                item.className = 'list-group-item'; // Aggiungo la classe per lo stile della lista
+                
+                // Formattazione semplice "nome - punti"
+                const nome = obiettivo.nome_obiettivo || 'Attività'; // Nome dell'obiettivo, se non presente uso "Attività" 
+                const punti = obiettivo.punti || 0; // Se non ci sono punti, metto 0
+                item.textContent = nome + ' - ' + punti + ' punti';              
+                lista.appendChild(item); // Aggiungo l'elemento alla lista
+            });
+
+        } else { // Se non ci sono attività settimanali, mostro un messaggio all'utente
+            lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna attività settimanale</li>';
+        }
+        lista.style.marginTop = '16px'; // Aggiungo spazio sopra la lista (come fatto per i premi)
+        
+    } catch (error) {
+        document.getElementById('listaAttivitaSettimanali').innerHTML = 
+            '<li class="list-group-item text-danger">Errore nel caricamento</li>'; 
     }
 }
