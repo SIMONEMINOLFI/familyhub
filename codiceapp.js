@@ -43,7 +43,9 @@ async function gestisciAccesso(e) {
             formAccesso.style.display = "none"; // Nascondo il form di login
             paginaHome.style.display = "block"; // Mostro la home page
             mostraPremiUtente(data.id_utente); // Mostro i premi dell'utente
-            caricaAttivitaSettimanali(data.id_utente);
+            caricaAttivitaSettimanali(data.id_utente); 
+            caricaAttivitaMensili(data.id_utente); 
+            caricaAttivitaAnnuali(data.id_utente);
 
             // Aggiungo l'event listener al bottone "Aggiungi Premio" con l'ID utente
             document.querySelector("#btnAggiungiPremio").addEventListener("click", function(e) {
@@ -310,7 +312,7 @@ async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, no
 
     // Se qualcosa va storto durante il riscatto del premio, mostro un messaggio di errore
     } catch (errore) {
-        alert("Si è verificato un errore durante il riscatto del premio. Riprova più tardi.");
+        alert("Si è verificato un errore durante il riscatto del premio.");
     }
 }
 
@@ -361,7 +363,7 @@ async function aggiungiPremio(idUtente) {
             throw new Error("Errore durante l'aggiunta del premio"); 
         }
     } catch (errore) {
-        alert("Si è verificato un errore durante l'aggiunta del premio. Riprova più tardi.");
+        alert("Si è verificato un errore durante l'aggiunta del premio.");
         console.error(errore);
     }
 }
@@ -377,10 +379,12 @@ La funzione eliminaPremio (eseguita quando l'utente clicca sul bottone "rimuovi"
 
 // Funzione per eliminare un premio non ancora riscattato
 async function eliminaPremio(idPremio, idUtente) {
+    // Chiedo conferma all'utente prima di procedere con l'eliminazione
     const conferma = confirm("Sei sicuro di voler eliminare questo premio?");
     if (!conferma) return;
 
     try {
+        // Faccio una DELETE request al server per eliminare il premio
         const url = 'api.php/records/premi/' + idPremio;
         const response = await fetch(url, { method: 'DELETE' });
 
@@ -391,7 +395,7 @@ async function eliminaPremio(idPremio, idUtente) {
             throw new Error("Errore durante l'eliminazione");
         }
     } catch (errore) {
-        alert("Si è verificato un errore durante l'eliminazione del premio. Riprova più tardi.");
+        alert("Si è verificato un errore durante l'eliminazione del premio.");
         console.error(errore);
     }
 }
@@ -434,5 +438,83 @@ async function caricaAttivitaSettimanali(idUtente) {
     } catch (error) {
         document.getElementById('listaAttivitaSettimanali').innerHTML = 
             '<li class="list-group-item text-danger">Errore nel caricamento</li>'; 
+    }
+}
+
+// Funzione per caricare le attività mensili dell'utente
+async function caricaAttivitaMensili(idUtente) {
+    try {
+        const url = 'api.php/records/partecipazioneobiettivi?' +
+                    'filter=tipo,eq,attivita' +
+                    '&filter=frequenza,eq,mensile' +
+                    '&filter=stato,eq,accettato' +
+                    '&filter=id_utente,eq,' + idUtente;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Errore nel caricamento');
+        
+        const data = await response.json();
+        const lista = document.getElementById('listaAttivitaMensili');
+        
+        lista.innerHTML = ''; 
+
+        if (data.records && data.records.length > 0) {
+            data.records.forEach(obiettivo => {
+                const item = document.createElement('li');
+                item.className = 'list-group-item';
+                
+                const nome = obiettivo.nome_obiettivo || 'Attività';
+                const punti = obiettivo.punti || 0;
+                item.textContent = nome + ' - ' + punti + ' punti';
+                
+                lista.appendChild(item);
+            });
+        } else {
+            lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna attività mensile</li>';
+        }
+        lista.style.marginTop = '16px';
+
+    } catch (error) {
+        document.getElementById('listaAttivitaMensili').innerHTML = 
+            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+    }
+}
+
+// Funzione per caricare le attività annuali dell'utente
+async function caricaAttivitaAnnuali(idUtente) {
+    try {
+        const url = 'api.php/records/partecipazioneobiettivi?' +
+                    'filter=tipo,eq,attivita' +
+                    '&filter=frequenza,eq,annuale' +
+                    '&filter=stato,eq,accettato' +
+                    '&filter=id_utente,eq,' + idUtente;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Errore nel caricamento');
+        
+        const data = await response.json();
+        const lista = document.getElementById('listaAttivitaAnnuali');
+        
+        lista.innerHTML = '';
+
+        if (data.records && data.records.length > 0) {
+            data.records.forEach(obiettivo => {
+                const item = document.createElement('li');
+                item.className = 'list-group-item';
+                
+                const nome = obiettivo.nome_obiettivo || 'Attività';
+                const punti = obiettivo.punti || 0;
+                item.textContent = nome + ' - ' + punti + ' punti';
+                
+                lista.appendChild(item);
+            });
+        } else {
+            lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna attività annuale</li>';
+        }
+        lista.style.marginTop = '16px';
+
+    } catch (error) {
+        document.getElementById('listaAttivitaAnnuali').innerHTML = 
+            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
