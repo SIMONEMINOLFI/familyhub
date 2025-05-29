@@ -186,8 +186,10 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                 // Aggiungo un premio da riscattare nella lista
                 listaPremiDaRiscattare.innerHTML += 
                     "<li class='list-group-item'>" +
-                    "<span>" + premio.nome_premio + " - " + premio.punti_richiesti + " punti</span>" +
-                    "<button class='btn btn-primary riscatta-btn' data-id='" + premio.id_premio + "' data-punti='" + premio.punti_richiesti + "' data-nome='" + premio.nome_premio + "'>Riscatta</button>" +
+                    "<button class='elimina-btn' data-id='" + premio.id_premio + "' " +
+                    "style='color: red; border: none; background: none; cursor: pointer; font-weight: bold;'>❌</button>" +
+                    premio.nome_premio + " - " + premio.punti_richiesti + " punti " +
+                    "<button class='btn btn-primary riscatta-btn' data-id='" + premio.id_premio + "' data-punti='" + premio.punti_richiesti + "' data-nome='" + premio.nome_premio + "' style='margin-left: 5px; padding: 2px 8px;'>Riscatta</button>" +
                     "</li>";
             }
         } else {
@@ -208,7 +210,16 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
             listaPremiRiscossi.innerHTML = "<li class='list-group-item orange text-center'>Nessun premio riscosso</li>";;
         }
 
-        // Aggiungo l'evento di clic per il riscatto dei premi
+        // Aggiungo l'evento di clic per il pulsante di eliminazione dei premi da riscattare
+        const bottoniElimina = document.querySelectorAll('.elimina-btn');
+        bottoniElimina.forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                const idPremio = event.target.getAttribute('data-id');
+                eliminaPremio(idPremio, idUtente);
+            });
+        });
+
+        // Aggiungo l'evento di clic per il riscatto dei premi da riscattare
         const bottoniRiscatta = document.querySelectorAll('.riscatta-btn');
         bottoniRiscatta.forEach(function(button) {
             // Modifico direttamente lo stile del bottone
@@ -236,6 +247,8 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                 // Se i punti sono sufficienti, chiamo la funzione per il riscatto del premio
                 riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, nomeUtente);
             });
+
+
 
         });
 
@@ -348,6 +361,36 @@ async function aggiungiPremio(idUtente) {
         }
     } catch (errore) {
         alert("Si è verificato un errore durante l'aggiunta del premio. Riprova più tardi.");
+        console.error(errore);
+    }
+}
+
+/* 
+La funzione eliminaPremio (eseguita quando l'utente clicca sul bottone "rimuovi" accanto a un premio da riscattare):
+
+1. Chiede conferma all'utente prima di procedere con l'eliminazione
+2. Invia una richiesta DELETE al server per eliminare il premio specificato
+3. Se l'eliminazione ha successo, aggiorna la lista dei premi dell'utente
+4. In caso di errore, mostra un messaggio di errore all'utente
+*/
+
+// Funzione per eliminare un premio non ancora riscattato
+async function eliminaPremio(idPremio, idUtente) {
+    const conferma = confirm("Sei sicuro di voler eliminare questo premio?");
+    if (!conferma) return;
+
+    try {
+        const url = 'api.php/records/premi/' + idPremio;
+        const response = await fetch(url, { method: 'DELETE' });
+
+        if (response.ok) {
+            alert("Premio eliminato con successo!");
+            mostraPremiUtente(idUtente);
+        } else {
+            throw new Error("Errore durante l'eliminazione");
+        }
+    } catch (errore) {
+        alert("Si è verificato un errore durante l'eliminazione del premio. Riprova più tardi.");
         console.error(errore);
     }
 }

@@ -28,7 +28,6 @@
         <!-- Pagina Home completa (voglio nasconderla inizialmente) -->
         <div id="paginaHome">
             <h1>Family Hub</h1>
-        </div>
 
         <!-- Sezione Classifica e Icona Utente (disposti come colonne laterali) -->
         <div class="row">  
@@ -77,7 +76,8 @@
                 <ul class="nav nav-tabs">
                     <!-- Inizio della navigazione con stile "tabs" di Bootstrap -->
                     <li class="nav-item">
-                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#daRiscuotere" id="btnDaRiscuotere">🎁 Da Riscattare</button>
+                        <!-- attributo active indica che "daRiscuotere" sarà il tab selezionato di default -->
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#daRiscuotere" id="btnDaRiscuotere">🎁 Da Riscattare</button>
                     </li>
                     <li class="nav-item">
                         <button class="nav-link" data-bs-toggle="tab" data-bs-target="#riscossi" id="btnRiscossi">✅ Riscossi</button>
@@ -89,7 +89,7 @@
                 </ul>
 
                 <div class="tab-content mt-3">
-                    <div class="tab-pane fade" id="daRiscuotere">
+                    <div class="tab-pane fade show active" id="daRiscuotere">
                         <ul id="listaPremiDaRiscattare" class="list-group">
                             <!-- Premi da riscuotere verranno inseriti qui... -->
                         </ul>
