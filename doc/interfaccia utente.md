@@ -38,13 +38,15 @@
 
 - [X] Fetch per prendere gli Obiettivi con relativa frequenza, tipo, stato
 
-- [ ] Gestione scadenza obiettivi (gli obiettivi "scaduti" non devono più essere visualizzati all'utente, potrei aggiungere anche visivamente quanti giorni mancano alla scadenza obiettivo...)
+- [X] Inserisco tasto per inserire nuove Attività/Sfide
+
+- [X] Gestione fetch obiettivi distinti per frequenza tramite JS
+
+- [ ] Aggiungo tasto "Rimuovi" (X) in Obiettivi
 
 - [ ] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
 
-- [ ] Inserisco tasto per inserire nuove Attività/Sfide
-
-- [ ] Gestione fetch obiettivi distinti per frequenza tramite JS
+- [ ] Gestione scadenza obiettivi (gli obiettivi "scaduti" non devono più essere visualizzati all'utente, potrei aggiungere anche visivamente quanti giorni mancano alla scadenza obiettivo...)
 
 - [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, se completata prende punti utente sfidante e li aggiunge all'utente sfidato
 
@@ -98,4 +100,4 @@ Gli obiettivi sono suddivisi prima per **tipologia** in due liste (attività/sfi
 
 | nome_utente: "Mario" | password: "mariobros83" | hash: "$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS"
 
-| nome_utente: "Luigi2001" | password: "loveTravelling*" | hash: "$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe"
+| nome_utente: "Luigi" | password: "loveTravelling*" | hash: "$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe"

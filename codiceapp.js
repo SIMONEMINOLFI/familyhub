@@ -46,6 +46,9 @@ async function gestisciAccesso(e) {
             caricaAttivitaSettimanali(data.id_utente); 
             caricaAttivitaMensili(data.id_utente); 
             caricaAttivitaAnnuali(data.id_utente);
+            caricaSfideSettimanali(data.id_utente);
+            caricaSfideMensili(data.id_utente);
+            caricaSfideAnnuali(data.id_utente);
 
             // Aggiungo l'event listener al bottone "Aggiungi Premio" con l'ID utente
             document.querySelector("#btnAggiungiPremio").addEventListener("click", function(e) {
@@ -515,6 +518,123 @@ async function caricaAttivitaAnnuali(idUtente) {
 
     } catch (error) {
         document.getElementById('listaAttivitaAnnuali').innerHTML = 
+            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+    }
+}
+
+// Funzione per caricare le sfide settimanali dell'utente
+async function caricaSfideSettimanali(idUtente) {
+    try {
+        const url = 'api.php/records/partecipazioneobiettivi?' +
+                    'filter=tipo,eq,sfida' +
+                    '&filter=frequenza,eq,settimanale' +
+                    '&filter=stato,eq,accettato' +
+                    '&filter=id_utente,eq,' + idUtente;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Errore nel caricamento');
+        
+        const data = await response.json();
+        const lista = document.getElementById('listaSfideSettimanali');
+        
+        lista.innerHTML = '';
+
+        if (data.records && data.records.length > 0) {
+            data.records.forEach(sfida => {
+                const item = document.createElement('li');
+                item.className = 'list-group-item';
+                
+                const nome = sfida.nome_obiettivo || 'Sfida';
+                const punti = sfida.punti || 0;
+                item.textContent = nome + ' - ' + punti + ' punti';
+                
+                lista.appendChild(item);
+            });
+        } else {
+            lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna sfida settimanale</li>';
+        }
+        lista.style.marginTop = '16px';
+
+    } catch (error) {
+        document.getElementById('listaSfideSettimanali').innerHTML = 
+            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+    }
+}
+
+// Funzione per caricare le sfide mensili dell'utente
+async function caricaSfideMensili(idUtente) {
+    try {
+        const url = 'api.php/records/partecipazioneobiettivi?' +
+                    'filter=tipo,eq,sfida' +
+                    '&filter=frequenza,eq,mensile' +
+                    '&filter=stato,eq,accettato' +
+                    '&filter=id_utente,eq,' + idUtente;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Errore nel caricamento');
+        
+        const data = await response.json();
+        const lista = document.getElementById('listaSfideMensili');
+        
+        lista.innerHTML = '';
+
+        if (data.records && data.records.length > 0) {
+            data.records.forEach(sfida => {
+                const item = document.createElement('li');
+                item.className = 'list-group-item';
+                
+                const nome = sfida.nome_obiettivo || 'Sfida';
+                const punti = sfida.punti || 0;
+                item.textContent = nome + ' - ' + punti + ' punti';
+                
+                lista.appendChild(item);
+            });
+        } else {
+            lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna sfida mensile</li>';
+        }
+        lista.style.marginTop = '16px';
+
+    } catch (error) {
+        document.getElementById('listaSfideMensili').innerHTML = 
+            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+    }
+}
+
+// Funzione per caricare le sfide annuali dell'utente
+async function caricaSfideAnnuali(idUtente) {
+    try {
+        const url = 'api.php/records/partecipazioneobiettivi?' +
+                    'filter=tipo,eq,sfida' +
+                    '&filter=frequenza,eq,annuale' +
+                    '&filter=stato,eq,accettato' +
+                    '&filter=id_utente,eq,' + idUtente;
+
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Errore nel caricamento');
+        
+        const data = await response.json();
+        const lista = document.getElementById('listaSfideAnnuali');
+        
+        lista.innerHTML = '';
+
+        if (data.records && data.records.length > 0) {
+            data.records.forEach(sfida => {
+                const item = document.createElement('li');
+                item.className = 'list-group-item';
+                
+                const nome = sfida.nome_obiettivo || 'Sfida';
+                const punti = sfida.punti || 0;
+                item.textContent = nome + ' - ' + punti + ' punti';
+                
+                lista.appendChild(item);
+            });
+        } else {
+            lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna sfida annuale</li>';
+        }
+        lista.style.marginTop = '16px';
+
+    } catch (error) {
+        document.getElementById('listaSfideAnnuali').innerHTML = 
             '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
