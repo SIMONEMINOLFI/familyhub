@@ -187,9 +187,10 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                 listaPremiDaRiscattare.innerHTML += 
                     "<li class='list-group-item'>" +
                     "<button class='elimina-btn' data-id='" + premio.id_premio + "' " +
-                    "style='color: red; border: none; background: none; cursor: pointer; font-weight: bold;'>❌</button>" +
-                    premio.nome_premio + " - " + premio.punti_richiesti + " punti " +
-                    "<button class='btn btn-primary riscatta-btn' data-id='" + premio.id_premio + "' data-punti='" + premio.punti_richiesti + "' data-nome='" + premio.nome_premio + "' style='margin-left: 5px; padding: 2px 8px;'>Riscatta</button>" +
+                        "style='color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;'>X</button>" +
+                    premio.nome_premio + " - " + premio.punti_richiesti + " punti" +
+                    "<br>" +
+                    "<button class='btn btn-primary riscatta-btn' data-id='" + premio.id_premio + "' data-punti='" + premio.punti_richiesti + "' data-nome='" + premio.nome_premio + "' style='margin-top: 5px; padding: 4px 12px;'>Riscatta</button>" +
                     "</li>";
             }
         } else {
