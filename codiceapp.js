@@ -113,8 +113,8 @@ async function mostraClassifica(nomeLoginUtente) {
 
     try {
         // Faccio una richiesta GET (fatta da app Bruno) al server per avere dati degli utenti
-        const risposta = await fetch("api.php/records/utenti?include=id_utente,nome_utente,punti&order=punti,desc");
-        const dati = await risposta.json(); // Converto la risposta in formato JSON per poterla usare
+        const response = await fetch("api.php/records/utenti?include=id_utente,nome_utente,punti&order=punti,desc");
+        const dati = await response.json(); // Converto la risposta in formato JSON per poterla usare
 
         let contenuto = ""; // Definisco una variabile per il contenuto della tabella
         let puntiUtente = 0; // Inizializzo variabile per memorizzare i punti dell’utente loggato (nomeLoginUtente)
@@ -168,12 +168,12 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
 
     try {
         // Faccio la richiesta per ottenere i premi riscossi
-        const rispostaPremiRiscossi = await fetch("api.php/records/premi?filter=data_riscossione,neq,null&filter=id_utente,eq," + idUtente);
-        const datiPremiRiscossi = await rispostaPremiRiscossi.json();
+        const responsePremiRiscossi = await fetch("api.php/records/premi?filter=data_riscossione,neq,null&filter=id_utente,eq," + idUtente);
+        const datiPremiRiscossi = await responsePremiRiscossi.json();
 
         // Faccio la richiesta per ottenere i premi da riscattare
-        const rispostaPremiDaRiscattare = await fetch("api.php/records/premi?filter=data_riscossione,is,null&filter=id_utente,eq," + idUtente);
-        const datiPremiDaRiscattare = await rispostaPremiDaRiscattare.json();
+        const responsePremiDaRiscattare = await fetch("api.php/records/premi?filter=data_riscossione,is,null&filter=id_utente,eq," + idUtente);
+        const datiPremiDaRiscattare = await responsePremiDaRiscattare.json();
 
         // Svuoto le due liste prima di aggiungere i nuovi premi
         listaPremiDaRiscattare.innerHTML = "";
@@ -249,8 +249,6 @@ async function mostraPremiUtente(idUtente) { // idUtente è l'id dell'utente log
                 riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, nomeUtente);
             });
 
-
-
         });
 
     } catch (errore) {
@@ -290,7 +288,7 @@ async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, no
     try {
         // Invio una richiesta al server per aggiornare il premio selezionato
         const urlPremio = 'api.php/records/premi/' + idPremio;
-        const rispostaPremio = await fetch(urlPremio, {
+        const responsePremio = await fetch(urlPremio, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -299,7 +297,7 @@ async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, no
         });
 
         // Se il server risponde con un errore, interrompo l'esecuzione
-        if (!rispostaPremio.ok) throw new Error("Errore nell'aggiornamento del premio");
+        if (!responsePremio.ok) throw new Error("Errore nell'aggiornamento del premio");
 
         // Informo l’utente che il riscatto è avvenuto correttamente con un messaggio di conferma
         alert("Hai riscattato il premio: " + nomePremio + " per " + puntiRichiesti + " punti");
@@ -395,6 +393,83 @@ async function eliminaPremio(idPremio, idUtente) {
     } catch (errore) {
         alert("Si è verificato un errore durante l'eliminazione del premio.");
         console.error(errore);
+    }
+}
+
+/*
+La funzione completaObiettivo (eseguita quando l'utente clicca su "Completa" accanto a un'attività):
+
+1. Aggiorna la partecipazione nel database (stato "completato", data odierna)
+2. I punti vengono aggiornati automaticamente tramite trigger da phpMyAdmin
+3. Mostra un messaggio all'utente e aggiorna la classifica e gli obiettivi
+4. Gestisce eventuali errori...
+*/
+
+// Funzione per completare un obiettivo
+async function completaObiettivo(idPartecipazione, idUtente, punti, nomeUtente) {
+    try {
+        // Aggiorno solo la partecipazione
+        const urlPartecipazione = 'api.php/records/partecipazione/' + idPartecipazione;
+        const response = await fetch(urlPartecipazione, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                // Imposto lo stato a completato e metto la data odierna
+                data_completamento: new Date().toISOString().split('T')[0],
+                stato: "completato"
+            })
+        });
+        if (!response.ok) throw new Error("Errore  aggiornamento partecipazione");
+
+        // Quando completo l'obiettivo mostro un messaggio all'utente, poi aggiorno la classifica e gli obiettivi
+        alert("Obiettivo completato! +" + punti + " punti");
+        mostraClassifica(nomeUtente);
+        mostraObiettiviUtente(idUtente);
+
+    } catch (error) {
+        alert("Errore durante il completamento obiettivo");
+    }
+}
+
+/* 
+La funzione eliminaObiettivo (eseguita quando l'utente clicca sul pulsante "X" accanto a un obiettivo):
+
+1. Chiede conferma all'utente prima di procedere con l'eliminazione
+2. Recupera l'id dell'obiettivo associato alla partecipazione
+3. Elimina la partecipazione dal database
+4. Elimina l'obiettivo collegato a quella partecipazione
+5. Aggiorna l'interfaccia dell'utente
+*/
+
+// Funzione per eliminare un obiettivo (elimino sia da tabella partecipazione che da tabella obiettivi)
+async function eliminaObiettivo(idPartecipazione, idUtente) {
+    // Mostro un messaggio di conferma all'utente
+    if (!confirm("Sei sicuro di voler eliminare questo obiettivo?")) return;
+    
+    try { 
+        // Prendo i dati dalla tabella partecipazione
+        const urlPartecipazione = 'api.php/records/partecipazione/' + idPartecipazione; 
+        const responsePartecipazione = await fetch(urlPartecipazione);
+        const partecipazione = await responsePartecipazione.json();
+        
+        // Se non trovo obiettivo lancio l'errore
+        if (!partecipazione.id_obiettivo) throw new Error("Obiettivo non trovato");
+
+        // Elimino la partecipazione
+        await fetch(urlPartecipazione, { method: 'DELETE' });
+
+        // Elimino l'obiettivo collegato a quella partecipazione
+        const urlObiettivo = 'api.php/records/obiettivi/' + partecipazione.id_obiettivo;
+        await fetch(urlObiettivo, { method: 'DELETE' });
+
+        // Mostro un messaggio di eliminazione avvenuta e aggiorno l'interfaccia utente
+        alert("Obiettivo eliminato con successo!");
+        mostraObiettiviUtente(idUtente);
+        
+    } catch (error) {
+        // In caso di errore, mostro un messaggio all'utente
+        alert("Errore durante l'eliminazione dell'obiettivo");
+        console.error(error);
     }
 }
 
