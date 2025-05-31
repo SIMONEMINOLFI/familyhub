@@ -43,12 +43,7 @@ async function gestisciAccesso(e) {
             formAccesso.style.display = "none"; // Nascondo il form di login
             paginaHome.style.display = "block"; // Mostro la home page
             mostraPremiUtente(data.id_utente); // Mostro i premi dell'utente
-            caricaAttivitaSettimanali(data.id_utente); 
-            caricaAttivitaMensili(data.id_utente); 
-            caricaAttivitaAnnuali(data.id_utente);
-            caricaSfideSettimanali(data.id_utente);
-            caricaSfideMensili(data.id_utente);
-            caricaSfideAnnuali(data.id_utente);
+            mostraObiettiviUtente(data.id_utente); // Mostro gli obiettivi dell'utente
 
             // Aggiungo l'event listener al bottone "Aggiungi Premio" con l'ID utente
             document.querySelector("#btnAggiungiPremio").addEventListener("click", function(e) {
@@ -400,6 +395,21 @@ async function eliminaPremio(idPremio, idUtente) {
     } catch (errore) {
         alert("Si è verificato un errore durante l'eliminazione del premio.");
         console.error(errore);
+    }
+}
+
+// Funzione per mostrare gli obiettivi dell'utente (raggruppo semplicemente le chiamate per le attività e le sfide...)
+async function mostraObiettiviUtente(idUtente) {
+    try {
+        // Usa await per ogni chiamata asincrona
+        await caricaAttivitaSettimanali(idUtente);
+        await caricaAttivitaMensili(idUtente);
+        await caricaAttivitaAnnuali(idUtente);
+        await caricaSfideSettimanali(idUtente);
+        await caricaSfideMensili(idUtente);
+        await caricaSfideAnnuali(idUtente);
+    } catch (error) {
+        alert("Errore nel caricamento degli obiettivi");
     }
 }
 
