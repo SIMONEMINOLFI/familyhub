@@ -488,44 +488,104 @@ async function mostraObiettiviUtente(idUtente) {
     }
 }
 
-// Funzione per caricare le attività settimanali dell'utente
+/*  
+La funzione `caricaAttivitaSettimanali` (richiamata per mostrare le attività settimanali dell'utente):
+
+1. Recupera tutte le partecipazioni dell’utente con stato "accettato"
+2. Recupera tutti gli obiettivi con frequenza settimanale e tipo "attività"
+3. Per ogni partecipazione valida, cerca l’obiettivo corrispondente e lo mostra a schermo
+4. Aggiunge i pulsanti per completare o eliminare ogni attività
+5. Se non ci sono attività, mostra un messaggio dedicato
+6. In caso di errore, mostra un messaggio di errore
+*/
+
+// Funzione che mostra le attività settimanali dell'utente 
 async function caricaAttivitaSettimanali(idUtente) {
     try {
-        const url = 'api.php/records/partecipazioneobiettivi?' +
-                    'filter=tipo,eq,attivita' +
-                    '&filter=frequenza,eq,settimanale' +
-                    '&filter=stato,eq,accettato' +
-                    '&filter=id_utente,eq,' + idUtente;
+        // URL per le partecipazioni accettate dell’utente
+        let urlPartecipazioni = 'api.php/records/partecipazione?' +
+                              'filter=id_utente,eq,' + idUtente + 
+                              '&filter=stato,eq,accettato';
+        
+        // Richiesta al server per ottenere le partecipazioni
+        let responsePartecipazione = await fetch(urlPartecipazioni);
+        if (!responsePartecipazione.ok) throw new Error('Errore nel caricamento partecipazioni');
+        let partecipazioni = await responsePartecipazione.json();
 
-        const response = await fetch(url);
-        
-        if (!response.ok) throw new Error('Errore nel caricamento');
-        
-        const data = await response.json();
-        const lista = document.getElementById('listaAttivitaSettimanali');
-        
-        lista.innerHTML = ''; // Svuoto la lista prima di aggiungere nuovi elementi
+        // Ottengo gli obiettivi settimanali di tipo "attività"
+        let urlObiettivi = 'api.php/records/obiettivi?' +
+                          'filter=frequenza,eq,settimanale' +
+                          '&filter=tipo,eq,attivita';
 
-        if (data.records && data.records.length > 0) { // Controllo se ci sono attività settimanali
-            data.records.forEach(obiettivo => {
-                const item = document.createElement('li');
-                item.className = 'list-group-item'; // Aggiungo la classe per lo stile della lista
+        // Faccio una richiesta al server per ottenere gli obiettivi settimanali
+        let responseObj = await fetch(urlObiettivi);
+        if (!responseObj.ok) throw new Error('Errore nel caricamento obiettivi');
+        let obiettivi = await responseObj.json();
+
+        // Svuoto la lista prima di popolarla
+        let lista = document.getElementById('listaAttivitaSettimanali');
+        lista.innerHTML = '';
+
+        if (partecipazioni.records && obiettivi.records) { // Se ci sono partecipazioni e obiettivi...
+            for (let i = 0; i < partecipazioni.records.length; i++) {
+                let partecipazione = partecipazioni.records[i];
+
+                // Trovo l’obiettivo associato alla partecipazione
+                let obiettivo = obiettivi.records.find(function(o) {
+                    return o.id_obiettivo == partecipazione.id_obiettivo;
+                });
                 
-                // Formattazione semplice "nome - punti"
-                const nome = obiettivo.nome_obiettivo || 'Attività'; // Nome dell'obiettivo, se non presente uso "Attività" 
-                const punti = obiettivo.punti || 0; // Se non ci sono punti, metto 0
-                item.textContent = nome + ' - ' + punti + ' punti';              
-                lista.appendChild(item); // Aggiungo l'elemento alla lista
-            });
+                if (obiettivo) { // Se esiste un obiettivo associato
+                    let item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    
+                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
+                    let nome = obiettivo.nome_obiettivo || 'Attività';
+                    let punti = obiettivo.punti_obiettivo || 0;
+                    let idPartecipazione = partecipazione.id_partecipazione;
+                    
+                    item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
+                    'style="color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;">' +
+                    'X</button>' + nome + ' - ' + punti + ' punti' +
+                    '<div style="text-align: center; margin-top: 8px;">' +
+                    '<button class="btn btn-primary completa-btn" ' +
+                    'data-id="' + idPartecipazione + '" ' +
+                    'data-punti="' + punti + '" ' +
+                    'style="font-size: 14px; padding: 5px 10px; margin-left: 10px; margin-top: 5px; display: inline-block;">' +
+                    'Completa</button></div>';
+                        
+                    lista.appendChild(item); // Aggiungo l'elemento alla lista
+                }
+            }
+            
+            // Aggiungo event listener per i bottoni "Elimina"
+            let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
+            for (let j = 0; j < bottoniElimina.length; j++) {
+                bottoniElimina[j].addEventListener('click', function(e) {
+                    eliminaObiettivo(e.target.getAttribute('data-id'), idUtente);
+                });
+            }
+            
+            // Aggiungo event listener per i bottoni "Completa"
+            let bottoniCompleta = document.querySelectorAll('.completa-btn');
+            for (let k = 0; k < bottoniCompleta.length; k++) {
+                bottoniCompleta[k].addEventListener('click', function(e) {
+                    let nomeUtente = document.querySelector("#nomeUtente").textContent;
+                    completaObiettivo(e.target.getAttribute('data-id'), idUtente,
+                        e.target.getAttribute('data-punti'), nomeUtente);
+                });
+            }
+        }
 
-        } else { // Se non ci sono attività settimanali, mostro un messaggio all'utente
+        // Se non ci sono attività, mostro un messaggio alternativo
+        if (lista.children.length === 0) {
             lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna attività settimanale</li>';
         }
-        lista.style.marginTop = '16px'; // Aggiungo spazio sopra la lista (come fatto per i premi)
+        lista.style.marginTop = '16px';
         
     } catch (error) {
-        document.getElementById('listaAttivitaSettimanali').innerHTML = 
-            '<li class="list-group-item text-danger">Errore nel caricamento</li>'; 
+        // In caso di errore, mostro un messaggio a schermo
+        document.getElementById('listaAttivitaSettimanali').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
 
