@@ -576,10 +576,11 @@ async function caricaAttivitaSettimanali(idUtente) {
                 });
             }
 
-            // Aggiungo event listener per le icone info
+            // Aggiungo event listener per i bottoni "Info"
             let iconeInfo = document.querySelectorAll('.info-icon');
             for (let z = 0; z < iconeInfo.length; z++) {
                 iconeInfo[z].addEventListener('click', function(e) {
+                    e.stopPropagation();
                     let descrizione = decodeURIComponent(e.target.getAttribute('data-descrizione'));
                     alert("Descrizione:\n\n" + descrizione);
                 });
@@ -598,81 +599,223 @@ async function caricaAttivitaSettimanali(idUtente) {
     }
 }
 
-// Funzione per caricare le attività mensili dell'utente
+// Funzione che mostra le attività mensili dell'utente 
 async function caricaAttivitaMensili(idUtente) {
     try {
-        const url = 'api.php/records/partecipazioneobiettivi?' +
-                    'filter=tipo,eq,attivita' +
-                    '&filter=frequenza,eq,mensile' +
-                    '&filter=stato,eq,accettato' +
-                    '&filter=id_utente,eq,' + idUtente;
-
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Errore nel caricamento');
+        // URL per le partecipazioni accettate dell'utente
+        let urlPartecipazioni = 'api.php/records/partecipazione?' +
+                              'filter=id_utente,eq,' + idUtente + 
+                              '&filter=stato,eq,accettato';
         
-        const data = await response.json();
-        const lista = document.getElementById('listaAttivitaMensili');
-        
-        lista.innerHTML = ''; 
+        // Richiesta al server per ottenere le partecipazioni
+        let responsePartecipazione = await fetch(urlPartecipazioni);
+        if (!responsePartecipazione.ok) throw new Error('Errore nel caricamento partecipazioni');
+        let partecipazioni = await responsePartecipazione.json();
 
-        if (data.records && data.records.length > 0) {
-            data.records.forEach(obiettivo => {
-                const item = document.createElement('li');
-                item.className = 'list-group-item';
+        // Filtro su frequenza mensile invece che settimanale
+        let urlObiettivi = 'api.php/records/obiettivi?' +
+                          'filter=frequenza,eq,mensile' +
+                          '&filter=tipo,eq,attivita';
+
+        // Faccio una richiesta al server per ottenere gli obiettivi mensili
+        let responseObj = await fetch(urlObiettivi);
+        if (!responseObj.ok) throw new Error('Errore nel caricamento obiettivi');
+        let obiettivi = await responseObj.json();
+
+        // Svuoto la lista prima di popolarla
+        let lista = document.getElementById('listaAttivitaMensili');
+        lista.innerHTML = '';
+
+        if (partecipazioni.records && obiettivi.records) { // Se ci sono partecipazioni e obiettivi...
+            for (let i = 0; i < partecipazioni.records.length; i++) {
+                let partecipazione = partecipazioni.records[i];
+
+                // Trovo l’obiettivo associato alla partecipazione
+                let obiettivo = obiettivi.records.find(function(o) {
+                    return o.id_obiettivo == partecipazione.id_obiettivo;
+                });
                 
-                const nome = obiettivo.nome_obiettivo || 'Attività';
-                const punti = obiettivo.punti || 0;
-                item.textContent = nome + ' - ' + punti + ' punti';
-                
-                lista.appendChild(item);
-            });
-        } else {
+                if (obiettivo) { // Se esiste un obiettivo associato
+                    let item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    
+                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
+                    let nome = obiettivo.nome_obiettivo || 'Attività';
+                    let punti = obiettivo.punti_obiettivo || 0;
+                    let idPartecipazione = partecipazione.id_partecipazione;
+                    let descrizione = obiettivo.descrizione || '';
+                    
+                    // Costruisco la parte nome con icona info se l'attività ha una descrizione
+                    let nomeConInfo = nome;
+                    if (descrizione.trim() !== '') {
+                        // L'icona info è cliccabile e mi apre una alert
+                        nomeConInfo += ' <span class="info-icon" ' +
+                                     'style="cursor: pointer; color: #007bff;" ' +
+                                     'title="Mostra descrizione" ' +
+                                     'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                    }
+
+                    item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
+                    'style="color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;">' +
+                    'X</button>' + nomeConInfo + ' - ' + punti + ' punti' +
+                    '<div style="text-align: center; margin-top: 8px;">' +
+                    '<button class="btn btn-primary completa-btn" ' +
+                    'data-id="' + idPartecipazione + '" ' +
+                    'data-punti="' + punti + '" ' +
+                    'style="font-size: 14px; padding: 5px 10px; margin-left: 0px; display: inline-block;">' +
+                    'Completa</button></div>';
+                        
+                    lista.appendChild(item); // Aggiungo l'elemento alla lista
+                }
+            }
+
+            // Aggiungo event listener per i bottoni "Elimina"
+            let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
+            for (let j = 0; j < bottoniElimina.length; j++) {
+                bottoniElimina[j].addEventListener('click', function(e) {
+                    eliminaObiettivo(e.target.getAttribute('data-id'), idUtente);
+                });
+            }
+            
+            // Aggiungo event listener per i bottoni "Completa"
+            let bottoniCompleta = document.querySelectorAll('.completa-btn');
+            for (let k = 0; k < bottoniCompleta.length; k++) {
+                bottoniCompleta[k].addEventListener('click', function(e) {
+                    let nomeUtente = document.querySelector("#nomeUtente").textContent;
+                    completaObiettivo(e.target.getAttribute('data-id'), idUtente,
+                        e.target.getAttribute('data-punti'), nomeUtente);
+                });
+            }
+
+            // Aggiungo event listener per i bottoni "Info"
+            let iconeInfo = document.querySelectorAll('.info-icon');
+            for (let z = 0; z < iconeInfo.length; z++) {
+                iconeInfo[z].addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    let descrizione = decodeURIComponent(e.target.getAttribute('data-descrizione'));
+                    alert("Descrizione:\n\n" + descrizione);
+                });
+            }
+        }
+
+        // Se non ci sono attività, mostro un messaggio alternativo
+        if (lista.children.length === 0) {
             lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna attività mensile</li>';
         }
         lista.style.marginTop = '16px';
-
+        
     } catch (error) {
-        document.getElementById('listaAttivitaMensili').innerHTML = 
-            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+        document.getElementById('listaAttivitaMensili').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
 
-// Funzione per caricare le attività annuali dell'utente
+// Funzione che mostra le attività annuali dell'utente 
 async function caricaAttivitaAnnuali(idUtente) {
     try {
-        const url = 'api.php/records/partecipazioneobiettivi?' +
-                    'filter=tipo,eq,attivita' +
-                    '&filter=frequenza,eq,annuale' +
-                    '&filter=stato,eq,accettato' +
-                    '&filter=id_utente,eq,' + idUtente;
+        // URL per le partecipazioni accettate dell'utente
+        let urlPartecipazioni = 'api.php/records/partecipazione?' +
+                              'filter=id_utente,eq,' + idUtente + 
+                              '&filter=stato,eq,accettato';
+        
+        // Richiesta al server per ottenere le partecipazioni
+        let responsePartecipazione = await fetch(urlPartecipazioni);
+        if (!responsePartecipazione.ok) throw new Error('Errore nel caricamento partecipazioni');
+        let partecipazioni = await responsePartecipazione.json();
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Errore nel caricamento');
-        
-        const data = await response.json();
-        const lista = document.getElementById('listaAttivitaAnnuali');
-        
+        // Filtro su frequenza annuale invece che settimanale/mensile
+        let urlObiettivi = 'api.php/records/obiettivi?' +
+                          'filter=frequenza,eq,annuale' +
+                          '&filter=tipo,eq,attivita';
+
+        // Faccio una richiesta al server per ottenere gli obiettivi annuali
+        let responseObj = await fetch(urlObiettivi);
+        if (!responseObj.ok) throw new Error('Errore nel caricamento obiettivi');
+        let obiettivi = await responseObj.json();
+
+        // Svuoto la lista prima di popolarla (listaAttivitaAnnuali)
+        let lista = document.getElementById('listaAttivitaAnnuali');
         lista.innerHTML = '';
 
-        if (data.records && data.records.length > 0) {
-            data.records.forEach(obiettivo => {
-                const item = document.createElement('li');
-                item.className = 'list-group-item';
-                
-                const nome = obiettivo.nome_obiettivo || 'Attività';
-                const punti = obiettivo.punti || 0;
-                item.textContent = nome + ' - ' + punti + ' punti';
-                
-                lista.appendChild(item);
-            });
-        } else {
+        if (partecipazioni.records && obiettivi.records) { // Se ci sono partecipazioni e obiettivi...
+            for (let i = 0; i < partecipazioni.records.length; i++) {
+                let partecipazione = partecipazioni.records[i];
+
+                // Trovo l’obiettivo associato alla partecipazione
+                let obiettivo = obiettivi.records.find(function(o) {
+                    return o.id_obiettivo == partecipazione.id_obiettivo;
+                });
+
+                if (obiettivo) { // Se esiste un obiettivo associato
+                    let item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    
+                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
+                    let nome = obiettivo.nome_obiettivo || 'Attività';
+                    let punti = obiettivo.punti_obiettivo || 0;
+                    let idPartecipazione = partecipazione.id_partecipazione;
+                    let descrizione = obiettivo.descrizione || '';
+                    
+                    // Costruisco la parte nome con icona info se l'attività ha una descrizione
+                    let nomeConInfo = nome;
+                    if (descrizione.trim() !== '') {
+                        // L'icona info è cliccabile e mi apre una alert
+                        nomeConInfo += ' <span class="info-icon" ' +
+                                     'style="cursor: pointer; color: #007bff;" ' +
+                                     'title="Mostra descrizione" ' +
+                                     'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                    }
+
+                    item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
+                    'style="color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;">' +
+                    'X</button>' + nomeConInfo + ' - ' + punti + ' punti' +
+                    '<div style="text-align: center; margin-top: 8px;">' +
+                    '<button class="btn btn-primary completa-btn" ' +
+                    'data-id="' + idPartecipazione + '" ' +
+                    'data-punti="' + punti + '" ' +
+                    'style="font-size: 14px; padding: 5px 10px; margin-left: 0px; display: inline-block;">' +
+                    'Completa</button></div>';
+                        
+                    lista.appendChild(item); // Aggiungo l'elemento alla lista
+                }
+            }
+
+            // Aggiungo event listener per i bottoni "Elimina"
+            let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
+            for (let j = 0; j < bottoniElimina.length; j++) {
+                bottoniElimina[j].addEventListener('click', function(e) {
+                    eliminaObiettivo(e.target.getAttribute('data-id'), idUtente);
+                });
+            }
+            
+            // Aggiungo event listener per i bottoni "Completa"
+            let bottoniCompleta = document.querySelectorAll('.completa-btn');
+            for (let k = 0; k < bottoniCompleta.length; k++) {
+                bottoniCompleta[k].addEventListener('click', function(e) {
+                    let nomeUtente = document.querySelector("#nomeUtente").textContent;
+                    completaObiettivo(e.target.getAttribute('data-id'), idUtente,
+                        e.target.getAttribute('data-punti'), nomeUtente);
+                });
+            }
+
+            // Aggiungo event listener per i bottoni "Info"
+            let iconeInfo = document.querySelectorAll('.info-icon');
+            for (let z = 0; z < iconeInfo.length; z++) {
+                iconeInfo[z].addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    let descrizione = decodeURIComponent(e.target.getAttribute('data-descrizione'));
+                    alert("Descrizione:\n\n" + descrizione);
+                });
+            }
+        }
+
+        // Se non ci sono attività, mostro un messaggio alternativo
+        if (lista.children.length === 0) {
             lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna attività annuale</li>';
         }
         lista.style.marginTop = '16px';
-
+        
     } catch (error) {
-        document.getElementById('listaAttivitaAnnuali').innerHTML = 
-            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+        document.getElementById('listaAttivitaAnnuali').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
 
