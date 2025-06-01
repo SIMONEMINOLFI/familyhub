@@ -488,6 +488,13 @@ async function mostraObiettiviUtente(idUtente) {
     }
 }
 
+// Funzione per eliminare i listener duplicati dei bottoni
+function rimuoviEventListener(bottoni) {
+    bottoni.forEach(btn => {
+        btn.replaceWith(btn.cloneNode(true)); // Clona l'elemento rimuovendo tutti gli event listener
+    });
+}
+
 // Funzione che mostra le attività settimanali dell'utente 
 async function caricaAttivitaSettimanali(idUtente) {
     try {
@@ -557,6 +564,11 @@ async function caricaAttivitaSettimanali(idUtente) {
                     lista.appendChild(item); // Aggiungo l'elemento alla lista
                 }
             }
+
+            // Rimuovo eventuali listener duplicati dai bottoni
+            rimuoviEventListener(document.querySelectorAll('.elimina-obiettivo-btn'));
+            rimuoviEventListener(document.querySelectorAll('.completa-btn'));
+            rimuoviEventListener(document.querySelectorAll('.info-icon'));
             
             // Aggiungo event listener per i bottoni "Elimina"
             let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
@@ -669,6 +681,11 @@ async function caricaAttivitaMensili(idUtente) {
                 }
             }
 
+            // Rimuovo eventuali listener duplicati dai bottoni
+            rimuoviEventListener(document.querySelectorAll('.elimina-obiettivo-btn'));
+            rimuoviEventListener(document.querySelectorAll('.completa-btn'));
+            rimuoviEventListener(document.querySelectorAll('.info-icon'));
+
             // Aggiungo event listener per i bottoni "Elimina"
             let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
             for (let j = 0; j < bottoniElimina.length; j++) {
@@ -778,6 +795,11 @@ async function caricaAttivitaAnnuali(idUtente) {
                     lista.appendChild(item); // Aggiungo l'elemento alla lista
                 }
             }
+
+            // Rimuovo eventuali listener duplicati dai bottoni
+            rimuoviEventListener(document.querySelectorAll('.elimina-obiettivo-btn'));
+            rimuoviEventListener(document.querySelectorAll('.completa-btn'));
+            rimuoviEventListener(document.querySelectorAll('.info-icon'));
 
             // Aggiungo event listener per i bottoni "Elimina"
             let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
