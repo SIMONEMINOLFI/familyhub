@@ -543,15 +543,19 @@ async function caricaAttivitaSettimanali(idUtente) {
                     let nome = obiettivo.nome_obiettivo || 'Attività';
                     let punti = obiettivo.punti_obiettivo || 0;
                     let idPartecipazione = partecipazione.id_partecipazione;
+                    let descrizione = obiettivo.descrizione || 'Nessuna descrizione disponibile';
                     
                     item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
                     'style="color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;">' +
                     'X</button>' + nome + ' - ' + punti + ' punti' +
                     '<div style="text-align: center; margin-top: 8px;">' +
+                    '<button class="btn btn-secondary info-btn" ' +
+                    'data-descrizione="' + encodeURIComponent(descrizione) + '" ' +
+                    'style="font-size: 14px; padding: 5px 10px; margin-right: 10px; display: inline-block;">Info</button>' +
                     '<button class="btn btn-primary completa-btn" ' +
                     'data-id="' + idPartecipazione + '" ' +
                     'data-punti="' + punti + '" ' +
-                    'style="font-size: 14px; padding: 5px 10px; margin-left: 10px; margin-top: 5px; display: inline-block;">' +
+                    'style="font-size: 14px; padding: 5px 10px; margin-left: 0px; display: inline-block;">' +
                     'Completa</button></div>';
                         
                     lista.appendChild(item); // Aggiungo l'elemento alla lista
@@ -575,6 +579,15 @@ async function caricaAttivitaSettimanali(idUtente) {
                         e.target.getAttribute('data-punti'), nomeUtente);
                 });
             }
+
+            // Aggiungo event listener per i bottoni "Info"
+            let bottoniInfo = document.querySelectorAll('.info-btn');
+            for (let z = 0; z < bottoniInfo.length; z++) {
+                bottoniInfo[z].addEventListener('click', function(e) {
+                    let descrizione = decodeURIComponent(e.target.getAttribute('data-descrizione'));
+                    alert("Descrizione:\n\n" + descrizione);
+                });
+            }
         }
 
         // Se non ci sono attività, mostro un messaggio alternativo
@@ -588,6 +601,7 @@ async function caricaAttivitaSettimanali(idUtente) {
         document.getElementById('listaAttivitaSettimanali').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
+
 
 // Funzione per caricare le attività mensili dell'utente
 async function caricaAttivitaMensili(idUtente) {

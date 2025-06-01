@@ -42,9 +42,9 @@
 
 - [X] Gestione fetch obiettivi distinti per frequenza tramite JS
 
-- [ ] Aggiungo tasto "Rimuovi" (X) in Obiettivi
+- [X] Aggiungo tasto "Rimuovi" (X) in Obiettivi
 
-- [ ] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
+- [X] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
 
 - [ ] Gestione scadenza obiettivi (gli obiettivi "scaduti" non devono più essere visualizzati all'utente, potrei aggiungere anche visivamente quanti giorni mancano alla scadenza obiettivo...)
 
