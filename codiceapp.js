@@ -488,17 +488,6 @@ async function mostraObiettiviUtente(idUtente) {
     }
 }
 
-/*  
-La funzione `caricaAttivitaSettimanali` (richiamata per mostrare le attività settimanali dell'utente):
-
-1. Recupera tutte le partecipazioni dell’utente con stato "accettato"
-2. Recupera tutti gli obiettivi con frequenza settimanale e tipo "attività"
-3. Per ogni partecipazione valida, cerca l’obiettivo corrispondente e lo mostra a schermo
-4. Aggiunge i pulsanti per completare o eliminare ogni attività
-5. Se non ci sono attività, mostra un messaggio dedicato
-6. In caso di errore, mostra un messaggio di errore
-*/
-
 // Funzione che mostra le attività settimanali dell'utente 
 async function caricaAttivitaSettimanali(idUtente) {
     try {
@@ -541,17 +530,24 @@ async function caricaAttivitaSettimanali(idUtente) {
                     
                     // Estraggo nome, punti e id dalla partecipazione/obiettivo
                     let nome = obiettivo.nome_obiettivo || 'Attività';
-                    let punti = obiettivo.punti_obiettivo || 0;
+                    let punti = obiettivo.punti_obiettivo || 0; 
                     let idPartecipazione = partecipazione.id_partecipazione;
-                    let descrizione = obiettivo.descrizione || 'Nessuna descrizione disponibile';
+                    let descrizione = obiettivo.descrizione || '';
                     
+                    // Costruisco la parte nome con icona info se l'attività ha una descrizione
+                    let nomeConInfo = nome;
+                    if (descrizione.trim() !== '') {
+                        // L'icona info è cliccabile e mi apre una alert
+                        nomeConInfo += ' <span class="info-icon" ' +
+                                       'style="cursor: pointer; color: #007bff;" ' +
+                                       'title="Mostra descrizione" ' +
+                                       'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                    }
+
                     item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
                     'style="color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;">' +
-                    'X</button>' + nome + ' - ' + punti + ' punti' +
+                    'X</button>' + nomeConInfo + ' - ' + punti + ' punti' +
                     '<div style="text-align: center; margin-top: 8px;">' +
-                    '<button class="btn btn-secondary info-btn" ' +
-                    'data-descrizione="' + encodeURIComponent(descrizione) + '" ' +
-                    'style="font-size: 14px; padding: 5px 10px; margin-right: 10px; display: inline-block;">Info</button>' +
                     '<button class="btn btn-primary completa-btn" ' +
                     'data-id="' + idPartecipazione + '" ' +
                     'data-punti="' + punti + '" ' +
@@ -580,10 +576,10 @@ async function caricaAttivitaSettimanali(idUtente) {
                 });
             }
 
-            // Aggiungo event listener per i bottoni "Info"
-            let bottoniInfo = document.querySelectorAll('.info-btn');
-            for (let z = 0; z < bottoniInfo.length; z++) {
-                bottoniInfo[z].addEventListener('click', function(e) {
+            // Aggiungo event listener per le icone info
+            let iconeInfo = document.querySelectorAll('.info-icon');
+            for (let z = 0; z < iconeInfo.length; z++) {
+                iconeInfo[z].addEventListener('click', function(e) {
                     let descrizione = decodeURIComponent(e.target.getAttribute('data-descrizione'));
                     alert("Descrizione:\n\n" + descrizione);
                 });
@@ -601,7 +597,6 @@ async function caricaAttivitaSettimanali(idUtente) {
         document.getElementById('listaAttivitaSettimanali').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
-
 
 // Funzione per caricare le attività mensili dell'utente
 async function caricaAttivitaMensili(idUtente) {
