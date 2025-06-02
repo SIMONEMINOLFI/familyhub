@@ -624,7 +624,7 @@ async function caricaAttivitaMensili(idUtente) {
         if (!responsePartecipazione.ok) throw new Error('Errore nel caricamento partecipazioni');
         let partecipazioni = await responsePartecipazione.json();
 
-        // Filtro su frequenza mensile invece che settimanale
+        // Ottengo gli obiettivi mensili di tipo "attività"
         let urlObiettivi = 'api.php/records/obiettivi?' +
                           'filter=frequenza,eq,mensile' +
                           '&filter=tipo,eq,attivita';
@@ -739,7 +739,7 @@ async function caricaAttivitaAnnuali(idUtente) {
         if (!responsePartecipazione.ok) throw new Error('Errore nel caricamento partecipazioni');
         let partecipazioni = await responsePartecipazione.json();
 
-        // Filtro su frequenza annuale invece che settimanale/mensile
+        // Ottengo gli obiettivi annuali di tipo "attività"
         let urlObiettivi = 'api.php/records/obiettivi?' +
                           'filter=frequenza,eq,annuale' +
                           '&filter=tipo,eq,attivita';
@@ -841,119 +841,350 @@ async function caricaAttivitaAnnuali(idUtente) {
     }
 }
 
-// Funzione per caricare le sfide settimanali dell'utente
+// Funzione che mostra le sfide settimanali dell'utente 
 async function caricaSfideSettimanali(idUtente) {
     try {
-        const url = 'api.php/records/partecipazioneobiettivi?' +
-                    'filter=tipo,eq,sfida' +
-                    '&filter=frequenza,eq,settimanale' +
-                    '&filter=stato,eq,accettato' +
-                    '&filter=id_utente,eq,' + idUtente;
+        // URL per le partecipazioni accettate dell'utente
+        let urlPartecipazioni = 'api.php/records/partecipazione?' +
+                              'filter=id_utente,eq,' + idUtente + 
+                              '&filter=stato,eq,accettato';
+        
+        // Richiesta al server per ottenere le partecipazioni
+        let responsePartecipazione = await fetch(urlPartecipazioni);
+        if (!responsePartecipazione.ok) throw new Error('Errore nel caricamento partecipazioni');
+        let partecipazioni = await responsePartecipazione.json();
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Errore nel caricamento');
-        
-        const data = await response.json();
-        const lista = document.getElementById('listaSfideSettimanali');
-        
+        // Ottengo gli obiettivi settimanali di tipo "sfida"
+        let urlObiettivi = 'api.php/records/obiettivi?' +
+                          'filter=frequenza,eq,settimanale' +
+                          '&filter=tipo,eq,sfida';
+
+        // Faccio una richiesta al server per ottenere gli obiettivi settimanali
+        let responseObj = await fetch(urlObiettivi);
+        if (!responseObj.ok) throw new Error('Errore nel caricamento obiettivi');
+        let obiettivi = await responseObj.json();
+
+        // Svuoto la lista prima di popolarla
+        let lista = document.getElementById('listaSfideSettimanali');
         lista.innerHTML = '';
 
-        if (data.records && data.records.length > 0) {
-            data.records.forEach(sfida => {
-                const item = document.createElement('li');
-                item.className = 'list-group-item';
+        if (partecipazioni.records && obiettivi.records) { // Se ci sono partecipazioni e obiettivi...
+            for (let i = 0; i < partecipazioni.records.length; i++) {
+                let partecipazione = partecipazioni.records[i];
+
+                // Trovo l’obiettivo associato alla partecipazione
+                let obiettivo = obiettivi.records.find(function(o) {
+                    return o.id_obiettivo == partecipazione.id_obiettivo;
+                });
                 
-                const nome = sfida.nome_obiettivo || 'Sfida';
-                const punti = sfida.punti || 0;
-                item.textContent = nome + ' - ' + punti + ' punti';
-                
-                lista.appendChild(item);
-            });
-        } else {
+                if (obiettivo) { // Se esiste un obiettivo associato
+                    let item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    
+                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
+                    let nome = obiettivo.nome_obiettivo || 'Sfida';
+                    let punti = obiettivo.punti_obiettivo || 0; 
+                    let idPartecipazione = partecipazione.id_partecipazione;
+                    let descrizione = obiettivo.descrizione || '';
+                    
+                    // Costruisco la parte nome con icona info se la sfida ha una descrizione
+                    let nomeConInfo = nome;
+                    if (descrizione.trim() !== '') {
+                        // L'icona info è cliccabile e mi apre una alert
+                        nomeConInfo += ' <span class="info-icon" ' +
+                                       'style="cursor: pointer; color: #007bff;" ' +
+                                       'title="Mostra descrizione" ' +
+                                       'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                    }
+
+                    item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
+                    'style="color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;">' +
+                    'X</button>' + nomeConInfo + ' - ' + punti + ' punti' +
+                    '<div style="text-align: center; margin-top: 8px;">' +
+                    '<button class="btn btn-primary completa-btn" ' +
+                    'data-id="' + idPartecipazione + '" ' +
+                    'data-punti="' + punti + '" ' +
+                    'style="font-size: 14px; padding: 5px 10px; margin-left: 0px; display: inline-block;">' +
+                    'Completa</button></div>';
+                        
+                    lista.appendChild(item); // Aggiungo l'elemento alla lista
+                }
+            }
+
+            // Rimuovo eventuali listener duplicati dai bottoni
+            rimuoviEventListener(document.querySelectorAll('.elimina-obiettivo-btn'));
+            rimuoviEventListener(document.querySelectorAll('.completa-btn'));
+            rimuoviEventListener(document.querySelectorAll('.info-icon'));
+            
+            // Aggiungo event listener per i bottoni "Elimina"
+            let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
+            for (let j = 0; j < bottoniElimina.length; j++) {
+                bottoniElimina[j].addEventListener('click', function(e) {
+                    eliminaObiettivo(e.target.getAttribute('data-id'), idUtente);
+                });
+            }
+            
+            // Aggiungo event listener per i bottoni "Completa"
+            let bottoniCompleta = document.querySelectorAll('.completa-btn');
+            for (let k = 0; k < bottoniCompleta.length; k++) {
+                bottoniCompleta[k].addEventListener('click', function(e) {
+                    let nomeUtente = document.querySelector("#nomeUtente").textContent;
+                    completaObiettivo(e.target.getAttribute('data-id'), idUtente,
+                        e.target.getAttribute('data-punti'), nomeUtente);
+                });
+            }
+
+            // Aggiungo event listener per i bottoni "Info"
+            let iconeInfo = document.querySelectorAll('.info-icon');
+            for (let z = 0; z < iconeInfo.length; z++) {
+                iconeInfo[z].addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    let descrizione = decodeURIComponent(e.target.getAttribute('data-descrizione'));
+                    alert("Descrizione:\n\n" + descrizione);
+                });
+            }
+        }
+
+        // Se non ci sono sfide, mostro un messaggio alternativo
+        if (lista.children.length === 0) {
             lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna sfida settimanale</li>';
         }
         lista.style.marginTop = '16px';
-
+        
     } catch (error) {
-        document.getElementById('listaSfideSettimanali').innerHTML = 
-            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+        // In caso di errore, mostro un messaggio a schermo
+        document.getElementById('listaSfideSettimanali').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
 
-// Funzione per caricare le sfide mensili dell'utente
+// Funzione che mostra le sfide mensili dell'utente 
 async function caricaSfideMensili(idUtente) {
     try {
-        const url = 'api.php/records/partecipazioneobiettivi?' +
-                    'filter=tipo,eq,sfida' +
-                    '&filter=frequenza,eq,mensile' +
-                    '&filter=stato,eq,accettato' +
-                    '&filter=id_utente,eq,' + idUtente;
+        // URL per le partecipazioni accettate dell'utente
+        let urlPartecipazioni = 'api.php/records/partecipazione?' +
+                              'filter=id_utente,eq,' + idUtente + 
+                              '&filter=stato,eq,accettato';
+        
+        // Richiesta al server per ottenere le partecipazioni
+        let responsePartecipazione = await fetch(urlPartecipazioni);
+        if (!responsePartecipazione.ok) throw new Error('Errore nel caricamento partecipazioni');
+        let partecipazioni = await responsePartecipazione.json();
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Errore nel caricamento');
-        
-        const data = await response.json();
-        const lista = document.getElementById('listaSfideMensili');
-        
+        // Ottengo gli obiettivi mensili di tipo "sfida"
+        let urlObiettivi = 'api.php/records/obiettivi?' +
+                          'filter=frequenza,eq,mensile' +
+                          '&filter=tipo,eq,sfida';
+
+        // Faccio una richiesta al server per ottenere gli obiettivi mensili
+        let responseObj = await fetch(urlObiettivi);
+        if (!responseObj.ok) throw new Error('Errore nel caricamento obiettivi');
+        let obiettivi = await responseObj.json();
+
+        // Svuoto la lista prima di popolarla
+        let lista = document.getElementById('listaSfideMensili');
         lista.innerHTML = '';
 
-        if (data.records && data.records.length > 0) {
-            data.records.forEach(sfida => {
-                const item = document.createElement('li');
-                item.className = 'list-group-item';
+        if (partecipazioni.records && obiettivi.records) { // Se ci sono partecipazioni e obiettivi...
+            for (let i = 0; i < partecipazioni.records.length; i++) {
+                let partecipazione = partecipazioni.records[i];
+
+                // Trovo l’obiettivo associato alla partecipazione
+                let obiettivo = obiettivi.records.find(function(o) {
+                    return o.id_obiettivo == partecipazione.id_obiettivo;
+                });
                 
-                const nome = sfida.nome_obiettivo || 'Sfida';
-                const punti = sfida.punti || 0;
-                item.textContent = nome + ' - ' + punti + ' punti';
-                
-                lista.appendChild(item);
-            });
-        } else {
+                if (obiettivo) { // Se esiste un obiettivo associato
+                    let item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    
+                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
+                    let nome = obiettivo.nome_obiettivo || 'Sfida';
+                    let punti = obiettivo.punti_obiettivo || 0; 
+                    let idPartecipazione = partecipazione.id_partecipazione;
+                    let descrizione = obiettivo.descrizione || '';
+                    
+                    // Costruisco la parte nome con icona info se la sfida ha una descrizione
+                    let nomeConInfo = nome;
+                    if (descrizione.trim() !== '') {
+                        // L'icona info è cliccabile e mi apre una alert
+                        nomeConInfo += ' <span class="info-icon" ' +
+                                       'style="cursor: pointer; color: #007bff;" ' +
+                                       'title="Mostra descrizione" ' +
+                                       'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                    }
+
+                    item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
+                    'style="color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;">' +
+                    'X</button>' + nomeConInfo + ' - ' + punti + ' punti' +
+                    '<div style="text-align: center; margin-top: 8px;">' +
+                    '<button class="btn btn-primary completa-btn" ' +
+                    'data-id="' + idPartecipazione + '" ' +
+                    'data-punti="' + punti + '" ' +
+                    'style="font-size: 14px; padding: 5px 10px; margin-left: 0px; display: inline-block;">' +
+                    'Completa</button></div>';
+                        
+                    lista.appendChild(item); // Aggiungo l'elemento alla lista
+                }
+            }
+
+            // Rimuovo eventuali listener duplicati dai bottoni
+            rimuoviEventListener(document.querySelectorAll('.elimina-obiettivo-btn'));
+            rimuoviEventListener(document.querySelectorAll('.completa-btn'));
+            rimuoviEventListener(document.querySelectorAll('.info-icon'));
+            
+            // Aggiungo event listener per i bottoni "Elimina"
+            let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
+            for (let j = 0; j < bottoniElimina.length; j++) {
+                bottoniElimina[j].addEventListener('click', function(e) {
+                    eliminaObiettivo(e.target.getAttribute('data-id'), idUtente);
+                });
+            }
+            
+            // Aggiungo event listener per i bottoni "Completa"
+            let bottoniCompleta = document.querySelectorAll('.completa-btn');
+            for (let k = 0; k < bottoniCompleta.length; k++) {
+                bottoniCompleta[k].addEventListener('click', function(e) {
+                    let nomeUtente = document.querySelector("#nomeUtente").textContent;
+                    completaObiettivo(e.target.getAttribute('data-id'), idUtente,
+                        e.target.getAttribute('data-punti'), nomeUtente);
+                });
+            }
+
+            // Aggiungo event listener per i bottoni "Info"
+            let iconeInfo = document.querySelectorAll('.info-icon');
+            for (let z = 0; z < iconeInfo.length; z++) {
+                iconeInfo[z].addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    let descrizione = decodeURIComponent(e.target.getAttribute('data-descrizione'));
+                    alert("Descrizione:\n\n" + descrizione);
+                });
+            }
+        }
+
+        // Se non ci sono sfide, mostro un messaggio alternativo
+        if (lista.children.length === 0) {
             lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna sfida mensile</li>';
         }
         lista.style.marginTop = '16px';
-
+        
     } catch (error) {
-        document.getElementById('listaSfideMensili').innerHTML = 
-            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+        // In caso di errore, mostro un messaggio a schermo
+        document.getElementById('listaSfideMensili').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
 
-// Funzione per caricare le sfide annuali dell'utente
+// Funzione che mostra le sfide annuali dell'utente 
 async function caricaSfideAnnuali(idUtente) {
     try {
-        const url = 'api.php/records/partecipazioneobiettivi?' +
-                    'filter=tipo,eq,sfida' +
-                    '&filter=frequenza,eq,annuale' +
-                    '&filter=stato,eq,accettato' +
-                    '&filter=id_utente,eq,' + idUtente;
+        // URL per le partecipazioni accettate dell'utente
+        let urlPartecipazioni = 'api.php/records/partecipazione?' +
+                              'filter=id_utente,eq,' + idUtente + 
+                              '&filter=stato,eq,accettato';
+        
+        // Richiesta al server per ottenere le partecipazioni
+        let responsePartecipazione = await fetch(urlPartecipazioni);
+        if (!responsePartecipazione.ok) throw new Error('Errore nel caricamento partecipazioni');
+        let partecipazioni = await responsePartecipazione.json();
 
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('Errore nel caricamento');
-        
-        const data = await response.json();
-        const lista = document.getElementById('listaSfideAnnuali');
-        
+        // Ottengo gli obiettivi annuali di tipo "sfida"
+        let urlObiettivi = 'api.php/records/obiettivi?' +
+                          'filter=frequenza,eq,annuale' +
+                          '&filter=tipo,eq,sfida';
+
+        // Faccio una richiesta al server per ottenere gli obiettivi annuali
+        let responseObj = await fetch(urlObiettivi);
+        if (!responseObj.ok) throw new Error('Errore nel caricamento obiettivi');
+        let obiettivi = await responseObj.json();
+
+        // Svuoto la lista prima di popolarla
+        let lista = document.getElementById('listaSfideAnnuali');
         lista.innerHTML = '';
 
-        if (data.records && data.records.length > 0) {
-            data.records.forEach(sfida => {
-                const item = document.createElement('li');
-                item.className = 'list-group-item';
+        if (partecipazioni.records && obiettivi.records) { // Se ci sono partecipazioni e obiettivi...
+            for (let i = 0; i < partecipazioni.records.length; i++) {
+                let partecipazione = partecipazioni.records[i];
+
+                // Trovo l’obiettivo associato alla partecipazione
+                let obiettivo = obiettivi.records.find(function(o) {
+                    return o.id_obiettivo == partecipazione.id_obiettivo;
+                });
                 
-                const nome = sfida.nome_obiettivo || 'Sfida';
-                const punti = sfida.punti || 0;
-                item.textContent = nome + ' - ' + punti + ' punti';
-                
-                lista.appendChild(item);
-            });
-        } else {
+                if (obiettivo) { // Se esiste un obiettivo associato
+                    let item = document.createElement('li');
+                    item.className = 'list-group-item';
+                    
+                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
+                    let nome = obiettivo.nome_obiettivo || 'Sfida';
+                    let punti = obiettivo.punti_obiettivo || 0; 
+                    let idPartecipazione = partecipazione.id_partecipazione;
+                    let descrizione = obiettivo.descrizione || '';
+                    
+                    // Costruisco la parte nome con icona info se la sfida ha una descrizione
+                    let nomeConInfo = nome;
+                    if (descrizione.trim() !== '') {
+                        // L'icona info è cliccabile e mi apre una alert
+                        nomeConInfo += ' <span class="info-icon" ' +
+                                       'style="cursor: pointer; color: #007bff;" ' +
+                                       'title="Mostra descrizione" ' +
+                                       'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                    }
+
+                    item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
+                    'style="color: red; border: none; background: none; cursor: pointer; font-weight: bold; margin-right: 8px;">' +
+                    'X</button>' + nomeConInfo + ' - ' + punti + ' punti' +
+                    '<div style="text-align: center; margin-top: 8px;">' +
+                    '<button class="btn btn-primary completa-btn" ' +
+                    'data-id="' + idPartecipazione + '" ' +
+                    'data-punti="' + punti + '" ' +
+                    'style="font-size: 14px; padding: 5px 10px; margin-left: 0px; display: inline-block;">' +
+                    'Completa</button></div>';
+                        
+                    lista.appendChild(item); // Aggiungo l'elemento alla lista
+                }
+            }
+
+            // Rimuovo eventuali listener duplicati dai bottoni
+            rimuoviEventListener(document.querySelectorAll('.elimina-obiettivo-btn'));
+            rimuoviEventListener(document.querySelectorAll('.completa-btn'));
+            rimuoviEventListener(document.querySelectorAll('.info-icon'));
+            
+            // Aggiungo event listener per i bottoni "Elimina"
+            let bottoniElimina = document.querySelectorAll('.elimina-obiettivo-btn');
+            for (let j = 0; j < bottoniElimina.length; j++) {
+                bottoniElimina[j].addEventListener('click', function(e) {
+                    eliminaObiettivo(e.target.getAttribute('data-id'), idUtente);
+                });
+            }
+            
+            // Aggiungo event listener per i bottoni "Completa"
+            let bottoniCompleta = document.querySelectorAll('.completa-btn');
+            for (let k = 0; k < bottoniCompleta.length; k++) {
+                bottoniCompleta[k].addEventListener('click', function(e) {
+                    let nomeUtente = document.querySelector("#nomeUtente").textContent;
+                    completaObiettivo(e.target.getAttribute('data-id'), idUtente,
+                        e.target.getAttribute('data-punti'), nomeUtente);
+                });
+            }
+
+            // Aggiungo event listener per i bottoni "Info"
+            let iconeInfo = document.querySelectorAll('.info-icon');
+            for (let z = 0; z < iconeInfo.length; z++) {
+                iconeInfo[z].addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    let descrizione = decodeURIComponent(e.target.getAttribute('data-descrizione'));
+                    alert("Descrizione:\n\n" + descrizione);
+                });
+            }
+        }
+
+        // Se non ci sono sfide, mostro un messaggio alternativo
+        if (lista.children.length === 0) {
             lista.innerHTML = '<li class="list-group-item orange text-center">Nessuna sfida annuale</li>';
         }
         lista.style.marginTop = '16px';
-
+        
     } catch (error) {
-        document.getElementById('listaSfideAnnuali').innerHTML = 
-            '<li class="list-group-item text-danger">Errore nel caricamento</li>';
+        // In caso di errore, mostro un messaggio a schermo
+        document.getElementById('listaSfideAnnuali').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
 }
