@@ -1,0 +1,23 @@
+meta {
+  name: Aggiungi obiettivo
+  type: http
+  seq: 17
+}
+
+post {
+  url: http://mywebapp.ingeg.it/api.php/records/obiettivi
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id_obiettivo": 100,
+    "nome_obiettivo": "Test inserimento",
+    "tipo": "attivita",
+    "frequenza": "settimanale",
+    "punti_obiettivo": 10,
+    "descrizione": "test"
+  }
+  
+}
