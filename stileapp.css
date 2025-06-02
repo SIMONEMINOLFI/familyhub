@@ -112,3 +112,22 @@ h5 {
     color: white;
     border-color: #28a745;
 }
+
+.modal-base {
+  display: none;
+  position: fixed;
+  top: 30%;
+  left: 35%;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.modal-btn {
+  display: block;
+}
+
+.with-margin {
+  margin-bottom: 10px;
+}
