@@ -319,7 +319,7 @@ async function riscattaPremio(idUtente, idPremio, nomePremio, puntiRichiesti, no
 }
 
 /* 
-La funzione aggiungiPremio (eseguita quando l'utente clicca su "Aggiungi Premio"):
+La funzione aggiungiPremio (eseguita quando l'utente clicca sul tasto "Aggiungi" in Premi):
 
 1. Mostra due input all'utente che deve inserire nome del premio e punti richiesti per riscattarlo
 2. Verifica che i campi siano validi
@@ -1208,14 +1208,14 @@ La funzione aggiungiObiettivo:
 // Funzione per aggiungere un'attività o una sfida all’utente
 async function aggiungiObiettivo(idUtente) {
   try {
-    // Prendo la lista utenti dal database
+    // Prendo la lista degli utenti dal database
     const utentiRes = await fetch("api.php/records/utenti");
     if (!utentiRes.ok) throw new Error("Errore nel caricamento utenti");
     const utenti = await utentiRes.json();
 
     // Scelta del tipo di obiettivo (attività o sfida)
     const tipo = await scegliTipoObiettivo();
-    if (!tipo) return;
+    if (!tipo) return; 
 
     // Chiedo il nome dell’obiettivo
     const nome = prompt("Inserisci il nome dell'obiettivo:");
@@ -1230,7 +1230,88 @@ async function aggiungiObiettivo(idUtente) {
       return;
     }
 
-    // qui devo continuare con descrizione, punti, frequenza, destinatario e insermento DB...
+    // Chiedo se vuole inserire una descrizione, altrimenti la lascio vuota
+    let descrizione = null;
+    if (confirm("Vuoi aggiungere una descrizione?")) {
+    descrizione = prompt("Inserisci la descrizione:") || null;
+    }
+
+    // Chiedo quanti punti vale l’obiettivo
+    const punti = chiediPunti();
+    if (punti === null) return;
+
+    // Scelta frequenza (settimanale, mensile, annuale)
+    const frequenza = await scegliFrequenza();
+    if (!frequenza) return;
+
+    // Se l'obiettivo ha come tipo "sfida", chiedo chi è il destinatario della sfida
+    let destinatarioId = null;
+    if (tipo === "sfida") {
+      destinatarioId = await chiediDestinatario(utenti);
+      if (!destinatarioId) return;
+    }
+
+    // Recupero nuovo ID obiettivo 
+    // Dato che non ho l'autoincremento, devo prendere l'ultimo ID e aggiungere 1...
+    const maxIdRes = await fetch("api.php/records/obiettivi?order=id_obiettivo,desc&limit=1");
+    if (!maxIdRes.ok) throw new Error("Errore nel recupero ultimo ID obiettivo");
+    const maxIdData = await maxIdRes.json();
+    const ultimoId = maxIdData.records?.[0]?.id_obiettivo || 0; // Se non ci sono record, uso 0 come ultimo ID
+    const idObiettivo = ultimoId + 1;
+
+    // Creo l’oggetto obiettivo da inserire
+    const obiettivoData = {
+      id_obiettivo: idObiettivo,
+      nome_obiettivo: nome,
+      tipo: tipo,
+      descrizione: descrizione,
+      frequenza: frequenza,
+      punti_obiettivo: punti
+    };
+
+    // Inserisco il nuovo obiettivo nel database
+    const obiettivoRes = await fetch("api.php/records/obiettivi", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(obiettivoData)
+    });
+    if (!obiettivoRes.ok) {
+      const error = await obiettivoRes.text();
+      throw new Error("Errore creazione obiettivo: " + error);
+    }
+
+    // Recupero nuovo ID partecipazione
+    // Stessa cosa di prima, prendo l'ultimo ID partecipazione e aggiungo 1...
+    const maxPartecipazioneRes = await fetch("api.php/records/partecipazione?order=id_partecipazione,desc&limit=1");
+    if (!maxPartecipazioneRes.ok) throw new Error("Errore nel recupero ultimo ID partecipazione");
+    const maxPartecipazioneData = await maxPartecipazioneRes.json();
+    const ultimoIdPartecipazione = maxPartecipazioneData.records?.[0]?.id_partecipazione || 0; 
+    const nuovoIdPartecipazione = ultimoIdPartecipazione + 1;
+
+    // Creo la partecipazione (assegno obiettivo all’utente)
+    const partecipazioneData = {
+      id_partecipazione: nuovoIdPartecipazione,
+      id_obiettivo: idObiettivo,
+      id_utente: tipo === "sfida" ? destinatarioId : idUtente, // se è sfida, assegno al destinatario, altrimenti all'utente corrente
+      id_utente_sfidante: tipo === "sfida" ? idUtente : null, // se è sfida, assegno l'utente corrente come sfidante
+      stato: "accettato", // per ora lo metto come accettato...potrei poi aggiungere logica per sfide in attesa (TODO)
+      data_assegnazione: new Date().toISOString().split('T')[0] // data odierna YYYY-MM-DD
+    };
+
+    // Inserisco partecipazione nel database
+    const partecipazioneRes = await fetch("api.php/records/partecipazione", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(partecipazioneData)
+    });
+    if (!partecipazioneRes.ok) {
+      const error = await partecipazioneRes.text();
+      throw new Error("Errore creazione partecipazione: " + error);
+    }
+
+    // Messaggio di conferma all'utente e aggiornamento dell'interfacia
+    alert(tipo === "sfida" ? "Sfida creata con successo!" : "Obiettivo creato con successo!");
+    mostraObiettiviUtente(idUtente);
 
   } catch (error) {
     console.error("ERRORE:", error);
@@ -1240,7 +1321,9 @@ async function aggiungiObiettivo(idUtente) {
 
 // Funzione per scegliere il tipo di obiettivo con modale Bootstrap
 async function scegliTipoObiettivo() {
+    // Creo una promise che mostra una modale (attività/sfida) e attende la scelta dell'utente
   return new Promise(resolve => {
+    // Creo la struttura HTML della modale
     let modal = document.createElement("div");
     modal.className = "modal fade";
     modal.innerHTML = 
@@ -1254,12 +1337,14 @@ async function scegliTipoObiettivo() {
       '</div>';
     document.body.appendChild(modal);
     
+    // Inizializzo e mostro la modale
     let bsModal = new bootstrap.Modal(modal);
     bsModal.show();
 
+    // Quando l’utente clicca un pulsante, risolvo la promise con il tipo scelto e chiudo la modale
     let buttons = modal.querySelectorAll('[data-tipo]');
-    buttons.forEach(btn => {
-      btn.onclick = () => {
+    buttons.forEach(function(btn) {
+      btn.onclick = function() {
         bsModal.hide();
         resolve(btn.getAttribute('data-tipo'));
         modal.remove();
@@ -1270,10 +1355,12 @@ async function scegliTipoObiettivo() {
 
 // Funzione che verifica se esiste già un obiettivo con lo stesso nome
 async function obiettivoEsiste(nome) {
+  // Richiedo al server se esiste già un obiettivo con questo nome
   let res = await fetch("api.php/records/obiettivi?filter=nome_obiettivo,eq," + encodeURIComponent(nome));
   if (!res.ok) throw new Error("Errore nel controllo obiettivo esistente");
   let data = await res.json();
 
+  // Se trovo almeno un record, ritorno true
   return data.records && data.records.length > 0;
 }
 
@@ -1281,10 +1368,66 @@ async function obiettivoEsiste(nome) {
 function chiediPunti() {
   let puntiRaw = prompt("Quanti punti assegnare all'obiettivo?");
   
+  // Controllo che l’input sia un numero valido
   if (!puntiRaw || isNaN(puntiRaw)) {
     alert("Inserisci un numero valido");
     return null;
   }
   
-  return parseInt(puntiRaw);
+  return parseInt(puntiRaw); // Ritorno il valore come intero
+}
+
+// Funzione per scegliere la frequenza con modale Bootstrap
+async function scegliFrequenza() {
+  return new Promise(resolve => {
+    // Creo struttura modale per scelta frequenza
+    let modal = document.createElement("div");
+    modal.className = "modal fade";
+    modal.innerHTML =
+      '<div class="modal-dialog">' +
+        '<div class="modal-content">' +
+          '<div class="modal-body text-center">' +
+            '<button class="btn btn-primary m-1" data-freq="settimanale">Settimanale</button>' +
+            '<button class="btn btn-primary m-1" data-freq="mensile">Mensile</button>' +
+            '<button class="btn btn-primary m-1" data-freq="annuale">Annuale</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(modal);
+
+    // Mostro la modale
+    let bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+
+    // Al click su una frequenza, risolvo la promise e chiudo la modale
+    let buttons = modal.querySelectorAll('[data-freq]');
+    buttons.forEach(function(btn) {
+      btn.onclick = function() {
+        bsModal.hide();
+        resolve(btn.getAttribute('data-freq'));
+        modal.remove();
+      };
+    });
+  });
+}
+
+// Funzione che chiede a chi assegnare la sfida, tramite prompt, e restituisce l’id dell'utente sfidato (destinatario)
+async function chiediDestinatario(utenti) {
+  // Creo una lista di nomi utenti da mostrare nel prompt
+  let nomi = utenti.records.map(function(u) { return u.nome_utente; }).join(", ");
+  let nomeDest = prompt("A chi vuoi lanciare la sfida? Utenti: " + nomi);
+  
+  if (!nomeDest) return null;
+
+  // Cerco l’utente corrispondente (ho messo confronto case-insensitive)
+  let destinatario = utenti.records.find(function(u) {
+    return u.nome_utente.toLowerCase() === nomeDest.toLowerCase();
+  });
+
+  if (!destinatario) {
+    alert("Utente non trovato");
+    return null;
+  }
+
+  return destinatario.id_utente;  // Ritorno l’id utente trovato
 }
