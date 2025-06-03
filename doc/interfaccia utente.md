@@ -50,13 +50,21 @@
 
 - [X] Aggiornamento gestione punteggio (una sfida se completata sottrae punti utente sfidante e li aggiunge all'utente sfidato)
 
-- [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, 
+- [X] Inserisco tasti per accettare o rifiutare sfide in arrivo
 
 ### Accesso all'App
 
-- L'utente accede all'applicazione con nome uetnte e password tramite un form. 
+- L'utente accede all'applicazione con nome uetnte e password tramite un form
 
 - Ad ogni accesso, viene mostrato un messaggio di benvenuto con il nome utente (es. Ciao Simone !). Cliccando su Accedi, l'utente viene indirizzato nella pagina Home della Webapp.
+
+#### Credenziali utenti database per il login
+
+- nome_utente: "Anna" | password: "ciao123" | hash: "$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO"
+
+-  nome_utente: "Mario" | password: "mariobros83" | hash: "$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS"
+
+-  nome_utente: "Luigi" | password: "loveTravelling*" | hash: "$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe"
 
 ### Design e Stile
 
@@ -96,10 +104,3 @@ Gli obiettivi sono suddivisi prima per **tipologia** in due liste (attività/sfi
 - Vengono visualizzati poi gli **obiettivi da completare**, con un colore diverso (ad esempio, grigio o verde chiaro).
 - Gli **obiettivi scaduti o rifiutati** (le sfide) rifiutate non vengono visualizzati...
 
-#### Credenziali utenti database per il login
-
-| nome_utente: "Anna" | password: "ciao123" | hash: "$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO"
-
-| nome_utente: "Mario" | password: "mariobros83" | hash: "$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS"
-
-| nome_utente: "Luigi" | password: "loveTravelling*" | hash: "$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe"
