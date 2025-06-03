@@ -1196,13 +1196,17 @@ async function caricaSfideAnnuali(idUtente) {
 }
 
 /*
-La funzione aggiungiObiettivo:
+La funzione aggiungiObiettivo (eseguita quando si clicca sul tasto "Aggiungi" in Obiettivi):
 
 1. Prende la lista utenti dal database
 2. Chiede all’utente di scegliere il tipo di obiettivo (attività o sfida)
 3. Chiede il nome dell’obiettivo e verifica che il nome non sia già presente
-
-(Da completare: descrizione, punti, frequenza, utente sfidato, inserimento DB)
+4. Chiede i punti assegnati all’obiettivo e una descrizione (opzionale)
+5. Chiede all'utente di scegliere la frequenza (settimanale, mensile, annuale) dell'obiettivo
+6. Se è una sfida, chiede chi è l'utente sfidato
+7. Recupera il nuovo ID per l’obiettivo (dato che non ho l'autoincremento) e inserisce l’obiettivo nel database
+8. Recupera il nuovo ID per la partecipazione e inserisce la partecipazione associando l’obiettivo all’utente corretto
+9. Mostra un messaggio di conferma e aggiorna la lista degli obiettivi dell'utente
 */
 
 // Funzione per aggiungere un'attività o una sfida all’utente
@@ -1309,7 +1313,7 @@ async function aggiungiObiettivo(idUtente) {
       throw new Error("Errore creazione partecipazione: " + error);
     }
 
-    // Messaggio di conferma all'utente e aggiornamento dell'interfacia
+    // Messaggio di conferma all'utente e aggiornamento dell'interfaccia
     alert(tipo === "sfida" ? "Sfida creata con successo!" : "Obiettivo creato con successo!");
     mostraObiettiviUtente(idUtente);
 
@@ -1318,6 +1322,16 @@ async function aggiungiObiettivo(idUtente) {
     alert("Errore: " + error.message);
   }
 }
+
+/*
+Funzioni di supporto per aggiungiObiettivo:
+
+1. scegliTipoObiettivo: mostra una modale per scegliere il tipo di obiettivo ("attività" o "sfida")
+2. obiettivoEsiste: verifica se esiste già un obiettivo con lo stesso nome per evitare duplicati
+3. chiediPunti: chiede tramite prompt quanti punti vale l'obiettivo (valore numerico)
+4. scegliFrequenza: mostra una modale per scegliere la frequenza dell'obiettivo (settimanale, mensile, annuale)
+5. chiediDestinatario: se il tipo è "sfida", chiede a chi assegnare la sfida e restituisce l'id utente
+*/
 
 // Funzione per scegliere il tipo di obiettivo con modale Bootstrap
 async function scegliTipoObiettivo() {
@@ -1360,8 +1374,7 @@ async function obiettivoEsiste(nome) {
   if (!res.ok) throw new Error("Errore nel controllo obiettivo esistente");
   let data = await res.json();
 
-  // Se trovo almeno un record, ritorno true
-  return data.records && data.records.length > 0;
+  return data.records && data.records.length > 0;  // Se trovo almeno un record, ritorno true
 }
 
 // Funzione per chiedere tramite prompt i punti assegnati all'obiettivo
