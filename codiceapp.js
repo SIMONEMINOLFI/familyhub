@@ -46,14 +46,24 @@ async function gestisciAccesso(e) {
             mostraPremiUtente(data.id_utente); // Mostro i premi dell'utente
             mostraObiettiviUtente(data.id_utente); // Mostro gli obiettivi dell'utente
 
+            // Rimuovo e ricreo il bottone "Aggiungi Premio" per evitare listener doppi
+            let btnPremio = document.querySelector("#btnAggiungiPremio");
+            let nuovoBtnPremio = btnPremio.cloneNode(true);
+            btnPremio.replaceWith(nuovoBtnPremio);
+
             // Aggiungo l'event listener al bottone "Aggiungi Premio" con l'ID utente
-            document.querySelector("#btnAggiungiPremio").addEventListener("click", function(e) {
+            nuovoBtnPremio.addEventListener("click", function(e) {
                 e.preventDefault();
                 aggiungiPremio(data.id_utente);
             });
 
+            // Rimuovo e ricreo il bottone "Aggiungi Obiettivo" per evitare listener doppi
+            let btnObiettivo = document.querySelector("#btnAggiungiObiettivo");
+            let nuovoBtnObiettivo = btnObiettivo.cloneNode(true);
+            btnObiettivo.replaceWith(nuovoBtnObiettivo);
+
             // Aggiungo l'event listener al bottone "Aggiungi Obiettivo" con l'ID utente
-            document.querySelector("#btnAggiungiObiettivo").addEventListener("click", function(e) {
+            nuovoBtnObiettivo.addEventListener("click", function(e) {
                 e.preventDefault();
                 aggiungiObiettivo(data.id_utente);
             });
