@@ -46,9 +46,11 @@
 
 - [X] Aggiungo tasto "Completa" in Attività/Sfide (come "Riscatta" per i premi)
 
-- [ ] Gestione tasto "Aggiungi" per gli Obiettivi con distinzione per tipo e frequenza
+- [X] Gestione tasto "Aggiungi" per gli Obiettivi con distinzione per tipo e frequenza
 
-- [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, se completata prende punti utente sfidante e li aggiunge all'utente sfidato
+- [X] Aggiornamento gestione punteggio (una sfida se completata sottrae punti utente sfidante e li aggiunge all'utente sfidato)
+
+- [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, 
 
 ### Accesso all'App
 

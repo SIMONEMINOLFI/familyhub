@@ -1335,33 +1335,50 @@ Funzioni di supporto per aggiungiObiettivo:
 
 // Funzione per scegliere il tipo di obiettivo con modale Bootstrap
 async function scegliTipoObiettivo() {
-    // Creo una promise che mostra una modale (attività/sfida) e attende la scelta dell'utente
+
+    // Controllo se esiste già una modale aperta
+    if (document.querySelector('.modal.fade.show')) {
+        return null;
+    }
+
+  // Creo una promise che mostra una modale (attività/sfida) e attende la scelta dell'utente
   return new Promise(resolve => {
     // Creo la struttura HTML della modale
     let modal = document.createElement("div");
     modal.className = "modal fade";
-    modal.innerHTML = 
+    modal.setAttribute("tabindex", "-1");
+    modal.innerHTML =
       '<div class="modal-dialog">' +
         '<div class="modal-content">' +
           '<div class="modal-body text-center">' +
+            '<p class="mb-3">Scegli il tipo di obiettivo:</p>' +
             '<button class="btn btn-primary m-2" data-tipo="attivita">Attività</button>' +
             '<button class="btn btn-danger m-2" data-tipo="sfida">Sfida</button>' +
           '</div>' +
         '</div>' +
       '</div>';
-    document.body.appendChild(modal);
-    
+
+    document.body.appendChild(modal); 
+
     // Inizializzo e mostro la modale
     let bsModal = new bootstrap.Modal(modal);
     bsModal.show();
 
-    // Quando l’utente clicca un pulsante, risolvo la promise con il tipo scelto e chiudo la modale
+    // Variabile per salvare il tipo scelto
+    let tipoScelto = null;
+
+    // Aggiungo listener per la fine dell'animazione di chiusura
+    modal.addEventListener('hidden.bs.modal', function () {
+      modal.remove(); // Rimuovo dal DOM dopo la chiusura
+      resolve(tipoScelto); // Risolvo solo dopo che è stata completamente chiusa
+    });
+
+    // Quando l’utente clicca un pulsante, salvo la scelta e nascondo la modale
     let buttons = modal.querySelectorAll('[data-tipo]');
     buttons.forEach(function(btn) {
       btn.onclick = function() {
-        bsModal.hide();
-        resolve(btn.getAttribute('data-tipo'));
-        modal.remove();
+        tipoScelto = btn.getAttribute('data-tipo'); // Salvo la scelta 
+        bsModal.hide(); // Nascondo la modale
       };
     });
   });
@@ -1400,6 +1417,7 @@ async function scegliFrequenza() {
       '<div class="modal-dialog">' +
         '<div class="modal-content">' +
           '<div class="modal-body text-center">' +
+            '<p class="mb-3">Scegli la frequenza dell\'obiettivo:</p>' +
             '<button class="btn btn-primary m-1" data-freq="settimanale">Settimanale</button>' +
             '<button class="btn btn-primary m-1" data-freq="mensile">Mensile</button>' +
             '<button class="btn btn-primary m-1" data-freq="annuale">Annuale</button>' +
