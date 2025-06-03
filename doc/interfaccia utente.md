@@ -24,9 +24,9 @@
 
 - [X] Sistemo GET Bruno Premi riscossi e da riscuotere per l'utente loggato
 
-- [X] Cliccando su Premi si apre una pagina con due liste (riscossi/da riscuotere)
+- [X] Cliccando su "Premi" si apre una pagina con due liste (riscossi/da riscuotere)
 
-- [X] Aggiungo tasto riscatta su Premi
+- [X] Aggiungo tasto "Riscatta" su "Premi"
 
 - [X] Aggiungo funzione mostraPunti 
 
@@ -44,9 +44,9 @@
 
 - [X] Aggiungo tasto "Rimuovi" (X) in Obiettivi
 
-- [X] Aggiungo tasto Completa in Attività/Sfide (come "Riscatta" per i premi)
+- [X] Aggiungo tasto "Completa" in Attività/Sfide (come "Riscatta" per i premi)
 
-- [ ] Gestione scadenza obiettivi (gli obiettivi "scaduti" non devono più essere visualizzati all'utente, potrei aggiungere anche visivamente quanti giorni mancano alla scadenza obiettivo...)
+- [ ] Gestione tasto "Aggiungi" per gli Obiettivi con distinzione per tipo e frequenza
 
 - [ ] Inserisco tasto notifiche sfide in arrivo da accettare o completare, se completata prende punti utente sfidante e li aggiunge all'utente sfidato
 

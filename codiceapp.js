@@ -8,6 +8,7 @@ La funzione gestisciAccesso (eseguita quando l'utente clicca su Accedi"):
     - Mostra la Home page (e nasconde la form di accesso)
     - Mostra un saluto personalizzato con il nome dell’utente
     - Mostra la classifica aggiornata
+    - Mostra i premi e gli obiettivi dell'utente
 5. Se il login fallisce (credenziali errate), mostra un messaggio specifico di errore
 6. Se c’è un problema tecnico (es. server non raggiungibile), mostra un messaggio di errore generico
 */
@@ -51,6 +52,12 @@ async function gestisciAccesso(e) {
                 aggiungiPremio(data.id_utente);
             });
 
+            // Aggiungo l'event listener al bottone "Aggiungi Obiettivo" con l'ID utente
+            document.querySelector("#btnAggiungiObiettivo").addEventListener("click", function(e) {
+                e.preventDefault();
+                aggiungiObiettivo(data.id_utente);
+            });
+
         } else {
             // Se il server non risponde con 200 (login fallito) mostro un messaggio di errore
             alert("Credenziali errate! Riprova.");
@@ -75,7 +82,6 @@ La funzione gestisciLogout (eseguita quando l'utente clicca su "Logout"):
    - Riporta l’utente alla schermata di login mostrando il form
 4. Se qualcosa va storto mostra un messaggio di errore
 */
-
 
 // Funzione per gestire il logout utente
 async function gestisciLogout(e) {
@@ -408,7 +414,7 @@ La funzione completaObiettivo (eseguita quando l'utente clicca su "Completa" acc
 // Funzione per completare un obiettivo
 async function completaObiettivo(idPartecipazione, idUtente, punti, nomeUtente) {
     try {
-        // Aggiorno solo la partecipazione
+        // Aggiorno lo stato della partecipazione a "completato" e imposto la data di completamento
         const urlPartecipazione = 'api.php/records/partecipazione/' + idPartecipazione;
         const response = await fetch(urlPartecipazione, {
             method: 'PUT',
@@ -1187,4 +1193,98 @@ async function caricaSfideAnnuali(idUtente) {
         // In caso di errore, mostro un messaggio a schermo
         document.getElementById('listaSfideAnnuali').innerHTML = '<li class="list-group-item text-danger">Errore nel caricamento</li>';
     }
+}
+
+/*
+La funzione aggiungiObiettivo:
+
+1. Prende la lista utenti dal database
+2. Chiede all’utente di scegliere il tipo di obiettivo (attività o sfida)
+3. Chiede il nome dell’obiettivo e verifica che il nome non sia già presente
+
+(Da completare: descrizione, punti, frequenza, utente sfidato, inserimento DB)
+*/
+
+// Funzione per aggiungere un'attività o una sfida all’utente
+async function aggiungiObiettivo(idUtente) {
+  try {
+    // Prendo la lista utenti dal database
+    const utentiRes = await fetch("api.php/records/utenti");
+    if (!utentiRes.ok) throw new Error("Errore nel caricamento utenti");
+    const utenti = await utentiRes.json();
+
+    // Scelta del tipo di obiettivo (attività o sfida)
+    const tipo = await scegliTipoObiettivo();
+    if (!tipo) return;
+
+    // Chiedo il nome dell’obiettivo
+    const nome = prompt("Inserisci il nome dell'obiettivo:");
+    if (!nome) {
+      alert("Nome obiettivo richiesto.");
+      return;
+    }
+
+    // Verifico che il nome non esista già
+    if (await obiettivoEsiste(nome)) {
+      alert("Esiste già un obiettivo con questo nome");
+      return;
+    }
+
+    // qui devo continuare con descrizione, punti, frequenza, destinatario e insermento DB...
+
+  } catch (error) {
+    console.error("ERRORE:", error);
+    alert("Errore: " + error.message);
+  }
+}
+
+// Funzione per scegliere il tipo di obiettivo con modale Bootstrap
+async function scegliTipoObiettivo() {
+  return new Promise(resolve => {
+    let modal = document.createElement("div");
+    modal.className = "modal fade";
+    modal.innerHTML = 
+      '<div class="modal-dialog">' +
+        '<div class="modal-content">' +
+          '<div class="modal-body text-center">' +
+            '<button class="btn btn-primary m-2" data-tipo="attivita">Attività</button>' +
+            '<button class="btn btn-danger m-2" data-tipo="sfida">Sfida</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(modal);
+    
+    let bsModal = new bootstrap.Modal(modal);
+    bsModal.show();
+
+    let buttons = modal.querySelectorAll('[data-tipo]');
+    buttons.forEach(btn => {
+      btn.onclick = () => {
+        bsModal.hide();
+        resolve(btn.getAttribute('data-tipo'));
+        modal.remove();
+      };
+    });
+  });
+}
+
+// Funzione che verifica se esiste già un obiettivo con lo stesso nome
+async function obiettivoEsiste(nome) {
+  let res = await fetch("api.php/records/obiettivi?filter=nome_obiettivo,eq," + encodeURIComponent(nome));
+  if (!res.ok) throw new Error("Errore nel controllo obiettivo esistente");
+  let data = await res.json();
+
+  return data.records && data.records.length > 0;
+}
+
+// Funzione per chiedere tramite prompt i punti assegnati all'obiettivo
+function chiediPunti() {
+  let puntiRaw = prompt("Quanti punti assegnare all'obiettivo?");
+  
+  if (!puntiRaw || isNaN(puntiRaw)) {
+    alert("Inserisci un numero valido");
+    return null;
+  }
+  
+  return parseInt(puntiRaw);
 }
