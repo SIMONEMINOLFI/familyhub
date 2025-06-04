@@ -1,5 +1,55 @@
 # FAMILY HUB - SPECIFICHE DELL' INTERFACCIA UTENTE
 
+## Credenziali degli utenti per il login
+
+- nome_utente: "Anna" | password: "ciao123" | hash: "$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO"
+
+- nome_utente: "Mario" | password: "mariobros83" | hash: "$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS"
+
+- nome_utente: "Luigi" | password: "loveTravelling*" | hash: "$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe"
+
+### Accesso all'App
+
+- L'utente inserisce nome utente e password nell'apposita form
+
+- Cliccando su Accedi, l'utente viene indirizzato nella pagina Home della Webapp
+
+- Ad ogni accesso, viene mostrato un messaggio di benvenuto con il nome utente (es. Ciao Simone !)
+
+### Design e Stile
+
+- Uso di icone ed emoji per rendere l'interfaccia più intuitiva e piacevole
+
+- Sfondo in tonalità chiare (azzurro chiaro)
+
+### Elementi Estetici Principali
+
+- Titolo "Family Hub" al centro della barra superiore
+
+- In alto a destra, un'icona circolare con il nome utente ed un'icona con opzione di *"Logout"*
+
+- Al centro dello schermo vengono visualizzati il nome e i punti accumulati
+
+### Sezione Classifica
+
+- Posizionata a sinistra della schermata principale
+
+- Contiene una tabella con la classifica degli utenti, ordinata per il totale di punti accumulati
+
+### Sezione Premi
+
+- Situata al centro-sinistra dello schermo. Cliccandola, si espande in due liste:
+
+- Premi riscossi: Mostra il nome del premio e la data di riscossione
+
+- Premi da riscattare: Contiene una lista di premi con pulsante "Riscatta"
+
+### Sezione Obiettivi
+
+Gli obiettivi sono suddivisi prima per **tipologia** (attività/sfide), poi per **frequenza** (settimanali/mensili/annuali)
+
+- Vengono visualizzati gli **obiettivi da completare** (come logico in una To-do list...), con un pulsante "Rimuovi" e un pulsante "Completa" che possono alterarne lo stato
+
 ### Storico Funzionalità introdotte per l'utilizzo dell'Interfaccia Utente 
 
 - [X] Login form utente (l'utente accede all'app e viene visualizzata la homepage)
@@ -51,56 +101,3 @@
 - [X] Aggiornamento gestione punteggio (una sfida se completata sottrae punti utente sfidante e li aggiunge all'utente sfidato)
 
 - [X] Inserisco tasti per accettare o rifiutare sfide in arrivo
-
-### Accesso all'App
-
-- L'utente accede all'applicazione con nome uetnte e password tramite un form
-
-- Ad ogni accesso, viene mostrato un messaggio di benvenuto con il nome utente (es. Ciao Simone !). Cliccando su Accedi, l'utente viene indirizzato nella pagina Home della Webapp.
-
-#### Credenziali utenti database per il login
-
-- nome_utente: "Anna" | password: "ciao123" | hash: "$2y$10$vs8cRPiDyLKzlwUxBNSZueMuobFV2MqlmIqDvfoM613iqrzylKUOO"
-
--  nome_utente: "Mario" | password: "mariobros83" | hash: "$2y$10$rAiKpMoWNUryOO6.ikOFA.lirGpruzNv19B6s3BPleNVtxxYwawFS"
-
--  nome_utente: "Luigi" | password: "loveTravelling*" | hash: "$2y$10$IbJlF4q12KkhNEMm4zmGhu0QWrGGXUd/5NKk5URjrZBAYOnkgeqIe"
-
-### Design e Stile
-
-- Uso di icone ed emoji per rendere l'interfaccia più intuitiva e piacevole.
-
-- Sfondo in tonalità chiare (azzurro chiaro).
-
-### Elementi Estetici Principali
-
-- Titolo "Family Hub" al centro della barra superiore.
-
-- In alto a destra, un'icona circolare con il nome utente ed un'icona con opzione di *"Logout"*. 
-
-- Al centro dello schermo vengono visualizzati il nome e i punti accumulati.
-
-### Sezione Classifica
-
-- Posizionata a sinistra della schermata principale.
-
-- Contiene una tabella con la classifica degli utenti, ordinata per il totale di punti accumulati.
-
-### Sezione Premi
-
-- Situata al centro-sinistra dello schermo. Cliccandola, si espande in due liste:
-
-- Premi riscossi: Mostra il nome del premio e la data di riscossione.
-
-- Premi da riscattare: Contiene un pulsante "riscatta", solo se l'utente ha abbastanza punti.
-
-### Sezione Obiettivi
-
-Gli obiettivi sono suddivisi prima per **tipologia** in due liste (attività/sfide), poi per **frequenza** (settimanali/mensili/annuali)
-
-#### Stato obiettivi
-
-- Cliccando su attività o su sfide mostro di default prima gli **obiettivi da completare**, con un pulsante per aggiornarne lo stato (ad esempio "Segna come completato").  
-- Vengono visualizzati poi gli **obiettivi da completare**, con un colore diverso (ad esempio, grigio o verde chiaro).
-- Gli **obiettivi scaduti o rifiutati** (le sfide) rifiutate non vengono visualizzati...
-

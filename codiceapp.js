@@ -1487,10 +1487,15 @@ async function aggiungiObiettivo(idUtente) {
     if (!frequenza) return;
 
     // Se l'obiettivo ha come tipo "sfida", chiedo chi è il destinatario della sfida
-    let destinatarioId = null;
     if (tipo === "sfida") {
-      destinatarioId = await chiediDestinatario(utenti);
-      if (!destinatarioId) return;
+        destinatarioId = await chiediDestinatario(utenti);
+        if (!destinatarioId) return;
+
+        // Impedisco che l'utente possa sfidarsi da solo
+        if (destinatarioId === idUtente) {
+            alert("Non puoi sfidarti da solo!");
+            return;
+        }
     }
 
     // Recupero nuovo ID obiettivo 

@@ -4,8 +4,6 @@
 
 Memorizza alcune informazioni base sugli utenti della mia webapp.  
 Ogni utente ha un saldo che registra il totale dei punti accumulati (il campo viene aggiornato in base alle attività svolte o alle sfide completate con gli altri utenti, e può essere utilizzato per riscattare premi).  
-Potrei impostare di default questo campo ad un valore indicativo di punti piuttosto che a 0 (una sorta di bonus di benvenuto per incentivare l'utente ad utilizzare l'app).  
-Il campo ultimo_accesso consente di registrare l'ultimo giorno di accesso dell'utente (eventualmente per l'assegnazione di punti bonus per il login quotidiano).
 
 | ATTRIBUTO        | TIPO     | VINCOLI     |
 |------------------|----------|-------------|
@@ -13,24 +11,23 @@ Il campo ultimo_accesso consente di registrare l'ultimo giorno di accesso dell'u
 | nome_utente      | VARCHAR  | NOT NULL    |
 | password         | VARCHAR  | NOT NULL    |
 | email            | VARCHAR  | UNIQUE      |
-| età              | INT      | > 0         |
-| punti            | INT      | >= 0        |
-| ultimo_accesso   | DATE     | NOT NULL    |
+| eta              | INT      | UNSIGNED    |
+| punti            | INT      | UNSIGNED    |
 
 -----------------------------------------------------------------------
 
 ### TABELLA OBIETTIVI (entità)
 
-Ogni obiettivo ha una descrizione, una frequenza di completamento (settimanale, mensile, annuale o occasionale) e un punteggio che l'utente guadagna quando lo completa. Gli obiettivi si distinguono in due tipologie: le attività (riguardano il singolo utente, vengono accettate automaticamente da sistema) e le sfide (coinvolgono due utenti, un utente sfidante offre parte dei suoi punti e chiede di fare qualcosa ad un altro utente, che può decidere se accettare/rifiutare la sfida).
+Ogni obiettivo ha un nome (e può avere una descrizione con informazioni aggiuntive sull'obiettivo), una frequenza di completamento (settimanale, mensile o annuale) e un punteggio che l'utente guadagna quando lo completa. Gli obiettivi si distinguono in due tipologie: le attività (riguardano il singolo utente, vengono accettate automaticamente da sistema) e le sfide (coinvolgono due utenti, un utente sfidante offre parte dei suoi punti e chiede di fare qualcosa ad un altro utente, che può decidere se accettare/rifiutare la sfida).
 
 | ATTRIBUTO        | TIPO     | VINCOLI                                  |
 |------------------|----------|------------------------------------------|
 | id_obiettivo     | INT      | PK                                       |
 | nome_obiettivo   | VARCHAR  | NOT NULL                                 |
-| tipo             | ENUM     | attività/sfida                           |
+| tipo             | ENUM     | attivita/sfida                           |
 | descrizione      | VARCHAR  | opzionale                                |
-| frequenza        | ENUM     | settimanale/mensile/annuale/occasionale  |
-| punti_obiettivo  | INT      | > 0                                      |
+| frequenza        | ENUM     | settimanale/mensile/annuale              |
+| punti_obiettivo  | INT      | UNSIGNED                                 |
 
 ----------------------------------------------------------------------------------
 
@@ -68,7 +65,7 @@ Con il campo punti_richiesti indico il numero di punti necessari a riscattare qu
 | id_premio        | INT      | PK         |
 | id_utente        | INT      | FK         |
 | nome_premio      | VARCHAR  | NOT NULL   |
-| punti_richiesti  | INT      | > 0        |
+| punti_richiesti  | INT      | UNSIGNED   |
 | data_riscossione | DATE     | NOT NULL   |
 
-**VINCOLI DI INTEGRITÀ REFERENZIALE**: Tra riscossione.id_utente e utenti.id_utente
+**VINCOLI DI INTEGRITÀ REFERENZIALE**: Tra premi.id_utente e utenti.id_utente

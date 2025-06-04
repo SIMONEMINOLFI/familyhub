@@ -4,32 +4,31 @@
 
 #### Gestione delle Attività (To-Do List Avanzata)
 
-- Suddivisione delle attività in **settimanali, mensili, annuali**.
+- Suddivisione delle attività in **settimanali, mensili, annuali**
 
-- Ogni attività completata assegna punti all'utente.
+- Ogni attività completata assegna punti all'utente
 
 #### Sfide e Classifica Familiare
 
-- L'utente può lanciare sfide ai propri familiari, con punti in palio.
+- L'utente può lanciare sfide ad altri utenti, mettendo i propri punti in palio
 
-- Le sfide possono essere accettate o rifiutate e assegnano punti al completamento.
+- Le sfide possono essere accettate o rifiutate dall'utente sfidato e assegnano punti al completamento
 
-- Classifica basata sui punti accumulati, con aggiornamenti periodici.
+- Classifica basata sui punti accumulati, con aggiornamento automatico
 
-#### Monitoraggio dei Progressi e Premi
+#### Progressi e Premi
 
-- Sistema di punteggio che premia l'utente per le attività completate e le sfide vinte.
+- Sistema di punteggio che premia l'utente per le attività completate e le sfide vinte
 
-- I punti possono essere utilizzati per sbloccare premi personalizzati.
-
-- Storico delle attività e delle sfide, per monitorare i progressi nel tempo.
+- I punti possono essere utilizzati per sbloccare premi personalizzati
 
 ### Punti di Forza e Unicità
 
-- **Più di una semplice to-do list:** Integra un sistema di sfide e ricompense, rendendo la gestione delle attività più stimolante.  
-- **Motivazione costante:** La classifica e i premi incentivano la costanza nell'uso dell'app.  
-- **Personalizzazione totale:** Attività, sfide e premi possono essere adattati alle proprie esigenze.  
-- **Storico e tracciabilità:** Monitoraggio delle attività passate per migliorare l'organizzazione e la gestione del tempo.
+- **Più di una semplice to-do list:** Integra un sistema di sfide e ricompense, rendendo la gestione delle attività più stimolante 
+
+- **Motivazione costante:** La classifica e i premi incentivano la costanza nell'uso dell'app 
+
+- **Personalizzazione totale:** Attività, sfide e premi possono essere adattati alle proprie esigenze 
 
 ### Esempio di utilizzo - L'Esperienza di Marco su Family Hub
 
