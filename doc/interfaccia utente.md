@@ -101,3 +101,5 @@ Gli obiettivi sono suddivisi prima per **tipologia** (attività/sfide), poi per 
 - [X] Aggiornamento gestione punteggio (una sfida se completata sottrae punti utente sfidante e li aggiunge all'utente sfidato)
 
 - [X] Inserisco tasti per accettare o rifiutare sfide in arrivo
+
+- [X] Aggiunto gestione automatica degli obiettivi in base alla frequenza (ad esempio gli obiettivi settimanali dopo 7 giorni non vengono più mostrati all'utente, e così via...)

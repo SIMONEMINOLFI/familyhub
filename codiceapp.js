@@ -511,6 +511,31 @@ function rimuoviEventListener(bottoni) {
     });
 }
 
+// Funzione che calcola quanti giorni mancano alla scadenza dell'obiettivo
+function calcolaGiorniRimanenti(dataAssegnazione, frequenza) {
+
+    const oggi = new Date(); // Data di oggi
+    const inizio = new Date(dataAssegnazione); 
+    let fine = new Date(inizio); // Data per la fine dell'obiettivo
+
+    // Aggiungo giorni in base alla frequenza
+    if (frequenza === "settimanale") {
+        // Se è settimanale, aggiungo 7 giorni
+        fine.setDate(fine.getDate() + 7);
+    } else if (frequenza === "mensile") {
+        // Se è mensile, aggiungo 1 mese
+        fine.setMonth(fine.getMonth() + 1);
+    } else if (frequenza === "annuale") {
+        // Se è annuale, aggiungo 1 anno
+        fine.setFullYear(fine.getFullYear() + 1);
+    }
+
+    const diffTime = fine - oggi;
+    const diffGiorni = Math.floor(diffTime / (1000 * 60 * 60 * 24)); // Converto la differenza in giorni interi (arrotondo per difetto)
+
+    return diffGiorni <= 0 ? -1 : diffGiorni; // Se la data è già passata oppure è oggi, considero l'obiettivo scaduto (restituisco -1)
+}
+
 // Funzione che mostra le attività settimanali dell'utente 
 async function caricaAttivitaSettimanali(idUtente) {
     try {
@@ -551,20 +576,31 @@ async function caricaAttivitaSettimanali(idUtente) {
                     let item = document.createElement('li');
                     item.className = 'list-group-item';
                     
-                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
-                    let nome = obiettivo.nome_obiettivo || 'Attività';
-                    let punti = obiettivo.punti_obiettivo || 0; 
+                    let nome = obiettivo.nome_obiettivo || 'Sfida';
+                    let punti = obiettivo.punti_obiettivo || 0;
                     let idPartecipazione = partecipazione.id_partecipazione;
                     let descrizione = obiettivo.descrizione || '';
-                    
-                    // Costruisco la parte nome con icona info se l'attività ha una descrizione
-                    let nomeConInfo = nome;
+
+                    // Calcolo i giorni rimanenti per completare l'obiettivo
+                    let giorniRimanenti = calcolaGiorniRimanenti(partecipazione.data_assegnazione, obiettivo.frequenza);
+
+                    // Se è scaduto, non mostro l'obiettivo
+                    if (giorniRimanenti < 0) {
+                        continue;
+                    }
+
+                    // Costruisco il badge con i giorni rimanenti come bottone stilizzato
+                    let badgeGiorni = '<span style="display: inline-block; background-color: #007bff; color: white; ' +
+                                    'border-radius: 10px; padding: 2px 8px; font-size: 0.75rem; margin-left: 6px;">' +
+                                    giorniRimanenti + 'G</span>';
+
+                    // Costruisco il nome con badge e info (se c'è una descrizione)
+                    let nomeConInfo = nome + badgeGiorni;
                     if (descrizione.trim() !== '') {
-                        // L'icona info è cliccabile e mi apre una alert
                         nomeConInfo += ' <span class="info-icon" ' +
-                                       'style="cursor: pointer; color: #007bff;" ' +
-                                       'title="Mostra descrizione" ' +
-                                       'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                                    'style="cursor: pointer; color: #007bff;" ' +
+                                    'title="Mostra descrizione" ' +
+                                    'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
                     }
 
                     item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
@@ -667,20 +703,31 @@ async function caricaAttivitaMensili(idUtente) {
                     let item = document.createElement('li');
                     item.className = 'list-group-item';
                     
-                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
-                    let nome = obiettivo.nome_obiettivo || 'Attività';
+                    let nome = obiettivo.nome_obiettivo || 'Sfida';
                     let punti = obiettivo.punti_obiettivo || 0;
                     let idPartecipazione = partecipazione.id_partecipazione;
                     let descrizione = obiettivo.descrizione || '';
-                    
-                    // Costruisco la parte nome con icona info se l'attività ha una descrizione
-                    let nomeConInfo = nome;
+
+                    // Calcolo i giorni rimanenti per completare l'obiettivo
+                    let giorniRimanenti = calcolaGiorniRimanenti(partecipazione.data_assegnazione, obiettivo.frequenza);
+
+                    // Se è scaduto, non mos
+                    if (giorniRimanenti < 0) {
+                        continue;
+                    }
+
+                    // Costruisco il badge con i giorni rimanenti come bottone stilizzato
+                    let badgeGiorni = '<span style="display: inline-block; background-color: #007bff; color: white; ' +
+                                    'border-radius: 10px; padding: 2px 8px; font-size: 0.75rem; margin-left: 6px;">' +
+                                    giorniRimanenti + 'G</span>';
+
+                    // Costruisco il nome con badge e info (se c'è una descrizione)
+                    let nomeConInfo = nome + badgeGiorni;
                     if (descrizione.trim() !== '') {
-                        // L'icona info è cliccabile e mi apre una alert
                         nomeConInfo += ' <span class="info-icon" ' +
-                                     'style="cursor: pointer; color: #007bff;" ' +
-                                     'title="Mostra descrizione" ' +
-                                     'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                                    'style="cursor: pointer; color: #007bff;" ' +
+                                    'title="Mostra descrizione" ' +
+                                    'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
                     }
 
                     item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
@@ -782,20 +829,31 @@ async function caricaAttivitaAnnuali(idUtente) {
                     let item = document.createElement('li');
                     item.className = 'list-group-item';
                     
-                    // Estraggo nome, punti e id dalla partecipazione/obiettivo
-                    let nome = obiettivo.nome_obiettivo || 'Attività';
+                    let nome = obiettivo.nome_obiettivo || 'Sfida';
                     let punti = obiettivo.punti_obiettivo || 0;
                     let idPartecipazione = partecipazione.id_partecipazione;
                     let descrizione = obiettivo.descrizione || '';
-                    
-                    // Costruisco la parte nome con icona info se l'attività ha una descrizione
-                    let nomeConInfo = nome;
+
+                    // Calcolo i giorni rimanenti per completare l'obiettivo
+                    let giorniRimanenti = calcolaGiorniRimanenti(partecipazione.data_assegnazione, obiettivo.frequenza);
+
+                    // Se è scaduto, non mos
+                    if (giorniRimanenti < 0) {
+                        continue;
+                    }
+
+                    // Costruisco il badge con i giorni rimanenti come bottone stilizzato
+                    let badgeGiorni = '<span style="display: inline-block; background-color: #007bff; color: white; ' +
+                                    'border-radius: 10px; padding: 2px 8px; font-size: 0.75rem; margin-left: 6px;">' +
+                                    giorniRimanenti + 'G</span>';
+
+                    // Costruisco il nome con badge e info (se c'è una descrizione)
+                    let nomeConInfo = nome + badgeGiorni;
                     if (descrizione.trim() !== '') {
-                        // L'icona info è cliccabile e mi apre una alert
                         nomeConInfo += ' <span class="info-icon" ' +
-                                     'style="cursor: pointer; color: #007bff;" ' +
-                                     'title="Mostra descrizione" ' +
-                                     'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                                    'style="cursor: pointer; color: #007bff;" ' +
+                                    'title="Mostra descrizione" ' +
+                                    'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
                     }
 
                     item.innerHTML = '<button class="elimina-obiettivo-btn" data-id="' + idPartecipazione + '" ' +
@@ -904,30 +962,31 @@ async function caricaSfideSettimanali(idUtente) {
                     item.className = 'list-group-item ' +
                                      (partecipazione.stato === 'attesa' ? 'bg-warning bg-opacity-10' : '');
 
-                    // Estraggo nome, punti, id e descrizione
                     let nome = obiettivo.nome_obiettivo || 'Sfida';
                     let punti = obiettivo.punti_obiettivo || 0;
                     let idPartecipazione = partecipazione.id_partecipazione;
                     let descrizione = obiettivo.descrizione || '';
 
-                    // Recupero il nome dello sfidante (se esiste) cercando nell'elenco utenti
-                    let nomeSfidante = '';
-                    if (partecipazione.id_utente_sfidante) {
-                        let utenteSfidante = utenti.records.find(function(u) {
-                            return u.id_utente == partecipazione.id_utente_sfidante;
-                        });
-                        if (utenteSfidante && utenteSfidante.nome_utente) {
-                            nomeSfidante = utenteSfidante.nome_utente;
-                        }
+                    // Calcolo i giorni rimanenti per completare l'obiettivo
+                    let giorniRimanenti = calcolaGiorniRimanenti(partecipazione.data_assegnazione, obiettivo.frequenza);
+
+                    // Se è scaduto, non mos
+                    if (giorniRimanenti < 0) {
+                        continue;
                     }
 
-                    // Aggiungo icona info se c'è una descrizione
-                    let nomeConInfo = nome;
+                    // Costruisco il badge con i giorni rimanenti come bottone stilizzato
+                    let badgeGiorni = '<span style="display: inline-block; background-color: #007bff; color: white; ' +
+                                    'border-radius: 10px; padding: 2px 8px; font-size: 0.75rem; margin-left: 6px;">' +
+                                    giorniRimanenti + 'G</span>';
+
+                    // Costruisco il nome con badge e info (se c'è una descrizione)
+                    let nomeConInfo = nome + badgeGiorni;
                     if (descrizione.trim() !== '') {
                         nomeConInfo += ' <span class="info-icon" ' +
-                                       'style="cursor: pointer; color: #007bff;" ' +
-                                       'title="Mostra descrizione" ' +
-                                       'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                                    'style="cursor: pointer; color: #007bff;" ' +
+                                    'title="Mostra descrizione" ' +
+                                    'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
                     }
 
                     // Costruisco il contenuto in base allo stato
@@ -1096,31 +1155,31 @@ async function caricaSfideMensili(idUtente) {
                     item.className = 'list-group-item ' +
                                      (partecipazione.stato === 'attesa' ? 'bg-warning bg-opacity-10' : '');
 
-                    // Estraggo nome, punti, id e descrizione
                     let nome = obiettivo.nome_obiettivo || 'Sfida';
                     let punti = obiettivo.punti_obiettivo || 0;
                     let idPartecipazione = partecipazione.id_partecipazione;
                     let descrizione = obiettivo.descrizione || '';
 
-                    // Recupero il nome dello sfidante (se esiste) cercando nell'elenco utenti
-                    let nomeSfidante = '';
-                    if (partecipazione.id_utente_sfidante) {
-                        let utenteSfidante = utenti.records.find(function(u) {
-                            return u.id_utente == partecipazione.id_utente_sfidante;
-                        });
-                        if (utenteSfidante && utenteSfidante.nome_utente) {
-                            nomeSfidante = utenteSfidante.nome_utente;
-                        }
+                    // Calcolo i giorni rimanenti per completare l'obiettivo
+                    let giorniRimanenti = calcolaGiorniRimanenti(partecipazione.data_assegnazione, obiettivo.frequenza);
+
+                    // Se è scaduto, non mos
+                    if (giorniRimanenti < 0) {
+                        continue;
                     }
 
-                    // Costruisco la parte nome con icona info se la sfida ha una descrizione
-                    let nomeConInfo = nome;
+                    // Costruisco il badge con i giorni rimanenti come bottone stilizzato
+                    let badgeGiorni = '<span style="display: inline-block; background-color: #007bff; color: white; ' +
+                                    'border-radius: 10px; padding: 2px 8px; font-size: 0.75rem; margin-left: 6px;">' +
+                                    giorniRimanenti + 'G</span>';
+
+                    // Costruisco il nome con badge e info (se c'è una descrizione)
+                    let nomeConInfo = nome + badgeGiorni;
                     if (descrizione.trim() !== '') {
-                        // L'icona info è cliccabile e mi apre una alert
                         nomeConInfo += ' <span class="info-icon" ' +
-                                       'style="cursor: pointer; color: #007bff;" ' +
-                                       'title="Mostra descrizione" ' +
-                                       'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                                    'style="cursor: pointer; color: #007bff;" ' +
+                                    'title="Mostra descrizione" ' +
+                                    'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
                     }
 
                     // Costruisco il contenuto in base allo stato
@@ -1288,30 +1347,31 @@ async function caricaSfideAnnuali(idUtente) {
                     item.className = 'list-group-item ' +
                                      (partecipazione.stato === 'attesa' ? 'bg-warning bg-opacity-10' : '');
 
-                    // Estraggo nome, punti, id e descrizione
                     let nome = obiettivo.nome_obiettivo || 'Sfida';
                     let punti = obiettivo.punti_obiettivo || 0;
                     let idPartecipazione = partecipazione.id_partecipazione;
                     let descrizione = obiettivo.descrizione || '';
 
-                    // Recupero il nome dello sfidante (se esiste) cercando nell'elenco utenti
-                    let nomeSfidante = '';
-                    if (partecipazione.id_utente_sfidante) {
-                        let utenteSfidante = utenti.records.find(function(u) {
-                            return u.id_utente == partecipazione.id_utente_sfidante;
-                        });
-                        if (utenteSfidante && utenteSfidante.nome_utente) {
-                            nomeSfidante = utenteSfidante.nome_utente;
-                        }
+                    // Calcolo i giorni rimanenti per completare l'obiettivo
+                    let giorniRimanenti = calcolaGiorniRimanenti(partecipazione.data_assegnazione, obiettivo.frequenza);
+
+                    // Se è scaduto, non mos
+                    if (giorniRimanenti < 0) {
+                        continue;
                     }
 
-                    // Costruisco la parte nome con icona info se la sfida ha una descrizione
-                    let nomeConInfo = nome;
+                    // Costruisco il badge con i giorni rimanenti come bottone stilizzato
+                    let badgeGiorni = '<span style="display: inline-block; background-color: #007bff; color: white; ' +
+                                    'border-radius: 10px; padding: 2px 8px; font-size: 0.75rem; margin-left: 6px;">' +
+                                    giorniRimanenti + 'G</span>';
+
+                    // Costruisco il nome con badge e info (se c'è una descrizione)
+                    let nomeConInfo = nome + badgeGiorni;
                     if (descrizione.trim() !== '') {
                         nomeConInfo += ' <span class="info-icon" ' +
-                                       'style="cursor: pointer; color: #007bff;" ' +
-                                       'title="Mostra descrizione" ' +
-                                       'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
+                                    'style="cursor: pointer; color: #007bff;" ' +
+                                    'title="Mostra descrizione" ' +
+                                    'data-descrizione="' + encodeURIComponent(descrizione) + '">ⓘ</span>';
                     }
 
                     // Costruisco il contenuto in base allo stato
