@@ -915,6 +915,12 @@ async function caricaAttivitaAnnuali(idUtente) {
     }
 }
 
+// Funzione che restituisce il nome dello sfidante dato il suo ID
+function getNomeSfidante(idSfidante, utenti) {
+    const sfidante = utenti.records.find(u => u.id_utente == idSfidante);
+    return sfidante ? sfidante.nome_utente : "Utente sconosciuto";
+}
+
 // Funzione che mostra le sfide settimanali dell'utente
 async function caricaSfideSettimanali(idUtente) {
     try {
@@ -995,7 +1001,7 @@ async function caricaSfideSettimanali(idUtente) {
                         item.innerHTML = nomeConInfo + ' - ' + punti + ' punti' +
                             '<div class="d-flex justify-content-between align-items-center mt-2">' +
                                 // Messaggio personalizzato con nome dello sfidante
-                                '<small class="text-muted">' + nomeSfidante + ' ti ha sfidato</small>' +
+                                '<small class="text-muted">' + getNomeSfidante(partecipazione.id_utente_sfidante, utenti) + ' ti ha sfidato</small>' +
                                 '<div>' +
                                     '<button class="btn btn-accetta btn-azione accetta-btn me-2" data-id="' + idPartecipazione + '">' +
                                         'Accetta</button>' +
@@ -1188,7 +1194,7 @@ async function caricaSfideMensili(idUtente) {
                         item.innerHTML = nomeConInfo + ' - ' + punti + ' punti' +
                             '<div class="d-flex justify-content-between align-items-center mt-2">' +
                                 // Messaggio personalizzato con nome dello sfidante
-                                '<small class="text-muted">' + nomeSfidante + ' ti ha sfidato</small>' +
+                                '<small class="text-muted">' + getNomeSfidante(partecipazione.id_utente_sfidante, utenti) + ' ti ha sfidato</small>' +
                                 '<div>' +
                                     '<button class="btn btn-accetta btn-azione accetta-btn me-2" data-id="' + idPartecipazione + '">' +
                                         'Accetta</button>' +
@@ -1380,7 +1386,7 @@ async function caricaSfideAnnuali(idUtente) {
                         item.innerHTML = nomeConInfo + ' - ' + punti + ' punti' +
                             '<div class="d-flex justify-content-between align-items-center mt-2">' +
                                 // Messaggio personalizzato con nome dello sfidante
-                                '<small class="text-muted">' + nomeSfidante + ' ti ha sfidato</small>' +
+                                '<small class="text-muted">' + getNomeSfidante(partecipazione.id_utente_sfidante, utenti) + ' ti ha sfidato</small>' +
                                 '<div>' +
                                     '<button class="btn btn-accetta btn-azione accetta-btn me-2" data-id="' + idPartecipazione + '">' +
                                         'Accetta</button>' +

@@ -132,25 +132,16 @@ h5 {
   margin-bottom: 10px;
 }
 
-
-
-
-
-
-
-
-
-/* Sfida in attesa - sfondo evidenziato */
 .bg-warning.bg-opacity-10 {
     background-color: rgba(255, 193, 7, 0.1);
 }
 
-/* Per uno stile comune ai bottoni "Accetta" e "Rifiuta" */
-.btn-azione {
+.btn-azione { /* Per uno stile comune ai bottoni "Accetta" e "Rifiuta" */
     font-size: 0.8rem;
     padding: 0.25rem 0.75rem;
     min-width: 85px;
     color: white;
+    transition: all 0.3s ease;
 }
 
 .btn-accetta {
