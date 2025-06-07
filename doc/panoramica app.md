@@ -1,28 +1,40 @@
 ## FAMILY HUB - PANORAMICA DELL'APPLICAZIONE
 
-### Funzionalità Principali
+### 📋 Gestione Obiettivi (To-Do List Avanzata)
 
-#### Gestione delle Attività (To-Do List Avanzata)
+##### Prima Suddivisione per tipologia
 
-- Suddivisione delle attività in **settimanali, mensili, annuali**
+- 🛠️ Attività (es. Riordinare camera) - riguarda un singolo utente
 
-- Ogni attività completata assegna punti all'utente
+- ⚡ Sfida (es. Concludere una maratona) - riguarda due utenti (uno sfidante e uno sfidato)
 
-#### Sfide e Classifica Familiare
+##### Seconda suddivisione per frequenza
 
-- L'utente può lanciare sfide ad altri utenti, mettendo i propri punti in palio
+  - 🗓️ Settimanali (es. Riparare lavatrice)
 
-- Le sfide possono essere accettate o rifiutate dall'utente sfidato e assegnano punti al completamento
+  - 📅 Mensili (es. Riorganizzare la dispensa)  
 
-- Classifica basata sui punti accumulati, con aggiornamento automatico
+  - 📅 Annuali (es. Leggere almeno 10 libri)
 
-#### Progressi e Premi
+### 🎖 Punteggio e Premi
 
-- Sistema di punteggio che premia l'utente per le attività completate e le sfide vinte
+- L'utente guadagna punti completando attività e sfide
 
-- I punti possono essere utilizzati per sbloccare premi personalizzati
+- I punti possono essere spesi per riscattare premi personalizzati
 
-### Punti di Forza e Unicità
+### ⚔️ Sfide
+
+- Un utente può lanciare sfide ad altri utenti, mettendo i propri punti in palio
+
+- Le sfide possono essere accettate o rifiutate dal destinatario
+
+- Quando una sfida viene completata, i punti vengono sottratti dall'utente sfidante e aggiunti a quello sfidato 
+
+### 🏆 Classifica utenti
+
+- Classifica con punti totali, aggiornata in tempo reale
+
+### 💪🏻 Punti di Forza e Unicità
 
 - **Più di una semplice to-do list:** Integra un sistema di sfide e ricompense, rendendo la gestione delle attività più stimolante 
 
@@ -30,10 +42,12 @@
 
 - **Personalizzazione totale:** Attività, sfide e premi possono essere adattati alle proprie esigenze 
 
+- **Potenzialità:** L'applicazione è stata inizialmente pensata per un uso familiare, tuttavia potrebbe essere facilmente ampliata ad altri contesti sociali senza tuttavia andare a perdere la propria unicità 
+
 ### Esempio di utilizzo - L'Esperienza di Marco su Family Hub
 
-Marco, 17 anni, usa Family Hub per tenere traccia dei suoi impegni.  
-Accede all'applicazione scegliendo come nome utente Marco01.  
+Marco, 17 anni, usa Family Hub per tenere traccia dei suoi impegni
+Accede all'applicazione scegliendo come nome utente Marco
 A questo punto clicca su Obiettivi, visualizza le attività della settimana, ed inizia a completarle...
 
 - **Lunedì:** Si impegna a dare ripetizioni gratuite a ragazzi al doposcuola, guadagna 20 punti
