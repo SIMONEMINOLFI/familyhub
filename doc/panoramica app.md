@@ -44,7 +44,7 @@
 
 - **Potenzialità:** L'applicazione è stata inizialmente pensata per un uso familiare, tuttavia potrebbe essere facilmente ampliata ad altri contesti sociali senza tuttavia andare a perdere la propria unicità 
 
-### Esempio di utilizzo - L'Esperienza di Marco su Family Hub
+#### Esempio di utilizzo - L'Esperienza di Marco su Family Hub
 
 Marco, 17 anni, usa Family Hub per tenere traccia dei suoi impegni
 Accede all'applicazione scegliendo come nome utente Marco

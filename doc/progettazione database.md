@@ -43,7 +43,7 @@ La tabella tiene traccia dell'utente che deve completare l'obiettivo e di quello
 | id_obiettivo         | INT      | FK                                         |
 | id_utente            | INT      | FK                                         |
 | id_utente_sfidante   | INT      | FK, opzionale                              |
-| stato                | ENUM     | accettato/rifiutato/completato/scaduto     |
+| stato                | ENUM     | accettato/rifiutato/completato/attesa      |
 | data_assegnazione    | DATE     | NOT NULL                                   |
 | data_completamento   | DATE     | opzionale                                  |
 
